@@ -28,8 +28,8 @@ def normalized_adjacency_eigenvalues(num_nodes, edge_index, k):
     Builds D^{-1/2} A D^{-1/2} and extracts the k largest eigenvalues
     via sparse eigendecomposition.
     """
-    row = edge_index[0].numpy()
-    col = edge_index[1].numpy()
+    row = edge_index[0].cpu().numpy()
+    col = edge_index[1].cpu().numpy()
     values = np.ones(len(row), dtype=np.float64)
     A = sparse.coo_matrix((values, (row, col)), shape=(num_nodes, num_nodes))
     A = A.tocsr()
@@ -80,8 +80,9 @@ def compute_coarsened_eigenvalues(data, alpha, k, device):
 
 def mean_relative_error(eig_orig, eig_coarse, k):
     """Mean relative error of top-k eigenvalues: (1/k) sum |c_i - o_i| / |o_i|."""
-    o = eig_orig[:k]
-    c = eig_coarse[:k]
+    min_k = min(len(eig_orig), len(eig_coarse), k)
+    o = eig_orig[:min_k]
+    c = eig_coarse[:min_k]
     denom = np.abs(o)
     denom[denom < 1e-12] = 1e-12
     return float(np.mean(np.abs(c - o) / denom))

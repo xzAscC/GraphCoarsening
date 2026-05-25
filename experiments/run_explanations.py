@@ -153,6 +153,8 @@ def main():
 
     print(f"Loading dataset: {args.dataset}")
     data = load_dataset(args.dataset)
+    if data.edge_index is None:
+        data.edge_index = data.train_pos_edge_index
     print(f"  Nodes: {data.num_nodes}, Edges: {data.train_pos_edge_index.size(1)}")
 
     checkpoint_path = os.path.join("checkpoints", f"{args.dataset}_gcn.pt")
