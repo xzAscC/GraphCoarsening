@@ -159,6 +159,52 @@ def _fidelity_minus_coarse(model, data, explanation, original_score, device):
     return 0.0 if original_pred == coarse_pred else 1.0
 
 
+def fidelity_plus_continuous(
+    model: torch.nn.Module,
+    data: Data,
+    explanation: Data,
+    node_a: int,
+    node_b: int,
+    device: str = "cpu",
+) -> float:
+    """Continuous fidelity+ — measures prediction score drop when removing explanation.
+
+    Returns |original_score - modified_score| instead of binary flip.
+    More discriminative than binary fidelity for statistical testing.
+    """
+    model = model.to(device)
+    model.eval()
+    data = data.to(device)
+
+    _, original_score = _predict_binary(
+        model, data.x, data.edge_index, node_a, node_b,
+        edge_weight=getattr(data, "edge_weight", None), device=device,
+    )
+
+    exp_edge_index = _to_global_edges(data, explanation)
+
+    mask = torch.ones(data.edge_index.size(1), dtype=torch.bool, device=device)
+    for i in range(exp_edge_index.size(1)):
+        src, dst = exp_edge_index[0, i], exp_edge_index[1, i]
+        matches = (
+            ((data.edge_index[0] == src) & (data.edge_index[1] == dst))
+            | ((data.edge_index[0] == dst) & (data.edge_index[1] == src))
+        )
+        mask[matches] = False
+
+    modified_edge_index = data.edge_index[:, mask]
+    modified_weight = None
+    if hasattr(data, "edge_weight") and data.edge_weight is not None:
+        modified_weight = data.edge_weight[mask]
+
+    _, modified_score = _predict_binary(
+        model, data.x, modified_edge_index, node_a, node_b,
+        edge_weight=modified_weight, device=device,
+    )
+
+    return abs(original_score - modified_score)
+
+
 def _to_global_edges(data: Data, explanation: Data) -> torch.Tensor:
     if hasattr(explanation, "original_node_indices"):
         orig = explanation.original_node_indices

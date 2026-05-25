@@ -2,6 +2,15 @@
 
 Implements the Union-Find data structure and Algorithm 2 (Node Partition Rule)
 for grouping graph nodes into supernodes.
+
+Proposition (Protected Partition Correctness):
+    The protected_nodes parameter constrains the greedy merge process:
+    if v ∈ protected_nodes, then v is never merged with any other node.
+    This is implemented by skipping union(a,b) when either endpoint is
+    protected. The resulting partition P' satisfies:
+    - v ∈ protected_nodes ⇒ {v} ∈ P' (singleton)
+    - v ∉ protected_nodes ⇒ merged per original spectral criteria
+    The O(E·α(N)) complexity is preserved since the protection check is O(1).
 """
 
 from typing import List, Tuple
@@ -86,6 +95,7 @@ def node_partition(
     scores: torch.Tensor,
     num_nodes: int,
     alpha: float = 0.75,
+    protected_nodes: set | None = None,
 ) -> List[List[int]]:
     """Greedy node partition using perturbation scores (Algorithm 2).
 
@@ -101,6 +111,9 @@ def node_partition(
         alpha: Coarsening ratio in (0, 1]. Controls how many merges to
             perform. ``alpha = 1.0`` merges all possible edges;
             ``alpha = 0.5`` stops after half the budget. Default 0.75.
+        protected_nodes: Optional set of node indices that should never be
+            merged with other nodes. They remain as singletons in the
+            partition.
 
     Returns:
         List of partitions (supernode classes). Each class is a list of
@@ -108,7 +121,6 @@ def node_partition(
     """
     max_merges = int(alpha * num_nodes)
 
-    # Sort edges by ascending perturbation score
     sorted_indices = torch.argsort(scores)
     sorted_edges = edge_index[:, sorted_indices]
 
@@ -123,10 +135,11 @@ def node_partition(
             break
         a = int(row[idx].item())
         b = int(col[idx].item())
+        if protected_nodes and (a in protected_nodes or b in protected_nodes):
+            continue
         if uf.union(a, b):
             num_merges += 1
 
-    # Collect classes from Union-Find
     root_to_nodes: dict[int, List[int]] = {}
     for node in range(num_nodes):
         root = uf.find(node)

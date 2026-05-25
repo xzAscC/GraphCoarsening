@@ -1,0 +1,64 @@
+{
+  "dataset": "Cora",
+  "n_edges": 50,
+  "seed": 42,
+  "methods": {
+    "Ours": {
+      "bin_fid": 0.48,
+      "cont_fid": 1.4243,
+      "cont_std": 1.467,
+      "sparsity": 0.9869
+    },
+    "Saliency": {
+      "bin_fid": 0.34,
+      "cont_fid": 1.202,
+      "cont_std": 1.1803,
+      "sparsity": 0.5
+    },
+    "Occlusion": {
+      "bin_fid": 0.36,
+      "cont_fid": 1.1992,
+      "cont_std": 1.1763,
+      "sparsity": 0.9869
+    },
+    "Random": {
+      "bin_fid": 0.28,
+      "cont_fid": null,
+      "sparsity": 0.9869
+    },
+    "FullGraph": {
+      "bin_fid": 0.36,
+      "cont_fid": null,
+      "sparsity": 0.0
+    },
+    "KHop": {
+      "bin_fid": 0.36,
+      "cont_fid": null,
+      "sparsity": 0.9737
+    },
+    "Degree": {
+      "bin_fid": 0.26,
+      "cont_fid": null,
+      "sparsity": 0.9869
+    }
+  },
+  "significance": {
+    "Ours_vs_Saliency": {
+      "t": 2.753,
+      "p": 0.0083,
+      "metric": "continuous_fid"
+    },
+    "Ours_vs_Occlusion": {
+      "t": 2.83,
+      "p": 0.0067,
+      "metric": "continuous_fid"
+    }
+  },
+  "parameters": {
+    "k": 100,
+    "alpha": 0.75,
+    "k_hop": 2,
+    "k_frac": 0.5,
+    "mode": "edge"
+  }
+}
