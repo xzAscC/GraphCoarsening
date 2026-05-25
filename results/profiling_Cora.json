@@ -1,0 +1,69 @@
+{
+  "dataset": "Cora",
+  "results": {
+    "Occlusion": {
+      "preprocess_time_s": 0.0004,
+      "preprocess_memory_mb": 1.78,
+      "mean_explain_time_s": 0.375753,
+      "std_explain_time_s": 0.454714,
+      "median_explain_time_s": 0.176459,
+      "mean_forward_time_s": 0.001456,
+      "peak_memory_mb": 50.76,
+      "batch_times": {
+        "1": 0.1331,
+        "10": 2.3865,
+        "100": 2.2984,
+        "1000": 2.1782
+      },
+      "num_samples": 10
+    },
+    "Saliency": {
+      "preprocess_time_s": 0.0004,
+      "preprocess_memory_mb": 33.03,
+      "mean_explain_time_s": 0.016196,
+      "std_explain_time_s": 0.024289,
+      "median_explain_time_s": 0.008183,
+      "mean_forward_time_s": 0.002159,
+      "peak_memory_mb": 92.85,
+      "batch_times": {
+        "1": 0.0082,
+        "10": 0.0459,
+        "100": 0.0495,
+        "1000": 0.047
+      },
+      "num_samples": 10
+    },
+    "GNNExplainer": {
+      "preprocess_time_s": 0.0005,
+      "preprocess_memory_mb": 42.05,
+      "mean_explain_time_s": 0.402273,
+      "std_explain_time_s": 0.070332,
+      "median_explain_time_s": 0.377842,
+      "mean_forward_time_s": 0.001976,
+      "peak_memory_mb": 93.4,
+      "batch_times": {
+        "1": 0.2821,
+        "10": 2.8338,
+        "100": 3.1455,
+        "1000": 3.0608
+      },
+      "num_samples": 10
+    },
+    "Ours": {
+      "preprocess_time_s": 0.0003,
+      "preprocess_memory_mb": 42.05,
+      "mean_explain_time_s": 0.051006,
+      "std_explain_time_s": 0.053577,
+      "median_explain_time_s": 0.035992,
+      "mean_forward_time_s": 0.001599,
+      "peak_memory_mb": 212.28,
+      "batch_times": {
+        "1": 0.0072,
+        "10": 0.1803,
+        "100": 0.181,
+        "1000": 0.1815
+      },
+      "num_samples": 10
+    }
+  }
+}

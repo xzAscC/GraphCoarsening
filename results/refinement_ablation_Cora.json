@@ -1,0 +1,65 @@
+{
+  "dataset": "Cora",
+  "results": {
+    "none": {
+      "mean_fidelity_plus": 0.5833333333333334,
+      "std_fidelity_plus": 0.4930066485916347,
+      "mean_fidelity_minus": 0.5833333333333334,
+      "std_fidelity_minus": 0.4930066485916347,
+      "mean_size": 2116.0,
+      "std_size": 0.0,
+      "mean_time": 0.018057972192764282,
+      "num_samples": 24
+    },
+    "split_endpoints": {
+      "mean_fidelity_plus": 0.13333333333333333,
+      "std_fidelity_plus": 0.33993463423951903,
+      "mean_fidelity_minus": 0.13333333333333333,
+      "std_fidelity_minus": 0.33993463423951903,
+      "mean_size": 7939.466666666666,
+      "std_size": 2576.364592901314,
+      "mean_time": 0.016011261940002443,
+      "num_samples": 30
+    },
+    "split_clusters": {
+      "mean_fidelity_plus": 0.13333333333333333,
+      "std_fidelity_plus": 0.33993463423951903,
+      "mean_fidelity_minus": 0.13333333333333333,
+      "std_fidelity_minus": 0.33993463423951903,
+      "mean_size": 7939.466666666666,
+      "std_size": 2576.364592901314,
+      "mean_time": 0.01609952449798584,
+      "num_samples": 30
+    },
+    "split_1hop": {
+      "mean_fidelity_plus": 0.06666666666666667,
+      "std_fidelity_plus": 0.24944382578492943,
+      "mean_fidelity_minus": 0.06666666666666667,
+      "std_fidelity_minus": 0.24944382578492943,
+      "mean_size": 8445.033333333333,
+      "std_size": 1890.6156225479106,
+      "mean_time": 0.018098251024882,
+      "num_samples": 30
+    },
+    "split_2hop": {
+      "mean_fidelity_plus": 0.03333333333333333,
+      "std_fidelity_plus": 0.17950549357115014,
+      "mean_fidelity_minus": 0.03333333333333333,
+      "std_fidelity_minus": 0.17950549357115014,
+      "mean_size": 8697.666666666666,
+      "std_size": 1360.528802422875,
+      "mean_time": 0.020097581545511882,
+      "num_samples": 30
+    },
+    "full_khop": {
+      "mean_fidelity_plus": 0.03333333333333333,
+      "std_fidelity_plus": 0.17950549357115014,
+      "mean_fidelity_minus": 0.03333333333333333,
+      "std_fidelity_minus": 0.17950549357115014,
+      "mean_size": 8697.666666666666,
+      "std_size": 1360.528802422875,
+      "mean_time": 0.018006428082784017,
+      "num_samples": 30
+    }
+  }
+}

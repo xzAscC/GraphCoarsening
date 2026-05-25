@@ -1,0 +1,164 @@
+{
+  "Cora": {
+    "2": {
+      "none": {
+        "cosine_sim": 0.979778,
+        "variance": 0.005053,
+        "dirichlet_energy": 23.569545,
+        "auc": 0.65525
+      },
+      "random": {
+        "cosine_sim": 0.967674,
+        "variance": 5.335177,
+        "dirichlet_energy": 162672.118168,
+        "auc": 0.498194,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "heavy_edge": {
+        "cosine_sim": 0.972976,
+        "variance": 2.923695,
+        "dirichlet_energy": 90590.345643,
+        "auc": 0.448718,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "spectral": {
+        "cosine_sim": 0.94601,
+        "variance": 10.689526,
+        "dirichlet_energy": 273108.135894,
+        "auc": 0.473665,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.42
+      }
+    },
+    "4": {
+      "none": {
+        "cosine_sim": 0.997748,
+        "variance": 0.002981,
+        "dirichlet_energy": 13.119516,
+        "auc": 0.64945
+      },
+      "random": {
+        "cosine_sim": 0.979499,
+        "variance": 0.013823,
+        "dirichlet_energy": 537.518464,
+        "auc": 0.525413,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "heavy_edge": {
+        "cosine_sim": 0.981401,
+        "variance": 0.009311,
+        "dirichlet_energy": 253.176145,
+        "auc": 0.54259,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "spectral": {
+        "cosine_sim": 0.994603,
+        "variance": 0.01873,
+        "dirichlet_energy": 931.760709,
+        "auc": 0.476801,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.46
+      }
+    },
+    "8": {
+      "none": {
+        "cosine_sim": 0.997066,
+        "variance": 0.002467,
+        "dirichlet_energy": 10.940601,
+        "auc": 0.642401
+      },
+      "random": {
+        "cosine_sim": 0.966986,
+        "variance": 0.004214,
+        "dirichlet_energy": 84.067578,
+        "auc": 0.573777,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "heavy_edge": {
+        "cosine_sim": 0.978266,
+        "variance": 0.003689,
+        "dirichlet_energy": 34.72812,
+        "auc": 0.549748,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "spectral": {
+        "cosine_sim": 0.978821,
+        "variance": 0.003441,
+        "dirichlet_energy": 102.351874,
+        "auc": 0.508368,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.36
+      }
+    },
+    "16": {
+      "none": {
+        "cosine_sim": 0.997781,
+        "variance": 0.001923,
+        "dirichlet_energy": 8.508304,
+        "auc": 0.641879
+      },
+      "random": {
+        "cosine_sim": 0.975752,
+        "variance": 0.003254,
+        "dirichlet_energy": 65.345089,
+        "auc": 0.554836,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "heavy_edge": {
+        "cosine_sim": 0.980666,
+        "variance": 0.002998,
+        "dirichlet_energy": 28.521141,
+        "auc": 0.550502,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "spectral": {
+        "cosine_sim": 0.983068,
+        "variance": 0.002754,
+        "dirichlet_energy": 83.792421,
+        "auc": 0.510211,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.3
+      }
+    },
+    "32": {
+      "none": {
+        "cosine_sim": 0.981332,
+        "variance": 0.003803,
+        "dirichlet_energy": 17.294936,
+        "auc": 0.649759
+      },
+      "random": {
+        "cosine_sim": 0.904439,
+        "variance": 0.005258,
+        "dirichlet_energy": 101.310007,
+        "auc": 0.467755,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "heavy_edge": {
+        "cosine_sim": 0.921097,
+        "variance": 0.004567,
+        "dirichlet_energy": 43.204764,
+        "auc": 0.43381,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.01
+      },
+      "spectral": {
+        "cosine_sim": 0.926083,
+        "variance": 0.004539,
+        "dirichlet_energy": 130.778065,
+        "auc": 0.422338,
+        "num_coarse_nodes": 677,
+        "coarsening_time_s": 0.32
+      }
+    }
+  }
+}

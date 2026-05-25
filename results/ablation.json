@@ -1,0 +1,71 @@
+{
+  "k": 500,
+  "results": {
+    "Cora": {
+      "0.3": {
+        "mean_relative_error": 0.096623,
+        "time_s": 4.17
+      },
+      "0.6": {
+        "mean_relative_error": 0.191153,
+        "time_s": 1.01
+      },
+      "0.9": {
+        "mean_relative_error": 1.050714,
+        "time_s": 0.37
+      },
+      "0.95": {
+        "mean_relative_error": 1.0,
+        "time_s": 0.37
+      },
+      "0.99": {
+        "mean_relative_error": 1.0,
+        "time_s": 0.3
+      }
+    },
+    "Citeseer": {
+      "0.3": {
+        "mean_relative_error": 1.0,
+        "time_s": 15.19
+      },
+      "0.6": {
+        "mean_relative_error": 0.064,
+        "time_s": 0.81
+      },
+      "0.9": {
+        "mean_relative_error": 1.0,
+        "time_s": 0.47
+      },
+      "0.95": {
+        "mean_relative_error": 1.0,
+        "time_s": 0.48
+      },
+      "0.99": {
+        "mean_relative_error": 1.0,
+        "time_s": 0.53
+      }
+    },
+    "PubMed": {
+      "0.3": {
+        "mean_relative_error": 0.008948,
+        "time_s": 65.83
+      },
+      "0.6": {
+        "mean_relative_error": 0.060535,
+        "time_s": 158.3
+      },
+      "0.9": {
+        "mean_relative_error": 0.701911,
+        "time_s": 34.46
+      },
+      "0.95": {
+        "mean_relative_error": 1.0,
+        "time_s": 29.86
+      },
+      "0.99": {
+        "mean_relative_error": 1.0,
+        "time_s": 33.6
+      }
+    }
+  }
+}
