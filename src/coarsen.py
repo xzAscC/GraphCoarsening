@@ -12,13 +12,21 @@ Proposition (Protected Partition):
     during coarsening, ensuring that explanation-relevant edges remain
     distinguishable in the coarse representation.
 
-Proposition (Two-Signal Scoring):
-    Edge importance is computed as Score(e) = ĝ(e)·(1+ρ̂(e)) where:
-    - ĝ(e) = normalized |∂f/∂w_e| (gradient saliency, prediction sensitivity)
-    - ρ̂(e) = normalized perturbation score (spectral structural importance)
-    The gradient signal identifies edges the model depends on; the spectral
-    signal identifies edges critical to the graph's spectral properties.
-    Their product ensures selection based on both criteria.
+Proposition (Prediction-Aware Partition):
+    Let ρ̂(e) be the normalized spectral perturbation score and ĝ(e) the
+    normalized gradient saliency. The combined score s(e) = ρ̂(e) + ĝ(e)
+    orders edges by both structural and predictive importance. Edges
+    merged first (lowest s(e)) are both spectrally and predictively
+    redundant, justifying their exclusion from the explanation candidate set.
+
+Proposition (Coarse-Graph Spectral Scoring):
+    Given a partition P', the coarse graph G' has spectral perturbation
+    scores ρ'_c(e') computed from G''s eigen-decomposition. For each
+    original edge e=(u,v) with supernode endpoints S_u, S_v in P':
+        ρ̂_c(e) = ρ'_c(S_u, S_v)
+    These scores are partition-dependent: different target links produce
+    different partitions → different coarse graphs → different spectral
+    importance, yielding locally-relevant structural scores.
 """
 
 from typing import List, Optional, Tuple
@@ -330,6 +338,7 @@ class GraphCoarsener:
     def fit_partition(
         self,
         protected_nodes: set | None = None,
+        edge_scores: torch.Tensor | None = None,
     ) -> List[List[int]]:
         """Re-run only the partition step with protected nodes.
 
@@ -339,12 +348,15 @@ class GraphCoarsener:
 
         Args:
             protected_nodes: Set of node indices that should remain singletons.
+            edge_scores: Custom per-edge scores for partition ordering.
+                If None, uses self.scores (spectral perturbation scores).
 
         Returns:
             New partition with protected nodes as singletons.
         """
+        scores = edge_scores if edge_scores is not None else self.scores
         partition = node_partition(
-            self.edge_index, self.scores, self.num_nodes, self.alpha,
+            self.edge_index, scores, self.num_nodes, self.alpha,
             protected_nodes=protected_nodes,
         )
         return partition

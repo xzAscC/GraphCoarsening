@@ -92,17 +92,37 @@ class CoarsenExplainer(BaseExplainer):
         return self._explain_link_coarse(data, node_a, node_b)
 
     def _explain_link_edge(self, data: Data, node_a: int, node_b: int) -> Data:
-        """Protect-and-Project: partition-driven edge selection.
+        """Protect-and-Project with coarse-graph spectral scoring.
 
-        1. Compute per-link partition with protected nodes near target.
-        2. Score edges by coarse weight × spectral × gradient.
-        3. Return top-k as standard edge-level explanation.
+        1. Compute gradient saliency on all edges.
+        2. Build prediction-aware partition (spectral + gradient scores),
+           protected nodes near target kept as singletons.
+        3. Build coarse graph from partition, compute spectral scores on it,
+           project back to original edges — partition-dependent spectral signal.
+        4. Score: gradient × (1 + coarse_spectral), select top-k.
         """
+        from src.coarsen import build_coarse_graph
+        from src.spectral import (
+            compute_normalized_adjacency,
+            compute_top_k_eigenpairs,
+            compute_perturbation_scores,
+        )
+
         coarsener = self._ensure_fitted(data)
         data = self._to_device(data)
 
         protected = self._get_protected_nodes(data, node_a, node_b)
-        partition = coarsener.fit_partition(protected_nodes=protected)
+
+        gradient_all = self._gradient_scores(data, node_a, node_b, data.edge_index)
+
+        # Prediction-aware partition: spectral + gradient combined scores
+        sn_global = self._normalize_to_01(coarsener.scores)
+        gn_global = self._normalize_to_01(gradient_all)
+        combined_partition_scores = sn_global + gn_global
+        partition = coarsener.fit_partition(
+            protected_nodes=protected,
+            edge_scores=combined_partition_scores,
+        )
 
         # Get candidate edges from 2-hop subgraph
         _, sub_ei, _, _ = k_hop_subgraph(
@@ -122,21 +142,51 @@ class CoarsenExplainer(BaseExplainer):
                 original_node_indices=nodes,
             )
 
-        # Signal 1: spectral perturbation scores from coarsening
-        spectral_scores = self._spectral_scores_for_subgraph(
-            coarsener.scores, data.edge_index, sub_ei, num_sub,
-        )
+        # Build node-to-supernode mapping
+        node_to_super = {}
+        num_coarse = len(partition)
+        for si, members in enumerate(partition):
+            for nd in members:
+                node_to_super[nd] = si
 
-        # Signal 2: gradient saliency (prediction sensitivity)
-        gradient_all = self._gradient_scores(data, node_a, node_b, data.edge_index)
+        # Coarse-graph spectral scores: compute spectral perturbation on the
+        # coarse graph built from the per-link prediction-aware partition.
+        # This produces partition-dependent spectral scores — different target
+        # links yield different partitions → different coarse graphs → different
+        # spectral importance for each edge.
+        coarse_ei, coarse_ew, _ = build_coarse_graph(
+            coarsener.edge_index, coarsener.edge_weight,
+            coarsener.num_nodes, partition, coarsener.x,
+        )
+        k_coarse = min(50, num_coarse - 1)
+        if k_coarse < 2:
+            k_coarse = 2
+        A_hat_coarse = compute_normalized_adjacency(coarse_ei, num_coarse)
+        evals, lvecs, rvecs = compute_top_k_eigenpairs(A_hat_coarse, k_coarse)
+        coarse_spectral = compute_perturbation_scores(coarse_ei, evals, lvecs, rvecs)
+
+        # Project coarse spectral scores back to original subgraph edges
+        coarse_spec_map = {}
+        for idx in range(coarse_ei.size(1)):
+            si, sj = int(coarse_ei[0, idx].item()), int(coarse_ei[1, idx].item())
+            coarse_spec_map[(si, sj)] = float(coarse_spectral[idx].item())
+
+        spectral_coarse = torch.zeros(num_sub, device=self.device)
+        for j in range(num_sub):
+            u, v = int(sub_ei[0, j].item()), int(sub_ei[1, j].item())
+            su, sv = node_to_super.get(u, u), node_to_super.get(v, v)
+            s = coarse_spec_map.get((su, sv), 0.0)
+            if s == 0.0:
+                s = coarse_spec_map.get((sv, su), 0.0)
+            spectral_coarse[j] = s
+
+        # Gradient scores for subgraph candidates
         gradient_scores = self._spectral_scores_for_subgraph(
             gradient_all, data.edge_index, sub_ei, num_sub,
         )
 
-        # Combine: gradient × (1 + spectral)
-        # Gradient is primary; spectral perturbation from coarsening boosts
-        # structurally important edges
-        sn = self._normalize_to_01(spectral_scores)
+        # Combine: gradient × (1 + coarse_spectral)
+        sn = self._normalize_to_01(spectral_coarse)
         gn = self._normalize_to_01(gradient_scores)
         combined = gn * (1.0 + sn)
 
