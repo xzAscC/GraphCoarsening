@@ -1,0 +1,373 @@
+{
+  "config": {
+    "device": "cuda",
+    "seed": 42,
+    "num_edges": 30
+  },
+  "part_a": {
+    "barbell_test": {
+      "num_nodes": 12,
+      "accuracy_original": {
+        "1": 1.0
+      },
+      "resistance_original": {
+        "1": 0.39999999999999586
+      },
+      "coarse_nodes_random": 6,
+      "coarse_nodes_spectral": 3
+    }
+  },
+  "part_b": {
+    "Cora": {
+      "num_test_edges": 30,
+      "k_eigenvectors": 100,
+      "resistance_stats": {
+        "mean": 0.04151239764327421,
+        "std": 0.07907724066436256,
+        "q33": 0.0025866235163610266,
+        "q66": 0.02585203591695905,
+        "bucket_low_size": 10,
+        "bucket_medium_size": 10,
+        "bucket_high_size": 10
+      },
+      "Occlusion": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.5,
+          "sparsity": 0.9902963458110516,
+          "sufficiency_std": 0.48989794855663565,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.7,
+          "necessity": 0.3,
+          "sparsity": 0.9797571301247772,
+          "sufficiency_std": 0.45825756949558394,
+          "necessity_std": 0.45825756949558405
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.3,
+          "sparsity": 0.991800356506239,
+          "sufficiency_std": 0.48989794855663565,
+          "necessity_std": 0.45825756949558394
+        }
+      },
+      "Saliency": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.48989794855663565,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.8,
+          "necessity": 0.3,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4,
+          "necessity_std": 0.45825756949558405
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.3,
+          "necessity": 0.3,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.45825756949558394,
+          "necessity_std": 0.45825756949558394
+        }
+      },
+      "GNNExplainer": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.1,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.30000000000000004,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.2,
+          "necessity": 0.3,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4000000000000001,
+          "necessity_std": 0.45825756949558405
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.0,
+          "necessity": 0.3,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.45825756949558394
+        }
+      },
+      "Ours": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.10000029802322388,
+          "necessity": 0.10000034570693969,
+          "sparsity": 0.0873328877005348,
+          "sufficiency_std": 0.29999990065904397,
+          "necessity_std": 0.2999998847644649
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.21010871529579161,
+          "necessity": 0.2101086974143982,
+          "sparsity": 0.0873328877005348,
+          "sufficiency_std": 0.3960759508983454,
+          "necessity_std": 0.3960759603839824
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.20000020563602447,
+          "necessity": 0.20000016391277314,
+          "sparsity": 0.17176916221033872,
+          "sufficiency_std": 0.3999998971820368,
+          "necessity_std": 0.3999999180436311
+        }
+      }
+    },
+    "Citeseer": {
+      "num_test_edges": 30,
+      "k_eigenvectors": 100,
+      "resistance_stats": {
+        "mean": 0.49540802618315516,
+        "std": 1.471395820906294,
+        "q33": 0.00042381876998909485,
+        "q66": 0.07543685742138873,
+        "bucket_low_size": 10,
+        "bucket_medium_size": 10,
+        "bucket_high_size": 10
+      },
+      "Occlusion": {
+        "low": {
+          "n_edges": 9,
+          "sufficiency": 0.1111111111111111,
+          "necessity": 0.1111111111111111,
+          "sparsity": 0.9976169968418032,
+          "sufficiency_std": 0.31426968052735443,
+          "necessity_std": 0.31426968052735443
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.5,
+          "necessity": 0.5,
+          "sparsity": 0.9853875968992248,
+          "sufficiency_std": 0.5,
+          "necessity_std": 0.5
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.0,
+          "necessity": 0.5,
+          "sparsity": 0.9977777777777777,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.5
+        }
+      },
+      "Saliency": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.1,
+          "necessity": 0.2,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.30000000000000004,
+          "necessity_std": 0.4000000000000001
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.5,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.5,
+          "necessity_std": 0.5
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.0,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.5
+        }
+      },
+      "GNNExplainer": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.0,
+          "necessity": 0.2,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.4000000000000001
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.3,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.45825756949558405,
+          "necessity_std": 0.5
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.1,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.30000000000000004,
+          "necessity_std": 0.5
+        }
+      },
+      "Ours": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 9.5367431640625e-08,
+          "necessity": 1.5497207641601563e-07,
+          "sparsity": 0.7013695090439277,
+          "sufficiency_std": 1.488923549270248e-07,
+          "necessity_std": 1.8506258364033728e-07
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 2.8312206268310547e-07,
+          "necessity": 2.905726432800293e-07,
+          "sparsity": 0.18074935400516798,
+          "sufficiency_std": 2.3437968183793737e-07,
+          "necessity_std": 2.1993730284542017e-07
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 2.652406692504883e-07,
+          "necessity": 2.652406692504883e-07,
+          "sparsity": 0.18069767441860468,
+          "sufficiency_std": 2.408094039322825e-07,
+          "necessity_std": 2.408094039322825e-07
+        }
+      }
+    },
+    "PubMed": {
+      "num_test_edges": 30,
+      "k_eigenvectors": 100,
+      "resistance_stats": {
+        "mean": 0.0030265532474150437,
+        "std": 0.011020754459222428,
+        "q33": 6.155210483428818e-05,
+        "q66": 0.0004161089668358339,
+        "bucket_low_size": 10,
+        "bucket_medium_size": 10,
+        "bucket_high_size": 10
+      },
+      "Occlusion": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.6,
+          "necessity": 0.5,
+          "sparsity": 0.9831948720670984,
+          "sufficiency_std": 0.4898979485566356,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.3,
+          "necessity": 0.4,
+          "sparsity": 0.9861967830979934,
+          "sufficiency_std": 0.45825756949558394,
+          "necessity_std": 0.48989794855663565
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.3,
+          "necessity": 0.5,
+          "sparsity": 0.9962642000212337,
+          "sufficiency_std": 0.45825756949558394,
+          "necessity_std": 0.5
+        }
+      },
+      "Saliency": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.6,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4898979485566356,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.2,
+          "necessity": 0.4,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4000000000000001,
+          "necessity_std": 0.48989794855663565
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.48989794855663565,
+          "necessity_std": 0.5
+        }
+      },
+      "GNNExplainer": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.48989794855663565,
+          "necessity_std": 0.5
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.2,
+          "necessity": 0.4,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4000000000000001,
+          "necessity_std": 0.48989794855663565
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.0,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.5
+        }
+      },
+      "Ours": {
+        "low": {
+          "n_edges": 10,
+          "sufficiency": 0.3,
+          "necessity": 0.3,
+          "sparsity": 0.17820097674912408,
+          "sufficiency_std": 0.45825756949558405,
+          "necessity_std": 0.45825756949558405
+        },
+        "medium": {
+          "n_edges": 10,
+          "sufficiency": 0.2,
+          "necessity": 0.2,
+          "sparsity": 0.17814789255759628,
+          "sufficiency_std": 0.4000000000000001,
+          "necessity_std": 0.4000000000000001
+        },
+        "high": {
+          "n_edges": 10,
+          "sufficiency": 0.4,
+          "necessity": 0.4,
+          "sparsity": 0.17816381781505464,
+          "sufficiency_std": 0.4898979485566356,
+          "necessity_std": 0.4898979485566356
+        }
+      }
+    }
+  }
+}

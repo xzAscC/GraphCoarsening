@@ -1,0 +1,70 @@
+{
+  "dataset": "Cora",
+  "results": {
+    "GCN": {
+      "test_auc": 0.6545229342272503,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.36,
+        "std_fidelity_plus": 0.48,
+        "mean_fidelity_minus": 0.5,
+        "std_fidelity_minus": 0.5,
+        "mean_time": 0.5928481054306031,
+        "num_samples": 50
+      },
+      "Saliency": {
+        "mean_fidelity_plus": 0.36,
+        "std_fidelity_plus": 0.48,
+        "mean_fidelity_minus": 0.46,
+        "std_fidelity_minus": 0.49839743177508455,
+        "mean_time": 0.00705923080444336,
+        "num_samples": 50
+      },
+      "Ours": {
+        "mean_fidelity_plus": 0.08,
+        "std_fidelity_plus": 0.2712931993250107,
+        "mean_fidelity_minus": 0.08,
+        "std_fidelity_minus": 0.2712931993250107,
+        "mean_time": 0.02136043071746826,
+        "num_samples": 50
+      }
+    },
+    "GraphSAGE": {
+      "test_auc": 0.9177039488134116,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.38,
+        "std_fidelity_plus": 0.4853864439804639,
+        "mean_fidelity_minus": 0.0,
+        "std_fidelity_minus": 0.0,
+        "mean_time": 0.461228518486023,
+        "num_samples": 50
+      },
+      "Ours": {
+        "mean_fidelity_plus": 0.08,
+        "std_fidelity_plus": 0.2712931993250107,
+        "mean_fidelity_minus": 0.08,
+        "std_fidelity_minus": 0.2712931993250107,
+        "mean_time": 0.020740923881530763,
+        "num_samples": 50
+      }
+    },
+    "GAT": {
+      "test_auc": 0.917613933006636,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.4,
+        "std_fidelity_plus": 0.4898979485566356,
+        "mean_fidelity_minus": 0.0,
+        "std_fidelity_minus": 0.0,
+        "mean_time": 0.5824296760559082,
+        "num_samples": 50
+      },
+      "Ours": {
+        "mean_fidelity_plus": 0.04,
+        "std_fidelity_plus": 0.19595917942265428,
+        "mean_fidelity_minus": 0.04,
+        "std_fidelity_minus": 0.19595917942265428,
+        "mean_time": 0.02033884048461914,
+        "num_samples": 50
+      }
+    }
+  }
+}

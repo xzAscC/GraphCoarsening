@@ -1,0 +1,160 @@
+{
+  "dataset": "Citeseer",
+  "size_fractions": [
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.5
+  ],
+  "results": {
+    "Ours": {
+      "0.05": {
+        "sufficiency": 0.29958442628383636,
+        "necessity": 0.7004155671596527,
+        "sparsity": 0.9990723514211888,
+        "num_edges": 7.18,
+        "num_samples": 50
+      },
+      "0.1": {
+        "sufficiency": 0.2995844256877899,
+        "necessity": 0.7004155880212783,
+        "sparsity": 0.9981447028423773,
+        "num_edges": 14.36,
+        "num_samples": 50
+      },
+      "0.2": {
+        "sufficiency": 0.2995844143629074,
+        "necessity": 0.7004155778884887,
+        "sparsity": 0.9962868217054264,
+        "num_edges": 28.74,
+        "num_samples": 50
+      },
+      "0.3": {
+        "sufficiency": 0.2995844197273254,
+        "necessity": 0.700415575504303,
+        "sparsity": 0.9944108527131783,
+        "num_edges": 43.26,
+        "num_samples": 50
+      },
+      "0.5": {
+        "sufficiency": 0.3225586128234863,
+        "necessity": 0.6774414002895355,
+        "sparsity": 0.9906279069767442,
+        "num_edges": 72.54,
+        "num_samples": 50
+      }
+    },
+    "Random": {
+      "0.05": {
+        "sufficiency": 0.82,
+        "necessity": 0.02,
+        "sparsity": 0.9990801033591733,
+        "num_edges": 7.12,
+        "num_samples": 50
+      },
+      "0.1": {
+        "sufficiency": 0.88,
+        "necessity": 0.1,
+        "sparsity": 0.9981524547803617,
+        "num_edges": 14.3,
+        "num_samples": 50
+      },
+      "0.2": {
+        "sufficiency": 0.8,
+        "necessity": 0.18,
+        "sparsity": 0.9962945736434108,
+        "num_edges": 28.68,
+        "num_samples": 50
+      },
+      "0.3": {
+        "sufficiency": 0.88,
+        "necessity": 0.12,
+        "sparsity": 0.9944186046511629,
+        "num_edges": 43.2,
+        "num_samples": 50
+      },
+      "0.5": {
+        "sufficiency": 0.82,
+        "necessity": 0.18,
+        "sparsity": 0.9906356589147287,
+        "num_edges": 72.48,
+        "num_samples": 50
+      }
+    },
+    "Degree": {
+      "0.05": {
+        "sufficiency": 0.8,
+        "necessity": 0.02,
+        "sparsity": 0.9990801033591733,
+        "num_edges": 7.12,
+        "num_samples": 50
+      },
+      "0.1": {
+        "sufficiency": 0.7,
+        "necessity": 0.04,
+        "sparsity": 0.9981524547803617,
+        "num_edges": 14.3,
+        "num_samples": 50
+      },
+      "0.2": {
+        "sufficiency": 0.78,
+        "necessity": 0.16,
+        "sparsity": 0.9962945736434108,
+        "num_edges": 28.68,
+        "num_samples": 50
+      },
+      "0.3": {
+        "sufficiency": 0.8,
+        "necessity": 0.1,
+        "sparsity": 0.9944186046511629,
+        "num_edges": 43.2,
+        "num_samples": 50
+      },
+      "0.5": {
+        "sufficiency": 0.8,
+        "necessity": 0.22,
+        "sparsity": 0.9906356589147287,
+        "num_edges": 72.48,
+        "num_samples": 50
+      }
+    },
+    "KHop": {
+      "0.05": {
+        "sufficiency": 0.94,
+        "necessity": 0.18,
+        "sparsity": 0.9812713178294574,
+        "num_edges": 144.96,
+        "num_samples": 50
+      },
+      "0.1": {
+        "sufficiency": 0.94,
+        "necessity": 0.18,
+        "sparsity": 0.9812713178294574,
+        "num_edges": 144.96,
+        "num_samples": 50
+      },
+      "0.2": {
+        "sufficiency": 0.94,
+        "necessity": 0.18,
+        "sparsity": 0.9812713178294574,
+        "num_edges": 144.96,
+        "num_samples": 50
+      },
+      "0.3": {
+        "sufficiency": 0.94,
+        "necessity": 0.18,
+        "sparsity": 0.9812713178294574,
+        "num_edges": 144.96,
+        "num_samples": 50
+      },
+      "0.5": {
+        "sufficiency": 0.94,
+        "necessity": 0.18,
+        "sparsity": 0.9812713178294574,
+        "num_edges": 144.96,
+        "num_samples": 50
+      }
+    }
+  }
+}

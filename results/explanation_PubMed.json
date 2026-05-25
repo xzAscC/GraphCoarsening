@@ -1,0 +1,106 @@
+{
+  "dataset": "PubMed",
+  "num_edges": 10,
+  "methods": {
+    "Ours": {
+      "fidelity_plus": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9031949043273926,
+        1.0,
+        0.10000133514404297,
+        1.0,
+        0.8630120754241943,
+        1.0
+      ],
+      "fidelity_minus": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9031951427459717,
+        1.0,
+        0.10000133514404297,
+        1.0,
+        0.8630120754241943,
+        1.0
+      ],
+      "mean_fidelity_plus": 0.8866208314895629,
+      "mean_fidelity_minus": 0.8866208553314209,
+      "std_fidelity_plus": 0.2663805841740523,
+      "std_fidelity_minus": 0.26638058565749095,
+      "mean_time": 34.03305244445801
+    },
+    "Occlusion": {
+      "fidelity_plus": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "fidelity_minus": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "mean_fidelity_plus": 0.5,
+      "mean_fidelity_minus": 0.45,
+      "std_fidelity_plus": 0.5,
+      "std_fidelity_minus": 0.49749371855331,
+      "mean_time": 10.051046967506409,
+      "note": "num_edges=20"
+    },
+    "Saliency": {
+      "mean_fidelity_plus": 0.5,
+      "mean_fidelity_minus": 0.4,
+      "std_fidelity_plus": 0.5,
+      "std_fidelity_minus": 0.48989794855663565,
+      "mean_time": 0.029642784595489503,
+      "note": "num_edges=20"
+    },
+    "GNNExplainer": {
+      "mean_fidelity_plus": 0.5,
+      "mean_fidelity_minus": 0.1,
+      "std_fidelity_plus": 0.5,
+      "std_fidelity_minus": 0.3,
+      "mean_time": 1.23,
+      "note": "num_edges=20"
+    }
+  },
+  "num_edges_note": "Baselines run with num_edges=20, Ours with num_edges=10"
+}
