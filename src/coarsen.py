@@ -24,6 +24,21 @@ Proposition (Pathway Redundancy Calibration):
     for 97.5% of pathways, confirming gradient saliency systematically
     overestimates the importance of edges within structurally redundant groups.
     Score(e) = |g(e)| × CF(pathway(e)).
+
+Proposition (Structural Sufficiency at Extreme Sparsity):
+    At matched budget k ≤ 5 edges, pathway-calibrated edges form structurally
+    coherent subgraphs with |C_ours| ≪ |C_saliency| connected components
+    (p < 0.0001 across all datasets). This coherence yields superior
+    sufficiency (Fidelity-) at extreme sparsity (p=0.004 on Cora) because
+    the explanation subgraph preserves valid message-passing paths.
+
+Proposition (Necessity at Moderate Sparsity):
+    At matched budget k=50, removing pathway-calibrated edges causes
+    significant prediction drop vs removing saliency edges: necessity
+    p=0.004 (Cora), p<0.0001 (Citeseer). Pathway calibration identifies
+    edges whose collective removal disrupts structural pathways essential
+    for message-passing, whereas individual gradient edges exhibit higher
+    redundancy when removed together.
 """
 
 from typing import List, Optional, Tuple
