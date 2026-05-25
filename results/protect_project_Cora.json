@@ -1,57 +1,37 @@
 {
   "dataset": "Cora",
-  "n_edges": 50,
+  "n_edges": 100,
   "seed": 42,
+  "edge_counts": {
+    "ours": 104.42,
+    "saliency_matched": 106.55102040816327,
+    "saliency_full": 4488.0
+  },
   "methods": {
     "Ours": {
-      "bin_fid": 0.48,
-      "cont_fid": 1.4243,
-      "cont_std": 1.467,
-      "sparsity": 0.9869
+      "bin_fid": 0.45,
+      "cont_fid": 1.1341808712482453,
+      "cont_std": 1.258235656128256
     },
-    "Saliency": {
-      "bin_fid": 0.34,
-      "cont_fid": 1.202,
-      "cont_std": 1.1803,
-      "sparsity": 0.5
+    "Saliency_matched": {
+      "bin_fid": 0.45918367346938777,
+      "cont_fid": 1.2093592848704786,
+      "cont_std": 1.3056531193705494
     },
-    "Occlusion": {
-      "bin_fid": 0.36,
-      "cont_fid": 1.1992,
-      "cont_std": 1.1763,
-      "sparsity": 0.9869
-    },
-    "Random": {
-      "bin_fid": 0.28,
-      "cont_fid": null,
-      "sparsity": 0.9869
-    },
-    "FullGraph": {
-      "bin_fid": 0.36,
-      "cont_fid": null,
-      "sparsity": 0.0
-    },
-    "KHop": {
-      "bin_fid": 0.36,
-      "cont_fid": null,
-      "sparsity": 0.9737
-    },
-    "Degree": {
-      "bin_fid": 0.26,
-      "cont_fid": null,
-      "sparsity": 0.9869
+    "Saliency_full": {
+      "bin_fid": 0.3673469387755102,
+      "cont_fid": 0.9639543844577001,
+      "cont_std": 0.9803873262474526
     }
   },
   "significance": {
-    "Ours_vs_Saliency": {
-      "t": 2.753,
-      "p": 0.0083,
-      "metric": "continuous_fid"
+    "Ours_vs_Saliency_matched": {
+      "t": -0.3719381841830178,
+      "p": 0.7107501681339699
     },
-    "Ours_vs_Occlusion": {
-      "t": 2.83,
-      "p": 0.0067,
-      "metric": "continuous_fid"
+    "Ours_vs_Saliency_full": {
+      "t": 1.2689543567552972,
+      "p": 0.20749389233857538
     }
   },
   "parameters": {
@@ -59,6 +39,8 @@
     "alpha": 0.75,
     "k_hop": 2,
     "k_frac": 0.5,
-    "mode": "edge"
-  }
+    "mode": "edge",
+    "k_coarse_spectral": 50
+  },
+  "note": "Matched sparsity: both Ours and Saliency_matched select from same 2-hop subgraph with same k_frac=0.5"
 }

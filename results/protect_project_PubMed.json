@@ -1,23 +1,37 @@
 {
   "dataset": "PubMed",
-  "n_edges": 50,
+  "n_edges": 100,
   "seed": 42,
+  "edge_counts": {
+    "ours": 609.53,
+    "saliency_matched": 609.53,
+    "saliency_full": 37676.0
+  },
   "methods": {
     "Ours": {
-      "bin_fid": 0.46,
-      "cont_fid": 1.6091,
-      "sparsity": 0.991
+      "bin_fid": 0.54,
+      "cont_fid": 1.8008416668325662,
+      "cont_std": 1.5950857060288377
     },
-    "Saliency": {
-      "bin_fid": 0.44,
-      "cont_fid": 1.3118,
-      "sparsity": 0.5
+    "Saliency_matched": {
+      "bin_fid": 0.54,
+      "cont_fid": 1.821410364434123,
+      "cont_std": 1.6298030145721292
+    },
+    "Saliency_full": {
+      "bin_fid": 0.45,
+      "cont_fid": 1.1872071380168199,
+      "cont_std": 0.9588326178464016
     }
   },
   "significance": {
-    "Ours_vs_Saliency": {
-      "p": 0.0344,
-      "metric": "continuous_fid"
+    "Ours_vs_Saliency_matched": {
+      "t": -0.6721432885446805,
+      "p": 0.5030581209415106
+    },
+    "Ours_vs_Saliency_full": {
+      "t": 5.2986698264148195,
+      "p": 7.073920972644916e-07
     }
   },
   "parameters": {
@@ -25,6 +39,8 @@
     "alpha": 0.75,
     "k_hop": 2,
     "k_frac": 0.5,
-    "mode": "edge"
-  }
+    "mode": "edge",
+    "k_coarse_spectral": 50
+  },
+  "note": "Matched sparsity: both Ours and Saliency_matched select from same 2-hop subgraph with same k_frac=0.5"
 }
