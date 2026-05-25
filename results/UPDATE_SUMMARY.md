@@ -43,10 +43,10 @@ This is a **genuine coarsening-time optimization** — the partition quality is 
 - Citeseer: Wins at k=20-200 Sufficiency and Necessity
 - PubMed: Only k=200 Necessity p=0.048
 
-### After (100 edges, prediction-guided partition)
+### After (100 edges, prediction-guided partition, conservative count — both t-test AND Wilcoxon agree)
 - **Cora**: 11 fidelity wins — Sufficiency at ALL 6 budgets, Necessity at 5/6 budgets
-- **Citeseer**: 6 fidelity wins — Necessity at k=20-200, Sufficiency at k=5, Fidelity+ at k=50
-- **PubMed**: 3 fidelity wins — Necessity at k=200 (p<0.001), Fidelity+ at k=100 (p=0.019) and k=200 (p<0.001)
+- **Citeseer**: 4 fidelity wins — Necessity at k=20-200 (all p<0.001). Plus 2 borderline wins (t-test only): k=5 Sufficiency (p=0.040/Wilcoxon p=0.064), k=50 Fidelity+ (p=0.021/Wilcoxon p=0.078)
+- **PubMed**: 2 fidelity wins — Necessity at k=200 (p<0.001), Fidelity+ at k=200 (p<0.001). Tested at all 6 budgets with lambda_pred=2.0
 
 ### PubMed Hyperparameter Tuning
 
