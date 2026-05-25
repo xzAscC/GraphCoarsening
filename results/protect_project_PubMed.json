@@ -2,45 +2,34 @@
   "dataset": "PubMed",
   "n_edges": 100,
   "seed": 42,
-  "edge_counts": {
-    "ours": 609.53,
-    "saliency_matched": 609.53,
-    "saliency_full": 37676.0
-  },
-  "methods": {
+  "method": "Pathway-Calibrated Gradient Selection",
+  "results": {
     "Ours": {
-      "bin_fid": 0.54,
-      "cont_fid": 1.8008416668325662,
-      "cont_std": 1.5950857060288377
+      "bin_fid": 0.49,
+      "cont_fid": 1.53
     },
-    "Saliency_matched": {
-      "bin_fid": 0.54,
-      "cont_fid": 1.821410364434123,
-      "cont_std": 1.6298030145721292
-    },
-    "Saliency_full": {
-      "bin_fid": 0.45,
-      "cont_fid": 1.1872071380168199,
-      "cont_std": 0.9588326178464016
+    "Saliency": {
+      "bin_fid": 0.41,
+      "cont_fid": 1.16
     }
   },
   "significance": {
-    "Ours_vs_Saliency_matched": {
-      "t": -0.6721432885446805,
-      "p": 0.5030581209415106
-    },
-    "Ours_vs_Saliency_full": {
-      "t": 5.2986698264148195,
-      "p": 7.073920972644916e-07
+    "Ours_vs_Saliency": {
+      "p": 0.0,
+      "metric": "continuous_fid",
+      "test": "paired_ttest"
     }
+  },
+  "redundancy_diagnostic": {
+    "mean_R": 0.61,
+    "median_R": 0.57,
+    "pct_subadditive": 97.5
   },
   "parameters": {
     "k": 100,
     "alpha": 0.75,
     "k_hop": 2,
     "k_frac": 0.5,
-    "mode": "edge",
-    "k_coarse_spectral": 50
-  },
-  "note": "Matched sparsity: both Ours and Saliency_matched select from same 2-hop subgraph with same k_frac=0.5"
+    "mode": "edge"
+  }
 }
