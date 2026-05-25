@@ -84,8 +84,9 @@ def _fidelity_plus_coarse(model, data, explanation, node_a, node_b, original_sco
     with torch.no_grad():
         coarse_score = model(exp_x, exp_edges, target, edge_weight=exp_weight).squeeze().item()
 
-    score_diff = abs(original_score - coarse_score)
-    return min(score_diff * 2.0, 1.0)
+    original_pred = int(original_score > 0.5)
+    coarse_pred = int(coarse_score > 0.5)
+    return 1.0 if original_pred != coarse_pred else 0.0
 
 
 def fidelity_minus(
@@ -119,6 +120,8 @@ def fidelity_minus(
     exp_edge_index = _to_global_edges(data, explanation)
 
     involved_nodes = torch.unique(exp_edge_index)
+    target_nodes = torch.tensor([node_a, node_b], device=device)
+    involved_nodes = torch.unique(torch.cat([involved_nodes, target_nodes]))
     x_sub = data.x[involved_nodes]
     node_map = torch.empty(data.x.size(0), dtype=torch.long, device=device)
     node_map[involved_nodes] = torch.arange(involved_nodes.size(0), device=device)
@@ -151,8 +154,9 @@ def _fidelity_minus_coarse(model, data, explanation, original_score, device):
     with torch.no_grad():
         coarse_score = model(exp_x, exp_edges, target, edge_weight=exp_weight).squeeze().item()
 
-    score_diff = abs(original_score - coarse_score)
-    return min(score_diff * 2.0, 1.0)
+    original_pred = int(original_score > 0.5)
+    coarse_pred = int(coarse_score > 0.5)
+    return 0.0 if original_pred == coarse_pred else 1.0
 
 
 def _to_global_edges(data: Data, explanation: Data) -> torch.Tensor:

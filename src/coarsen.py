@@ -49,11 +49,12 @@ def build_coarse_graph(
             - num_coarse_nodes: number of supernodes N'.
     """
     num_coarse = len(partition)
-    P_hat = build_partition_matrix(partition, num_nodes)  # (N, N')
+    device = edge_index.device
+    P_hat = build_partition_matrix(partition, num_nodes).to(device)  # (N, N')
 
     # Build original adjacency as sparse (N, N)
     if edge_weight is None:
-        edge_weight = torch.ones(edge_index.size(1), dtype=torch.float32)
+        edge_weight = torch.ones(edge_index.size(1), dtype=torch.float32, device=device)
 
     A = torch.sparse_coo_tensor(
         edge_index, edge_weight, size=(num_nodes, num_nodes)
@@ -117,7 +118,7 @@ def linkwise_coarse_graph(
     partition: List[List[int]],
     node_a: int,
     node_b: int,
-) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int, int, int]:
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int, int, int, torch.Tensor]:
     """Build a linkwise refined coarse graph (Algorithm 3).
 
     Splits the supernodes containing ``node_a`` and ``node_b`` into
@@ -144,6 +145,7 @@ def linkwise_coarse_graph(
             - num_coarse_nodes: N''.
             - supernode_a_idx: index of the supernode containing node_a.
             - supernode_b_idx: index of the supernode containing node_b.
+            - involved_original_nodes: tensor of all original node indices.
     """
     # Find clusters containing node_a and node_b
     cluster_a_idx: Optional[int] = None
@@ -203,6 +205,11 @@ def linkwise_coarse_graph(
             member_features = x[members]
             coarse_features[class_idx] = torch.logsumexp(member_features, dim=0)
 
+    all_involved = torch.tensor(
+        [v for members in refined_partition for v in members],
+        dtype=torch.long, device=x.device,
+    )
+
     return (
         coarse_edge_index,
         coarse_edge_weight,
@@ -210,6 +217,7 @@ def linkwise_coarse_graph(
         num_coarse_nodes,
         supernode_a_idx,
         supernode_b_idx,
+        all_involved,
     )
 
 
@@ -307,7 +315,7 @@ class GraphCoarsener:
         self,
         node_a: int,
         node_b: int,
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int, int, int]:
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, int, int, int, torch.Tensor]:
         """Build a linkwise refined coarse graph (Algorithm 1, Step 5).
 
         Returns a coarse graph where the supernodes containing ``node_a``

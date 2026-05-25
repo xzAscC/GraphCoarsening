@@ -155,19 +155,18 @@ def compute_perturbation_scores(
     Returns:
         Perturbation scores of shape (E,), one score per edge.
     """
+    right_vecs = right_vecs.to(edge_index.device)
+    left_vecs = left_vecs.to(edge_index.device)
+    eigenvalues = eigenvalues.to(edge_index.device)
+
     row = edge_index[0]
     col = edge_index[1]
     num_edges = edge_index.size(1)
     k = eigenvalues.size(0)
 
-    # Gather eigenvector components for edges
-    # u_a: shape (E, k) — right eigenvector values at node a
     u_a = right_vecs[row]  # (E, k)
-    # u_b: shape (E, k) — right eigenvector values at node b
     u_b = right_vecs[col]  # (E, k)
-    # v_a: shape (E, k) — left eigenvector values at node a
     v_a = left_vecs[row]  # (E, k)
-    # v_b: shape (E, k) — left eigenvector values at node b
     v_b = left_vecs[col]  # (E, k)
 
     # Broadcast eigenvalues: (1, k) for elementwise ops with (E, k)

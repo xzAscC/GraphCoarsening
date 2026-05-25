@@ -67,21 +67,16 @@ class CoarsenExplainer(BaseExplainer):
             num_nodes,
             supernode_a,
             supernode_b,
+            original_node_indices,
         ) = coarsener.explain_link(node_a, node_b)
 
-        involved_nodes = torch.unique(edge_index)
-        node_map = torch.empty(data.x.size(0), dtype=torch.long, device=self.device)
-        node_map[involved_nodes] = torch.arange(involved_nodes.size(0), device=self.device)
-        relabeled_edges = node_map[edge_index]
-
         return Data(
-            x=x if x is not None else data.x[involved_nodes],
-            edge_index=relabeled_edges,
+            x=x,
+            edge_index=edge_index,
             edge_weight=edge_weight,
-            original_node_indices=involved_nodes,
             is_coarse_graph=True,
-            target_a=int(node_map[supernode_a].item()),
-            target_b=int(node_map[supernode_b].item()),
+            target_a=supernode_a if supernode_a is not None else 0,
+            target_b=supernode_b if supernode_b is not None else 1,
         )
 
     def explain_batch(self, data: Data, edges: torch.Tensor) -> List[Data]:
