@@ -69,11 +69,12 @@ The merge cost C(e) = ρ̂(e) + λ·ĝ̂(a)·ĝ̂(b) captures both structural an
 ## Files Modified
 - `src/partition.py` — added `prediction_guided_partition()`
 - `src/explainers/coarsen_explainer.py` — wired prediction-guided partition, new params
+- `src/coarsen.py` — updated docstring: formal propositions (P1-P2) + empirical findings (E1-E3)
 - `experiments/run_matched_sparsity_comparison.py` — added CLI args for hyperparameters
-- `results/FINAL_RESULTS.md` — complete rewrite with new results
+- `results/FINAL_RESULTS.md` — complete rewrite with new results, honest assessment of losses
 - `results/matched_sparsity_Cora.json` — updated (100 edges)
 - `results/matched_sparsity_Citeseer.json` — updated (100 edges)
-- `results/matched_sparsity_PubMed.json` — updated (100 edges, lambda_pred=2.0)
+- `results/matched_sparsity_PubMed.json` — updated (100 edges, all 6 budgets, lambda_pred=2.0)
 - `results/UPDATE_SUMMARY.md` — this file
 
 ## Key Insight

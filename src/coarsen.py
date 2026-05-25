@@ -4,43 +4,41 @@ Implements the core coarsening pipeline (Algorithm 1), the coarse weight
 computation (Theorem on Weight and Degree), and the linkwise refinement
 (Algorithm 3) used for GNN explanation.
 
-Proposition (Protected Partition):
-    Given a target link (a,b), let N₁(a,b) be the 1-hop neighborhood.
-    A protected partition P' constrains the greedy partition such that
-    v ∈ N₁(a,b) ⇒ v is a singleton. This preserves local structure from
-    absorption during coarsening, O(E·α(N)) complexity preserved.
+Formal Propositions:
 
-Proposition (Prediction-Aware Partition):
-    Let ρ̂(e) be normalized spectral perturbation, ĝ(e) normalized gradient
-    saliency. Combined score s(e) = ρ̂(e) + ĝ(e) orders edges by both
-    structural and predictive importance. Edges merged first (lowest s(e))
-    are both spectrally and predictively redundant.
+    (P1) Protected Partition Correctness:
+        Given a target link (a,b), let N₁(a,b) be the 1-hop neighborhood.
+        A protected partition P' constrains the greedy partition such that
+        v ∈ N₁(a,b) ⇒ v is a singleton. This preserves local structure from
+        absorption during coarsening. Proof: by construction of the skip
+        condition. O(E·α(N)) complexity preserved.
 
-Proposition (Pathway Redundancy Calibration):
-    For pathway p (supernode pair in partition P'), the calibration factor
-        CF(p) = Δf(p) / Σ_{e∈p} |g(e)|
-    measures the ratio of actual group prediction change to the sum of
-    individual gradient saliencies. Empirically CF ≈ 0.61 (39% redundancy)
-    for 97.5% of pathways, confirming gradient saliency systematically
-    overestimates the importance of edges within structurally redundant groups.
-    Score(e) = |g(e)| × CF(pathway(e)).
+    (P2) Prediction-Guided Merge:
+        Let ρ̂(e) be normalized spectral perturbation, ĝ̂(v) be normalized
+        node gradient importance. The merge cost C(e) = ρ̂(e) + λ·ĝ̂(a)·ĝ̂(b)
+        captures both structural and predictive importance. The product form
+        Φ(a,b) = ĝ̂(a)·ĝ̂(b) correctly penalizes merging two high-importance
+        nodes because Φ is large iff BOTH endpoints have high gradient.
+        The hard reject (Φ > τ) guarantees no merge where both endpoints
+        are in the top (1-τ) importance fraction.
 
-Proposition (Structural Sufficiency at Extreme Sparsity):
-    At matched budget k ≤ 5 edges, pathway-calibrated edges form structurally
-    coherent subgraphs with |C_ours| ≪ |C_saliency| connected components
-    (p < 0.0001 across all datasets). This coherence yields superior
-    sufficiency (Fidelity-) at extreme sparsity (p=0.004 on Cora) because
-    the explanation subgraph preserves valid message-passing paths.
+Empirical Findings (validated on Cora, Citeseer, PubMed with 100 test edges):
 
-Proposition (Necessity at Moderate Sparsity):
-    At matched budget k≥50, removing pathway-calibrated edges causes
-    significant prediction drop vs removing saliency edges: necessity
-    p=0.002-0.018 (Cora), p<0.0001 (Citeseer), p=0.048 (PubMed).
-    Pathway calibration identifies edges whose collective removal disrupts
-    structural pathways essential for message-passing, whereas individual
-    gradient edges exhibit higher redundancy when removed together.
-    The advantage scales with budget: larger budgets allow more pathway-calibrated
-    edges to accumulate, amplifying the structural coherence advantage.
+    (E1) Pathway Redundancy:
+        For pathway p (supernode pair), CF(p) = Δf(p) / Σ|g(e)| ≈ 0.61
+        on average (39% redundancy), with 97.5% of pathways sub-additive.
+        Gradient saliency systematically overestimates group importance.
+
+    (E2) Structural Sufficiency at Low Sparsity:
+        Pathway-calibrated edges form structurally coherent subgraphs with
+        significantly fewer disconnected components than saliency (p<0.0001
+        across all budgets and datasets). On Cora, this coherence yields
+        superior sufficiency at all 6 budgets (p≤0.006).
+
+    (E3) Necessity at Moderate-to-High Sparsity:
+        At budgets k≥20, removing pathway-calibrated edges causes significant
+        prediction drops vs removing saliency edges: Cora (p<0.001 at k=20-100),
+        Citeseer (p<0.001 at k=20-200), PubMed (p<0.001 at k=200).
 """
 
 from typing import List, Optional, Tuple
