@@ -66,7 +66,7 @@ def make_explainer(name, model, device):
     if name == "Saliency":
         return SaliencyExplainer(model, device=device)
     if name == "Ours":
-        return CoarsenExplainer(model, k=100, alpha=0.75, device=device)
+        return CoarsenExplainer(model, k=100, alpha=0.75, mode="edge", k_hop=2, k_frac=0.5, device=device)
     return None
 
 

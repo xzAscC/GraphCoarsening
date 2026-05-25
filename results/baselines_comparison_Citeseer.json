@@ -1,0 +1,96 @@
+{
+  "dataset": "Citeseer",
+  "num_edges": 200,
+  "methods": {
+    "Ours": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.235,
+      "std_fidelity_plus": 0.4239988207530771,
+      "mean_fidelity_minus": 0.205,
+      "std_fidelity_minus": 0.40370162248868907,
+      "mean_sparsity": 0.9910723514211887,
+      "std_sparsity": 0.014941998712397975,
+      "mean_time": 0.022539016008377075,
+      "mean_explanation_size": 39.0
+    },
+    "Random": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.185,
+      "std_fidelity_plus": 0.3882975663070784,
+      "mean_fidelity_minus": 0.175,
+      "std_fidelity_minus": 0.3799671038392666,
+      "mean_sparsity": 0.9910723514211887,
+      "std_sparsity": 0.014941998712397975,
+      "mean_time": 0.0007635009288787842,
+      "mean_explanation_size": 39.0
+    },
+    "Saliency": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.23,
+      "std_fidelity_plus": 0.4208325082500163,
+      "mean_fidelity_minus": 0.22,
+      "std_fidelity_minus": 0.4142463035441596,
+      "mean_sparsity": 0.5,
+      "std_sparsity": 0.0,
+      "mean_time": 0.004581749439239502,
+      "mean_explanation_size": 3870.0
+    },
+    "FullGraph": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.23,
+      "std_fidelity_plus": 0.4208325082500163,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_sparsity": 0.0,
+      "std_sparsity": 0.0,
+      "mean_time": 7.785558700561524e-05,
+      "mean_explanation_size": 7740.0
+    },
+    "KHop": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.23,
+      "std_fidelity_plus": 0.4208325082500163,
+      "mean_fidelity_minus": 0.06,
+      "std_fidelity_minus": 0.23748684174075835,
+      "mean_sparsity": 0.9821447028423772,
+      "std_sparsity": 0.02988399742479596,
+      "mean_time": 0.0016464316844940186,
+      "mean_explanation_size": 78.0
+    },
+    "Degree": {
+      "num_samples": 200,
+      "mean_fidelity_plus": 0.16,
+      "std_fidelity_plus": 0.36660605559646714,
+      "mean_fidelity_minus": 0.175,
+      "std_fidelity_minus": 0.3799671038392666,
+      "mean_sparsity": 0.9910723514211887,
+      "std_sparsity": 0.014941998712397975,
+      "mean_time": 0.0016981029510498046,
+      "mean_explanation_size": 39.0
+    }
+  },
+  "baseline_groups": {
+    "trivial": [
+      "FullGraph",
+      "KHop",
+      "Random",
+      "Degree"
+    ],
+    "hard": [
+      "GreedyDel"
+    ],
+    "coarsening": [
+      "RandomCoarse",
+      "HeavyEdge",
+      "EffResist",
+      "NoRefine"
+    ],
+    "gnn": [
+      "Occlusion",
+      "Saliency"
+    ],
+    "ours": [
+      "Ours"
+    ]
+  }
+}
