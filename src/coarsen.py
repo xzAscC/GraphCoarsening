@@ -1,8 +1,24 @@
 """Coarse graph construction and linkwise refinement.
 
 Implements the core coarsening pipeline (Algorithm 1), the coarse weight
-computation (Theorem), and the linkwise refinement (Algorithm 3) used
-for GNN explanation.
+computation (Theorem on Weight and Degree), and the linkwise refinement
+(Algorithm 3) used for GNN explanation.
+
+Proposition (Protected Partition):
+    Given a target link (a,b), let N₁(a,b) be the 1-hop neighborhood.
+    A protected partition P' is obtained by constraining the greedy
+    partition algorithm such that v ∈ N₁(a,b) ⇒ v is a singleton in P'.
+    This preserves the local structure surrounding (a,b) from absorption
+    during coarsening, ensuring that explanation-relevant edges remain
+    distinguishable in the coarse representation.
+
+Proposition (Two-Signal Scoring):
+    Edge importance is computed as Score(e) = ĝ(e)·(1+ρ̂(e)) where:
+    - ĝ(e) = normalized |∂f/∂w_e| (gradient saliency, prediction sensitivity)
+    - ρ̂(e) = normalized perturbation score (spectral structural importance)
+    The gradient signal identifies edges the model depends on; the spectral
+    signal identifies edges critical to the graph's spectral properties.
+    Their product ensures selection based on both criteria.
 """
 
 from typing import List, Optional, Tuple
@@ -297,7 +313,7 @@ class GraphCoarsener:
             edge_index, self.eigenvalues, self.left_vecs, self.right_vecs
         )
 
-        # Step 4: Node partition
+        # Step 4: Node partition (default, no protection)
         self.partition = node_partition(
             edge_index, self.scores, num_nodes, self.alpha
         )
@@ -310,6 +326,126 @@ class GraphCoarsener:
         )
 
         return self
+
+    def fit_partition(
+        self,
+        protected_nodes: set | None = None,
+    ) -> List[List[int]]:
+        """Re-run only the partition step with protected nodes.
+
+        Reuses cached spectral decomposition and perturbation scores
+        but rebuilds the partition with a protection set. The Union-Find
+        step is O(E·α(N)) — fast enough for per-link calls.
+
+        Args:
+            protected_nodes: Set of node indices that should remain singletons.
+
+        Returns:
+            New partition with protected nodes as singletons.
+        """
+        partition = node_partition(
+            self.edge_index, self.scores, self.num_nodes, self.alpha,
+            protected_nodes=protected_nodes,
+        )
+        return partition
+
+    def project_back_edges(
+        self,
+        partition: List[List[int]],
+        node_a: int,
+        node_b: int,
+        k_frac: float = 0.5,
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Project coarse graph structure back to original edges.
+
+        For each original edge (u,v), maps u and v to their supernodes
+        S_u, S_v. Uses the normalized coarse weight as importance:
+
+            importance(u,v) = W[S_u, S_v] / sqrt(|S_u| · |S_v|)
+
+        Then selects top-k_frac of edges in the 2-hop neighborhood of
+        (node_a, node_b) ranked by this coarse importance.
+
+        Args:
+            partition: Node partition (list of supernode classes).
+            node_a: Source node of the target link.
+            node_b: Target node of the target link.
+            k_frac: Fraction of candidate edges to keep.
+
+        Returns:
+            Tuple of (kept_edge_index, kept_weights, involved_nodes).
+        """
+        from torch_geometric.utils import k_hop_subgraph
+
+        node_to_super = {}
+        super_sizes = []
+        for super_idx, members in enumerate(partition):
+            super_sizes.append(len(members))
+            for n in members:
+                node_to_super[n] = super_idx
+        super_sizes_t = torch.tensor(super_sizes, dtype=torch.float32, device=self.edge_index.device)
+
+        coarse_ei, coarse_ew, num_coarse = build_coarse_graph(
+            self.edge_index, self.edge_weight, self.num_nodes, partition, self.x
+        )
+
+        coarse_weight_map = {}
+        for idx in range(coarse_ei.size(1)):
+            si, sj = int(coarse_ei[0, idx].item()), int(coarse_ei[1, idx].item())
+            coarse_weight_map[(si, sj)] = float(coarse_ew[idx].item())
+
+        _, sub_ei, _, _ = k_hop_subgraph(
+            node_idx=torch.tensor([node_a, node_b], device=self.edge_index.device),
+            num_hops=2,
+            edge_index=self.edge_index,
+            relabel_nodes=False,
+            num_nodes=self.num_nodes,
+        )
+        num_sub = sub_ei.size(1)
+        if num_sub == 0:
+            nodes = torch.tensor([node_a, node_b], device=self.edge_index.device)
+            return torch.zeros(2, 0, dtype=torch.long, device=self.edge_index.device), torch.zeros(0, device=self.edge_index.device), nodes
+
+        edge_importance = torch.zeros(num_sub, device=self.edge_index.device)
+        for i in range(num_sub):
+            u, v = int(sub_ei[0, i].item()), int(sub_ei[1, i].item())
+            su, sv = node_to_super.get(u, u), node_to_super.get(v, v)
+            w = coarse_weight_map.get((su, sv), 0.0)
+            if w == 0.0:
+                w = coarse_weight_map.get((sv, su), 0.0)
+            size_norm = (super_sizes_t[su] * super_sizes_t[sv]).sqrt().item()
+            edge_importance[i] = w / max(size_norm, 1.0)
+
+        from src.explainers.coarsen_explainer import CoarsenExplainer
+        all_scores = self.scores
+        spectral = torch.zeros(num_sub, device=self.edge_index.device)
+        for i in range(num_sub):
+            u, v = sub_ei[0, i], sub_ei[1, i]
+            matches = (
+                (self.edge_index[0] == u) & (self.edge_index[1] == v)
+            ) | (
+                (self.edge_index[0] == v) & (self.edge_index[1] == u)
+            )
+            idx = matches.nonzero(as_tuple=True)[0]
+            if idx.numel() > 0:
+                spectral[i] = all_scores[idx[0]]
+
+        def norm01(t):
+            if t.numel() == 0: return t
+            mn, mx = t.min(), t.max()
+            if mx - mn < 1e-12: return torch.zeros_like(t)
+            return (t - mn) / (mx - mn)
+
+        combined = norm01(edge_importance) * (1.0 + norm01(spectral))
+
+        keep = max(1, int(num_sub * k_frac))
+        _, top_idx = combined.topk(keep)
+
+        kept_ei = sub_ei[:, top_idx]
+        kept_weights = combined[top_idx]
+        involved_nodes = torch.unique(kept_ei)
+
+        return kept_ei, kept_weights, involved_nodes
 
     def explain_link(
         self,

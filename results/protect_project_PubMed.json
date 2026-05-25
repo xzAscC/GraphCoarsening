@@ -1,0 +1,30 @@
+{
+  "dataset": "PubMed",
+  "n_edges": 50,
+  "seed": 42,
+  "methods": {
+    "Ours": {
+      "bin_fid": 0.46,
+      "cont_fid": 1.6091,
+      "sparsity": 0.991
+    },
+    "Saliency": {
+      "bin_fid": 0.44,
+      "cont_fid": 1.3118,
+      "sparsity": 0.5
+    }
+  },
+  "significance": {
+    "Ours_vs_Saliency": {
+      "p": 0.0344,
+      "metric": "continuous_fid"
+    }
+  },
+  "parameters": {
+    "k": 100,
+    "alpha": 0.75,
+    "k_hop": 2,
+    "k_frac": 0.5,
+    "mode": "edge"
+  }
+}

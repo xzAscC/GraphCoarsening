@@ -1,0 +1,30 @@
+{
+  "dataset": "Citeseer",
+  "n_edges": 50,
+  "seed": 42,
+  "methods": {
+    "Ours": {
+      "bin_fid": 0.34,
+      "cont_fid": 1.1868,
+      "sparsity": 0.991
+    },
+    "Saliency": {
+      "bin_fid": 0.3,
+      "cont_fid": 1.0411,
+      "sparsity": 0.5
+    }
+  },
+  "significance": {
+    "Ours_vs_Saliency": {
+      "p": 0.0663,
+      "metric": "continuous_fid"
+    }
+  },
+  "parameters": {
+    "k": 100,
+    "alpha": 0.75,
+    "k_hop": 2,
+    "k_frac": 0.5,
+    "mode": "edge"
+  }
+}
