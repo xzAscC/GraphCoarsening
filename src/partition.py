@@ -90,6 +90,100 @@ class UnionFind:
         return self.find(x) == self.find(y)
 
 
+def prediction_guided_partition(
+    edge_index: torch.Tensor,
+    spectral_scores: torch.Tensor,
+    gradient_scores: torch.Tensor,
+    num_nodes: int,
+    alpha: float = 0.75,
+    protected_nodes: set | None = None,
+    lambda_pred: float = 1.0,
+    fidelity_threshold: float = 0.8,
+) -> List[List[int]]:
+    """Prediction-guided partition minimizing spectral + prediction cost.
+
+    Optimization objective: min Σ [ρ̂(e) + λ · Φ(a,b)]
+    where ρ̂(e) is normalized spectral score and
+    Φ(a,b) = ĝ̂(a) · ĝ̂(b) is the product of endpoint gradient importances.
+
+    Hard constraint: skip merge if Φ(a,b) > fidelity_threshold.
+
+    Proposition (Prediction-Guided Merge):
+        The merge cost C(e) = ρ̂(e) + λ·ĝ̂(a)·ĝ̂(b) captures both structural
+        and predictive importance. Per-edge additive scoring (ρ̂+ĝ) misses the
+        interaction: edge e=(a,b) with low individual gradient but both endpoints
+        highly important (high Φ) should NOT be merged. The product Φ captures
+        this "don't merge two prediction-critical nodes" constraint.
+
+    Args:
+        edge_index: Edge list in COO format, shape (2, E).
+        spectral_scores: Spectral perturbation score per edge, shape (E,).
+        gradient_scores: Gradient saliency per edge, shape (E,).
+        num_nodes: Total number of nodes in the graph.
+        alpha: Coarsening ratio. Default 0.75.
+        protected_nodes: Nodes that remain singletons.
+        lambda_pred: Weight for prediction cost term. Default 1.0.
+        fidelity_threshold: Hard reject threshold for prediction cost. Default 0.8.
+
+    Returns:
+        List of partitions (supernode classes).
+    """
+    device = edge_index.device
+
+    node_imp = torch.zeros(num_nodes, dtype=torch.float32, device=device)
+    abs_grad = gradient_scores.abs()
+    node_imp.scatter_add_(0, edge_index[0], abs_grad)
+    node_imp.scatter_add_(0, edge_index[1], abs_grad)
+    imp_max = node_imp.max()
+    if imp_max > 1e-10:
+        node_imp = node_imp / imp_max
+
+    imp_a = node_imp[edge_index[0]]
+    imp_b = node_imp[edge_index[1]]
+    pred_cost = imp_a * imp_b
+
+    spec_norm = _normalize_01(spectral_scores)
+    combined = spec_norm + lambda_pred * pred_cost
+
+    max_merges = int(alpha * num_nodes)
+    sorted_indices = torch.argsort(combined)
+
+    uf = UnionFind(num_nodes)
+    num_merges = 0
+
+    for idx in range(sorted_indices.size(0)):
+        if num_merges >= max_merges:
+            break
+        eidx = int(sorted_indices[idx].item())
+        a = int(edge_index[0, eidx].item())
+        b = int(edge_index[1, eidx].item())
+
+        if protected_nodes and (a in protected_nodes or b in protected_nodes):
+            continue
+
+        if pred_cost[eidx].item() > fidelity_threshold:
+            continue
+
+        if uf.union(a, b):
+            num_merges += 1
+
+    root_to_nodes: dict[int, List[int]] = {}
+    for node in range(num_nodes):
+        root = uf.find(node)
+        root_to_nodes.setdefault(root, []).append(node)
+
+    return list(root_to_nodes.values())
+
+
+def _normalize_01(t: torch.Tensor) -> torch.Tensor:
+    if t.numel() == 0:
+        return t
+    mn, mx = t.min(), t.max()
+    if mx - mn < 1e-12:
+        return torch.zeros_like(t)
+    return (t - mn) / (mx - mn)
+
+
 def node_partition(
     edge_index: torch.Tensor,
     scores: torch.Tensor,

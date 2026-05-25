@@ -105,7 +105,8 @@ def _target_connected(explanation, node_a, node_b):
     return find(local_a) == find(local_b)
 
 
-def run_comparison(dataset_name, num_edges, budgets, seed=42):
+def run_comparison(dataset_name, num_edges, budgets, seed=42,
+                   lambda_pred=1.0, fidelity_threshold=0.8):
     from src.explainers.coarsen_explainer import CoarsenExplainer
     from src.explainers.baselines import SaliencyExplainer
 
@@ -140,6 +141,7 @@ def run_comparison(dataset_name, num_edges, budgets, seed=42):
 
     ours_method = CoarsenExplainer(
         model, k=100, alpha=0.75, mode="edge", k_hop=2, k_frac=0.5, device="cuda",
+        lambda_pred=lambda_pred, fidelity_threshold=fidelity_threshold,
     )
     sali_method = SaliencyExplainer(model, k_frac=0.5, device="cuda")
 
@@ -282,10 +284,16 @@ def main():
     parser.add_argument("--num_edges", type=int, default=100)
     parser.add_argument("--budgets", type=str, default="5,10,20,50")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--lambda_pred", type=float, default=1.0,
+                        help="Weight for prediction cost in partition")
+    parser.add_argument("--fidelity_threshold", type=float, default=0.8,
+                        help="Hard reject threshold for prediction cost")
     args = parser.parse_args()
 
     budgets = [int(b) for b in args.budgets.split(",")]
-    run_comparison(args.dataset, args.num_edges, budgets, args.seed)
+    run_comparison(args.dataset, args.num_edges, budgets, args.seed,
+                   lambda_pred=args.lambda_pred,
+                   fidelity_threshold=args.fidelity_threshold)
 
 
 if __name__ == "__main__":

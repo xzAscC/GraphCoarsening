@@ -59,6 +59,8 @@ class CoarsenExplainer(BaseExplainer):
         k_hop: int = 2,
         k_frac: float = 0.5,
         device: str = "cpu",
+        lambda_pred: float = 1.0,
+        fidelity_threshold: float = 0.8,
     ):
         super().__init__(model, device)
         self.k = k
@@ -66,6 +68,8 @@ class CoarsenExplainer(BaseExplainer):
         self.mode = mode
         self.k_hop = k_hop
         self.k_frac = k_frac
+        self.lambda_pred = lambda_pred
+        self.fidelity_threshold = fidelity_threshold
         self._coarsener: Optional[GraphCoarsener] = None
         self._cached_data_id: Optional[int] = None
 
@@ -113,13 +117,16 @@ class CoarsenExplainer(BaseExplainer):
 
         gradient_all = self._gradient_scores(data, node_a, node_b, data.edge_index)
 
-        # Prediction-aware partition
-        sn_global = self._normalize_to_01(coarsener.scores)
-        gn_global = self._normalize_to_01(gradient_all)
-        combined_partition_scores = sn_global + gn_global
-        partition = coarsener.fit_partition(
+        from src.partition import prediction_guided_partition
+        partition = prediction_guided_partition(
+            edge_index=data.edge_index,
+            spectral_scores=coarsener.scores,
+            gradient_scores=gradient_all,
+            num_nodes=data.x.size(0),
+            alpha=self.alpha,
             protected_nodes=protected,
-            edge_scores=combined_partition_scores,
+            lambda_pred=self.lambda_pred,
+            fidelity_threshold=self.fidelity_threshold,
         )
 
         # Get candidate edges from 2-hop subgraph
