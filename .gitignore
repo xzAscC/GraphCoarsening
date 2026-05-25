@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-specific: model checkpoints, datasets, review files
+checkpoints/
+data/
+figures/
+66ae36a81f3c41889b6b8293/
