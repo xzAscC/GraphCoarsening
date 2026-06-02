@@ -5,7 +5,7 @@ and explain_batch for a unified comparison framework.
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List
 
 import torch
 from torch_geometric.data import Data
@@ -30,10 +30,6 @@ class BaseExplainer(ABC):
         self.device = torch.device(device)
         self.model.to(self.device)
         self.model.eval()
-
-    # ------------------------------------------------------------------
-    # Core interface
-    # ------------------------------------------------------------------
 
     @abstractmethod
     def explain_link(
@@ -76,10 +72,6 @@ class BaseExplainer(ABC):
         """
         ...
 
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
-
     def _to_device(self, data: Data) -> Data:
         """Move a PyG Data object to ``self.device``."""
         return data.to(self.device)
@@ -104,12 +96,3 @@ class BaseExplainer(ABC):
                 edge_weight=getattr(data, "edge_weight", None),
             )
         return out.squeeze()
-
-    def _binary_predict(
-        self,
-        data: Data,
-        target_edge_index: torch.Tensor,
-    ) -> int:
-        """Return binary prediction (0 or 1) for a single target edge."""
-        score = self._predict(data, target_edge_index)
-        return int((score > 0.5).item())

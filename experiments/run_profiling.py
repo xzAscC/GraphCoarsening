@@ -47,7 +47,7 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
         try:
             from src.explainers.pyg_baselines import GNNExplainerWrapper
             ExplainerClass = GNNExplainerWrapper
-        except (ImportError, Exception):
+        except ImportError:
             return None
         kwargs = {"epochs": 100, "k_frac": 0.5}
     elif method_name == "Ours":
@@ -57,7 +57,6 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
     else:
         return None
 
-    # Preprocessing time
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats()
     tracemalloc.start()
@@ -67,7 +66,6 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
     preprocess_time = time.time() - t0
     preprocess_mem = _get_memory_mb()
 
-    # Per-query times
     n = min(num_edges, test_edges.size(1))
     explain_times = []
     forward_times = []
@@ -79,17 +77,16 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
         t1 = time.time()
         try:
             explanation = explainer.explain_link(data, a, b)
-        except Exception:
+        except (RuntimeError, ValueError):
             continue
         explain_times.append(time.time() - t1)
 
-        # Forward time on explanation
         t2 = time.time()
         try:
             target = torch.tensor([[a], [b]], device=device)
             with torch.no_grad():
                 model(data.x.to(device), data.edge_index.to(device), target)
-        except Exception:
+        except RuntimeError:
             pass
         forward_times.append(time.time() - t2)
 
@@ -99,7 +96,6 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
     if not explain_times:
         return None
 
-    # Batch timings
     batch_results = {}
     for batch_size in BATCH_SIZES:
         actual_size = min(batch_size, n)
@@ -109,7 +105,7 @@ def profile_method(method_name, model, data, test_edges, device, num_edges=50):
             b = int(test_edges[1, i].item())
             try:
                 explainer.explain_link(data, a, b)
-            except Exception:
+            except (RuntimeError, ValueError):
                 continue
         batch_time = time.time() - t3
         batch_results[str(batch_size)] = round(batch_time, 4)
@@ -197,7 +193,7 @@ def main():
 
     try:
         _plot_profiling(args.dataset, results)
-    except Exception as e:
+    except (ImportError, RuntimeError, ValueError) as e:
         print(f"Plotting skipped: {e}")
 
 

@@ -1,0 +1,69 @@
+{
+  "dataset": "Citeseer",
+  "results": {
+    "Occlusion": {
+      "preprocess_time_s": 0.0003,
+      "preprocess_memory_mb": 4.0,
+      "mean_explain_time_s": 0.180109,
+      "std_explain_time_s": 0.235055,
+      "median_explain_time_s": 0.080548,
+      "mean_forward_time_s": 0.000973,
+      "peak_memory_mb": 89.59,
+      "batch_times": {
+        "1": 0.0095,
+        "10": 0.5371,
+        "100": 3.3941,
+        "1000": 3.387
+      },
+      "num_samples": 27
+    },
+    "Saliency": {
+      "preprocess_time_s": 0.0003,
+      "preprocess_memory_mb": 70.97,
+      "mean_explain_time_s": 0.004895,
+      "std_explain_time_s": 0.010868,
+      "median_explain_time_s": 0.002847,
+      "mean_forward_time_s": 0.000992,
+      "peak_memory_mb": 154.65,
+      "batch_times": {
+        "1": 0.0025,
+        "10": 0.0247,
+        "100": 0.0745,
+        "1000": 0.0743
+      },
+      "num_samples": 30
+    },
+    "GNNExplainer": {
+      "preprocess_time_s": 0.0003,
+      "preprocess_memory_mb": 81.09,
+      "mean_explain_time_s": 0.267201,
+      "std_explain_time_s": 0.010744,
+      "median_explain_time_s": 0.264393,
+      "mean_forward_time_s": 0.001136,
+      "peak_memory_mb": 155.26,
+      "batch_times": {
+        "1": 0.2294,
+        "10": 2.268,
+        "100": 6.9561,
+        "1000": 6.6606
+      },
+      "num_samples": 30
+    },
+    "Ours": {
+      "preprocess_time_s": 0.0003,
+      "preprocess_memory_mb": 81.09,
+      "mean_explain_time_s": 0.26044,
+      "std_explain_time_s": 0.071613,
+      "median_explain_time_s": 0.23416,
+      "mean_forward_time_s": 0.001053,
+      "peak_memory_mb": 336.4,
+      "batch_times": {
+        "1": 0.1734,
+        "10": 1.884,
+        "100": 6.3008,
+        "1000": 6.2718
+      },
+      "num_samples": 30
+    }
+  }
+}

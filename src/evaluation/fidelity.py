@@ -15,8 +15,33 @@ def _predict_binary(model, x, edge_index, node_a, node_b, edge_weight=None, devi
 
 
 def _is_coarse_explanation(explanation: Data) -> bool:
-    """Check if explanation is a coarse graph (has aggregated features, not original)."""
     return getattr(explanation, "is_coarse_graph", False)
+
+
+def _build_removal_mask(
+    data_edge_index: torch.Tensor, exp_edge_index: torch.Tensor, device: str
+) -> torch.Tensor:
+    """Boolean mask that is *True* for edges NOT in *exp_edge_index*.
+
+    Matching is **undirected**: an edge (u, v) is removed when either
+    (u, v) or (v, u) appears in *exp_edge_index*.  Uses a Python-set
+    loop to avoid materialising an O(|E_data| × |E_exp|) tensor.
+    """
+    mask = torch.ones(data_edge_index.size(1), dtype=torch.bool, device=device)
+
+    remove_set = set()
+    for i in range(exp_edge_index.size(1)):
+        s = exp_edge_index[0, i].item()
+        d = exp_edge_index[1, i].item()
+        remove_set.add((min(s, d), max(s, d)))
+
+    for i in range(data_edge_index.size(1)):
+        s = data_edge_index[0, i].item()
+        d = data_edge_index[1, i].item()
+        if (min(s, d), max(s, d)) in remove_set:
+            mask[i] = False
+
+    return mask
 
 
 def fidelity_plus(
@@ -49,14 +74,7 @@ def fidelity_plus(
 
     exp_edge_index = _to_global_edges(data, explanation)
 
-    mask = torch.ones(data.edge_index.size(1), dtype=torch.bool, device=device)
-    for i in range(exp_edge_index.size(1)):
-        src, dst = exp_edge_index[0, i], exp_edge_index[1, i]
-        matches = (
-            ((data.edge_index[0] == src) & (data.edge_index[1] == dst))
-            | ((data.edge_index[0] == dst) & (data.edge_index[1] == src))
-        )
-        mask[matches] = False
+    mask = _build_removal_mask(data.edge_index, exp_edge_index, device)
 
     modified_edge_index = data.edge_index[:, mask]
     modified_weight = None
@@ -183,14 +201,7 @@ def fidelity_plus_continuous(
 
     exp_edge_index = _to_global_edges(data, explanation)
 
-    mask = torch.ones(data.edge_index.size(1), dtype=torch.bool, device=device)
-    for i in range(exp_edge_index.size(1)):
-        src, dst = exp_edge_index[0, i], exp_edge_index[1, i]
-        matches = (
-            ((data.edge_index[0] == src) & (data.edge_index[1] == dst))
-            | ((data.edge_index[0] == dst) & (data.edge_index[1] == src))
-        )
-        mask[matches] = False
+    mask = _build_removal_mask(data.edge_index, exp_edge_index, device)
 
     modified_edge_index = data.edge_index[:, mask]
     modified_weight = None

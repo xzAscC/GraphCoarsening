@@ -13,7 +13,7 @@ Proposition (Protected Partition Correctness):
     The O(E·α(N)) complexity is preserved since the protection check is O(1).
 """
 
-from typing import List, Tuple
+from typing import List
 
 import torch
 
@@ -237,9 +237,7 @@ def node_partition(
     root_to_nodes: dict[int, List[int]] = {}
     for node in range(num_nodes):
         root = uf.find(node)
-        if root not in root_to_nodes:
-            root_to_nodes[root] = []
-        root_to_nodes[root].append(node)
+        root_to_nodes.setdefault(root, []).append(node)
 
     return list(root_to_nodes.values())
 
@@ -276,39 +274,3 @@ def build_partition_matrix(
     ).coalesce()
 
     return P_hat
-
-
-def normalize_partition_matrix(P_hat: torch.Tensor) -> torch.Tensor:
-    """Normalize the partition matrix to have orthonormal columns.
-
-    Computes ``P = P_hat * M^{-1/2}`` where
-    ``M = diag(|C_1|, ..., |C_{N'}|)`` is the diagonal matrix of class sizes.
-    The resulting P satisfies ``P^T P = I``.
-
-    Args:
-        P_hat: Binary partition matrix, sparse or dense, shape (N, N').
-
-    Returns:
-        Normalized partition matrix of the same shape and format.
-    """
-    P_hat = P_hat.coalesce()
-    num_classes = P_hat.size(1)
-
-    # Compute class sizes: |C_j| = sum_i P_hat[i,j]
-    col_idx = P_hat.indices()[1]
-    class_sizes = torch.zeros(num_classes, dtype=torch.float32)
-    class_sizes.scatter_add_(0, col_idx, P_hat.values())
-
-    # M^{-1/2}
-    inv_sqrt_sizes = torch.where(
-        class_sizes > 0, class_sizes.pow(-0.5), torch.zeros_like(class_sizes)
-    )
-
-    # Scale each nonzero by the inverse sqrt of its class size
-    scaled_values = P_hat.values() * inv_sqrt_sizes[col_idx]
-
-    P_sparse = torch.sparse_coo_tensor(
-        P_hat.indices(), scaled_values, size=P_hat.size()
-    ).coalesce()
-
-    return P_sparse.to_dense()

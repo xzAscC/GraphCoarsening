@@ -30,7 +30,6 @@ from sklearn.metrics import roc_auc_score
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from config import ExperimentConfig
 from experiments.train_gcn import (
     load_dataset,
     train_epoch,
@@ -41,18 +40,10 @@ from src.models.gcn import GCN
 from src.coarsen import build_coarse_graph, logsumexp_features, GraphCoarsener
 from src.partition import node_partition
 
-# ---------------------------------------------------------------------------
-# Defaults
-# ---------------------------------------------------------------------------
-
 DEPTHS = [2, 4, 8, 16, 32]
 DATASETS = ["Cora", "Citeseer", "PubMed"]
 COARSENING_METHODS = ["random", "heavy_edge", "spectral"]
 
-
-# ---------------------------------------------------------------------------
-# Oversmoothing metrics
-# ---------------------------------------------------------------------------
 
 def compute_dirichlet_energy(z, edge_index, edge_weight=None):
     """Dirichlet energy = trace(Z^T L Z) / N  where L = D - A.
@@ -116,10 +107,6 @@ def compute_metrics(z, edge_index, edge_weight=None):
         ),
     }
 
-
-# ---------------------------------------------------------------------------
-# Coarsening helpers
-# ---------------------------------------------------------------------------
 
 def build_coarsened_graph(edge_index, num_nodes, x, method, alpha, k):
     """Build a coarsened graph via the requested method.
@@ -191,10 +178,6 @@ def compute_auc_with_projection(
     return float(roc_auc_score(labels, scores))
 
 
-# ---------------------------------------------------------------------------
-# Training helper
-# ---------------------------------------------------------------------------
-
 def train_gcn_linkpred(model, predictor, data, device, epochs):
     """Train model+predictor for *epochs* iterations. Returns final loss."""
     optimizer = torch.optim.Adam(
@@ -212,10 +195,6 @@ def train_gcn_linkpred(model, predictor, data, device, epochs):
             )
     return final_loss
 
-
-# ---------------------------------------------------------------------------
-# Plotting
-# ---------------------------------------------------------------------------
 
 def plot_results(results, datasets):
     """Generate the oversmoothing depth-sweep figure."""
@@ -287,10 +266,6 @@ def plot_results(results, datasets):
     print("Plot saved to " + out_path)
 
 
-# ---------------------------------------------------------------------------
-# Main experiment loop
-# ---------------------------------------------------------------------------
-
 def main():
     parser = argparse.ArgumentParser(
         description="Oversmoothing depth sweep: spectral coarsening mitigates oversmoothing"
@@ -308,7 +283,6 @@ def main():
     parser.add_argument("--hidden", type=int, default=128, help="Hidden dim")
     args = parser.parse_args()
 
-    # Graceful CPU fallback
     if args.device is not None:
         device = torch.device(args.device)
     elif torch.cuda.is_available():
@@ -353,7 +327,6 @@ def main():
             depth_key = str(depth)
             print("\n  --- Depth {} ---".format(depth))
 
-            # ---- Train GCN at this depth --------------------------------
             try:
                 torch.manual_seed(args.seed)
                 model = GCN(
@@ -368,7 +341,6 @@ def main():
                 print("    Training GCN (L={})...".format(depth), flush=True)
                 train_gcn_linkpred(model, predictor, data, device, args.epochs)
 
-                # Save checkpoint for reuse
                 ckpt_dir = "checkpoints"
                 os.makedirs(ckpt_dir, exist_ok=True)
                 ckpt_path = os.path.join(ckpt_dir, "{}_gcn_L{}.pt".format(ds_name, depth))
@@ -398,7 +370,6 @@ def main():
                     continue
                 raise
 
-            # ---- Full-graph embeddings ----------------------------------
             model.eval()
             with torch.no_grad():
                 x = (
@@ -421,7 +392,6 @@ def main():
 
             depth_results = {}
 
-            # -- (1) No coarsening (full graph) ---------------------------
             z_cpu = z_full.cpu()
             ei_cpu = data.train_pos_edge_index
             metrics = compute_metrics(z_cpu, ei_cpu)
@@ -436,7 +406,6 @@ def main():
                 )
             )
 
-            # -- (2)-(4) Coarsened methods --------------------------------
             for method in COARSENING_METHODS:
                 tag = method.replace("_", "-")
                 try:
@@ -512,18 +481,12 @@ def main():
 
         results[ds_name] = ds_results
 
-    # ------------------------------------------------------------------
-    # Save results
-    # ------------------------------------------------------------------
     os.makedirs("results", exist_ok=True)
     results_path = os.path.join("results", "oversmoothing.json")
     with open(results_path, "w") as f:
         json.dump(results, f, indent=2)
     print("\nResults saved to {}".format(results_path))
 
-    # ------------------------------------------------------------------
-    # Generate figure
-    # ------------------------------------------------------------------
     try:
         plot_results(results, args.datasets)
     except Exception as exc:

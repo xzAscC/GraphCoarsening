@@ -1,12 +1,12 @@
 {
   "BA-Shapes": {
     "Ours": {
-      "precision": 0.16372986654394844,
-      "recall": 0.2808333333333334,
-      "f1": 0.20685264133456904,
+      "precision": 0.7571428571428571,
+      "recall": 0.03416666666666667,
+      "f1": 0.06514081153162307,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.0269315242767334,
+      "mean_time": 0.07141828536987305,
       "num_samples": 10,
       "region_precision": 0.5319119201008965,
       "region_recall": 0.8550000000000001,
@@ -18,7 +18,7 @@
       "f1": 0.09816505223782532,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.03717696666717529,
+      "mean_time": 0.037693190574646,
       "num_samples": 10
     },
     "Saliency": {
@@ -27,18 +27,18 @@
       "f1": 0.6085183144825242,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.009043002128601074,
+      "mean_time": 0.004262399673461914,
       "num_samples": 10
     }
   },
   "Tree-Cycles": {
     "Ours": {
-      "precision": 0.0515625,
-      "recall": 0.275,
-      "f1": 0.08684210526315789,
+      "precision": 0.6933333333333334,
+      "recall": 0.027500000000000004,
+      "f1": 0.05282807438212631,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.010485410690307617,
+      "mean_time": 0.05769691467285156,
       "num_samples": 10,
       "region_precision": 0.522706674057434,
       "region_recall": 0.20833333333333334,
@@ -50,7 +50,7 @@
       "f1": 0.09090903453813323,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.0368800163269043,
+      "mean_time": 0.03634984493255615,
       "num_samples": 10
     },
     "Saliency": {
@@ -59,18 +59,18 @@
       "f1": 0.27306175652009423,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.004546260833740235,
+      "mean_time": 0.004298591613769531,
       "num_samples": 10
     }
   },
   "Link-Motif": {
     "Ours": {
-      "precision": 0.15732368896925858,
-      "recall": 0.3411764705882353,
-      "f1": 0.21534653465346537,
+      "precision": 0.8507575757575758,
+      "recall": 0.03647058823529411,
+      "f1": 0.06993639494113703,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.01004023551940918,
+      "mean_time": 0.08357100486755371,
       "num_samples": 10,
       "region_precision": 0.07246376811594203,
       "region_recall": 0.2,
@@ -82,7 +82,7 @@
       "f1": 0.09908529879123786,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.05123202800750733,
+      "mean_time": 0.07604658603668213,
       "num_samples": 10
     },
     "Saliency": {
@@ -91,7 +91,7 @@
       "f1": 0.18394692308452548,
       "mean_fidelity_plus": 0.0,
       "mean_fidelity_minus": 0.0,
-      "mean_time": 0.0023028373718261717,
+      "mean_time": 0.0042522668838500975,
       "num_samples": 10
     }
   }

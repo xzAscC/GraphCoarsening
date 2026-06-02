@@ -14,13 +14,11 @@ import argparse
 import json
 import os
 import sys
-import time
-
 import numpy as np
 import torch
 from scipy import stats
 from torch_geometric.data import Data
-from torch_geometric.utils import k_hop_subgraph
+
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -228,7 +226,15 @@ def run_comparison(dataset_name, num_edges, budgets, seed=42,
                     else (np.mean(a_vals) > np.mean(b_vals))
                 ),
             }
-            sig = "***" if min(t_p, w_p) < 0.001 else "**" if min(t_p, w_p) < 0.01 else "*" if min(t_p, w_p) < 0.05 else ""
+            min_p = min(t_p, w_p)
+            if min_p < 0.001:
+                sig = "***"
+            elif min_p < 0.01:
+                sig = "**"
+            elif min_p < 0.05:
+                sig = "*"
+            else:
+                sig = ""
             direction = "WIN" if result["ours_wins"] else "LOSS"
             print(f"  {name}: Ours={np.mean(a_vals):.4f} Saliency={np.mean(b_vals):.4f} "
                   f"t_p={t_p:.4f} w_p={w_p:.4f} d={d:.3f} [{direction}{sig}]")

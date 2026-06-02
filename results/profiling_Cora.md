@@ -5,74 +5,74 @@
 
 ### Occlusion
 
-- **preprocess_time_s**: 0.0004
+- **preprocess_time_s**: 0.0002
 - **preprocess_memory_mb**: 1.7800
-- **mean_explain_time_s**: 0.3758
-- **std_explain_time_s**: 0.4547
-- **median_explain_time_s**: 0.1765
-- **mean_forward_time_s**: 0.0015
-- **peak_memory_mb**: 50.7600
+- **mean_explain_time_s**: 0.2668
+- **std_explain_time_s**: 0.3388
+- **median_explain_time_s**: 0.1108
+- **mean_forward_time_s**: 0.0010
+- **peak_memory_mb**: 51.0600
 #### batch_times
 
-- **1**: 0.1331
-- **10**: 2.3865
-- **100**: 2.2984
-- **1000**: 2.1782
+- **1**: 0.0821
+- **10**: 1.6457
+- **100**: 5.4159
+- **1000**: 7.6653
 
-- **num_samples**: 10
+- **num_samples**: 30
 
 ### Saliency
 
-- **preprocess_time_s**: 0.0004
+- **preprocess_time_s**: 0.0003
 - **preprocess_memory_mb**: 33.0300
-- **mean_explain_time_s**: 0.0162
-- **std_explain_time_s**: 0.0243
-- **median_explain_time_s**: 0.0082
-- **mean_forward_time_s**: 0.0022
-- **peak_memory_mb**: 92.8500
+- **mean_explain_time_s**: 0.0047
+- **std_explain_time_s**: 0.0085
+- **median_explain_time_s**: 0.0030
+- **mean_forward_time_s**: 0.0010
+- **peak_memory_mb**: 92.8600
 #### batch_times
 
-- **1**: 0.0082
-- **10**: 0.0459
-- **100**: 0.0495
-- **1000**: 0.0470
+- **1**: 0.0026
+- **10**: 0.0269
+- **100**: 0.0828
+- **1000**: 0.0755
 
-- **num_samples**: 10
+- **num_samples**: 30
 
 ### GNNExplainer
 
-- **preprocess_time_s**: 0.0005
+- **preprocess_time_s**: 0.0003
 - **preprocess_memory_mb**: 42.0500
-- **mean_explain_time_s**: 0.4023
-- **std_explain_time_s**: 0.0703
-- **median_explain_time_s**: 0.3778
-- **mean_forward_time_s**: 0.0020
-- **peak_memory_mb**: 93.4000
+- **mean_explain_time_s**: 0.2710
+- **std_explain_time_s**: 0.0093
+- **median_explain_time_s**: 0.2688
+- **mean_forward_time_s**: 0.0012
+- **peak_memory_mb**: 93.4100
 #### batch_times
 
-- **1**: 0.2821
-- **10**: 2.8338
-- **100**: 3.1455
-- **1000**: 3.0608
+- **1**: 0.2164
+- **10**: 2.2332
+- **100**: 6.9529
+- **1000**: 6.8450
 
-- **num_samples**: 10
+- **num_samples**: 30
 
 ### Ours
 
 - **preprocess_time_s**: 0.0003
 - **preprocess_memory_mb**: 42.0500
-- **mean_explain_time_s**: 0.0510
-- **std_explain_time_s**: 0.0536
-- **median_explain_time_s**: 0.0360
-- **mean_forward_time_s**: 0.0016
+- **mean_explain_time_s**: 0.3549
+- **std_explain_time_s**: 0.1998
+- **median_explain_time_s**: 0.2647
+- **mean_forward_time_s**: 0.0011
 - **peak_memory_mb**: 212.2800
 #### batch_times
 
-- **1**: 0.0072
-- **10**: 0.1803
-- **100**: 0.1810
-- **1000**: 0.1815
+- **1**: 0.2277
+- **10**: 2.6784
+- **100**: 8.3774
+- **1000**: 8.3748
 
-- **num_samples**: 10
+- **num_samples**: 30
 
 

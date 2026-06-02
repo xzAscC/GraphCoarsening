@@ -6,33 +6,33 @@
 
 ### Occlusion
 
-- **fidelity_plus**: mean=0.1702, std=0.3758, n=47
-- **fidelity_minus**: mean=0.1702, std=0.3758, n=47
-- **mean_fidelity_plus**: 0.1702
-- **mean_fidelity_minus**: 0.1702
-- **std_fidelity_plus**: 0.3758
-- **std_fidelity_minus**: 0.3758
-- **mean_time**: 0.9985
+- **fidelity_plus**: mean=0.1489, std=0.3560, n=47
+- **fidelity_minus**: mean=0.2128, std=0.4093, n=47
+- **mean_fidelity_plus**: 0.1489
+- **mean_fidelity_minus**: 0.2128
+- **std_fidelity_plus**: 0.3560
+- **std_fidelity_minus**: 0.4093
+- **mean_time**: 0.1229
 
 ### Saliency
 
-- **fidelity_plus**: mean=0.1800, std=0.3842, n=50
-- **fidelity_minus**: mean=0.1600, std=0.3666, n=50
-- **mean_fidelity_plus**: 0.1800
-- **mean_fidelity_minus**: 0.1600
-- **std_fidelity_plus**: 0.3842
-- **std_fidelity_minus**: 0.3666
-- **mean_time**: 0.0094
+- **fidelity_plus**: mean=0.1400, std=0.3470, n=50
+- **fidelity_minus**: mean=0.2400, std=0.4271, n=50
+- **mean_fidelity_plus**: 0.1400
+- **mean_fidelity_minus**: 0.2400
+- **std_fidelity_plus**: 0.3470
+- **std_fidelity_minus**: 0.4271
+- **mean_time**: 0.0036
 
 ### GNNExplainer
 
-- **fidelity_plus**: mean=0.1800, std=0.3842, n=50
-- **fidelity_minus**: mean=0.1000, std=0.3000, n=50
-- **mean_fidelity_plus**: 0.1800
-- **mean_fidelity_minus**: 0.1000
-- **std_fidelity_plus**: 0.3842
-- **std_fidelity_minus**: 0.3000
-- **mean_time**: 1.2089
+- **fidelity_plus**: mean=0.1400, std=0.3470, n=50
+- **fidelity_minus**: mean=0.0600, std=0.2375, n=50
+- **mean_fidelity_plus**: 0.1400
+- **mean_fidelity_minus**: 0.0600
+- **std_fidelity_plus**: 0.3470
+- **std_fidelity_minus**: 0.2375
+- **mean_time**: 0.2251
 
 ### PGExplainer
 
@@ -40,22 +40,22 @@
 
 ### SubgraphX
 
-- **fidelity_plus**: mean=0.1800, std=0.3842, n=50
-- **fidelity_minus**: mean=0.1000, std=0.3000, n=50
-- **mean_fidelity_plus**: 0.1800
-- **mean_fidelity_minus**: 0.1000
-- **std_fidelity_plus**: 0.3842
-- **std_fidelity_minus**: 0.3000
-- **mean_time**: 0.9149
+- **fidelity_plus**: mean=0.1400, std=0.3470, n=50
+- **fidelity_minus**: mean=0.1400, std=0.3470, n=50
+- **mean_fidelity_plus**: 0.1400
+- **mean_fidelity_minus**: 0.1400
+- **std_fidelity_plus**: 0.3470
+- **std_fidelity_minus**: 0.3470
+- **mean_time**: 0.2836
 
 ### Ours
 
-- **fidelity_plus**: mean=0.0000, std=0.0000, n=50
-- **fidelity_minus**: mean=0.0000, std=0.0000, n=50
-- **mean_fidelity_plus**: 0.0000
-- **mean_fidelity_minus**: 0.0000
-- **std_fidelity_plus**: 0.0000
-- **std_fidelity_minus**: 0.0000
-- **mean_time**: 0.0879
+- **fidelity_plus**: mean=0.1800, std=0.3842, n=50
+- **fidelity_minus**: mean=0.1400, std=0.3470, n=50
+- **mean_fidelity_plus**: 0.1800
+- **mean_fidelity_minus**: 0.1400
+- **std_fidelity_plus**: 0.3842
+- **std_fidelity_minus**: 0.3470
+- **mean_time**: 0.2174
 
 

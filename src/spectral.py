@@ -39,26 +39,21 @@ def compute_normalized_adjacency(
     Returns:
         Sparse tensor of shape (num_nodes, num_nodes) representing Â.
     """
-    # Add self-loops
     loop_index = torch.arange(num_nodes, device=edge_index.device).unsqueeze(0).expand(2, -1)
     edge_index_plus = torch.cat([edge_index, loop_index], dim=1)
 
-    # Build sparse adjacency A_+ (with self-loops)
     num_edges_plus = edge_index_plus.size(1)
     values = torch.ones(num_edges_plus, dtype=torch.float32, device=edge_index.device)
     A_plus = torch.sparse_coo_tensor(
         edge_index_plus, values, size=(num_nodes, num_nodes)
     ).coalesce()
 
-    # Compute degree D_+
     row = A_plus.indices()[0]
     deg = torch.zeros(num_nodes, dtype=torch.float32, device=edge_index.device)
     deg.scatter_add_(0, row, A_plus.values())
 
-    # D_+^{-1/2}
     deg_inv_sqrt = torch.where(deg > 0, deg.pow(-0.5), torch.zeros_like(deg))
 
-    # Normalized values: D_+^{-1/2}(i) * D_+^{-1/2}(j) for each edge (i,j)
     row_idx = A_plus.indices()[0]
     col_idx = A_plus.indices()[1]
     norm_values = deg_inv_sqrt[row_idx] * deg_inv_sqrt[col_idx]
@@ -98,11 +93,9 @@ def compute_top_k_eigenpairs(
     """
     N = A_hat.size(0)
 
-    # Clamp k to matrix dimension
     k = min(k, N)
 
     if N <= 10_000:
-        # Dense path: convert to dense, use torch.linalg.eigh
         if A_hat.is_sparse:
             A_dense = A_hat.to_dense()
         else:
@@ -113,7 +106,6 @@ def compute_top_k_eigenpairs(
         eigenvalues = eigenvalues[-k:].flip(0)
         eigenvectors = eigenvectors[:, -k:].flip(1)
     else:
-        # Sparse path: use scipy ARPACK
         if A_hat.is_sparse:
             A_np = _sparse_tensor_to_scipy(A_hat)
         else:
@@ -132,7 +124,6 @@ def compute_top_k_eigenpairs(
         eigenvalues = torch.from_numpy(eigenvalues_np.copy()).float()
         eigenvectors = torch.from_numpy(eigenvectors_np.copy()).float()
 
-    # For symmetric matrices, left == right eigenvectors
     left_vecs = eigenvectors
     right_vecs = eigenvectors.clone()
 
@@ -180,7 +171,6 @@ def compute_perturbation_scores(
     v_a = left_vecs[row]  # (E, k)
     v_b = left_vecs[col]  # (E, k)
 
-    # Broadcast eigenvalues: (1, k) for elementwise ops with (E, k)
     lam = eigenvalues.unsqueeze(0)  # (1, k)
 
     # Check if undirected (left == right within tolerance)
@@ -212,7 +202,6 @@ def compute_perturbation_scores(
         vt_u = torch.sum(left_vecs * right_vecs, dim=0)  # (k,)
         eta = vt_u.unsqueeze(0) - (u_a * v_a + u_b * v_b)  # (E, k)
 
-    # Numerical stability: clamp eta away from zero
     eps = 1e-8
     eta = torch.where(eta.abs() < eps, eta + eps, eta)
 

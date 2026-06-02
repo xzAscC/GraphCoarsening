@@ -1,7 +1,7 @@
 """Comprehensive baseline comparison experiment (Priority 2).
 
 Runs ALL explanation baselines including:
-- Trivial: FullGraph, KHop, Random, Degree, PageRank
+- Trivial: FullGraph, KHop, Random, Degree
 - Hard: GreedyDeletion
 - Coarsening: RandomCoarsening, HeavyEdgeCoarsening, EffectiveResistanceCoarsening, NoRefinement
 - GNN: Occlusion, Saliency
@@ -148,6 +148,7 @@ def main():
         fid_plus_list = []
         fid_minus_list = []
         sparsity_list = []
+        exp_sizes = []
         times = []
 
         for i in range(test_edges.size(1)):
@@ -165,6 +166,9 @@ def main():
 
             if explanation is None:
                 continue
+
+            if hasattr(explanation, "edge_index"):
+                exp_sizes.append(explanation.edge_index.size(1))
 
             try:
                 fp = fidelity_plus(model, data, explanation, a, b, device=str(device))
@@ -191,9 +195,7 @@ def main():
             "mean_sparsity": float(np.mean(sparsity_list)),
             "std_sparsity": float(np.std(sparsity_list)),
             "mean_time": float(np.mean(times)),
-            "mean_explanation_size": float(
-                np.mean([explanation.edge_index.size(1) for _ in range(1)])
-            ) if hasattr(explanation, "edge_index") else None,
+            "mean_explanation_size": float(np.mean(exp_sizes)) if exp_sizes else None,
         }
         print(f"  Samples: {len(fid_plus_list)}, "
               f"Fid+: {results[method_name]['mean_fidelity_plus']:.4f}, "

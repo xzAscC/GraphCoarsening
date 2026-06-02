@@ -20,7 +20,6 @@ Coarsening baselines (use GraphCoarsener pipeline with custom scoring):
     NoRefinementExplainer               -- spectral coarsening without linkwise refinement
 """
 
-from abc import abstractmethod
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -55,11 +54,6 @@ __all__ = [
     "EffectiveResistanceCoarseningExplainer",
     "NoRefinementExplainer",
 ]
-
-
-# =====================================================================
-# Helper utilities
-# =====================================================================
 
 
 def _relabel_subgraph(
@@ -259,11 +253,6 @@ def _find_supernode_indices(
     return sa, sb
 
 
-# =====================================================================
-# Non-coarsening baselines
-# =====================================================================
-
-
 class FullGraphBaseline(BaseExplainer):
     """Returns the entire input graph as the explanation.
 
@@ -432,7 +421,6 @@ class DegreeBasedBaseline(BaseExplainer):
             0, data.edge_index[0], torch.ones(data.edge_index.size(1), device=self.device)
         )
 
-        # Score each edge by sum of endpoint degrees.
         edge_scores = deg[sub_ei[0]] + deg[sub_ei[1]]
 
         keep = _resolve_keep_count(sub_ei.size(1), self.budget, self.k_frac)
@@ -489,7 +477,6 @@ class PageRankBasedBaseline(BaseExplainer):
         if sub_ei.size(1) == 0:
             return _relabel_subgraph(data, sub_ei, sub_ew, self.device)
 
-        # Relabel to contiguous range for PageRank.
         assert data.x is not None
         involved = torch.unique(sub_ei)
         n_sub = involved.size(0)
@@ -499,7 +486,6 @@ class PageRankBasedBaseline(BaseExplainer):
 
         pr = _compute_pagerank(relabeled_ei, n_sub, damping=self.damping)
 
-        # Score each edge by sum of endpoint PR scores.
         pr_full = torch.zeros(data.x.size(0), device=self.device)
         pr_full[involved] = pr
         edge_scores = pr_full[sub_ei[0]] + pr_full[sub_ei[1]]
@@ -551,7 +537,6 @@ class GreedyDeletionBaseline(BaseExplainer):
         data = self._to_device(data)
         target = torch.tensor([[node_a], [node_b]], device=self.device)
 
-        # Identify candidate edges (k-hop subgraph in global edge_index).
         cand_mask = _khop_mask(data, node_a, node_b, self.k_hop, self.device)
         candidate_indices = cand_mask.nonzero(as_tuple=True)[0].tolist()
         if not candidate_indices:
@@ -562,7 +547,6 @@ class GreedyDeletionBaseline(BaseExplainer):
                 self.device,
             )
 
-        # Original prediction on full graph.
         assert data.edge_index is not None and data.x is not None
         original_score = self._predict(data, target).item()
         original_pred = int(original_score > 0.5)
@@ -624,11 +608,6 @@ class GreedyDeletionBaseline(BaseExplainer):
         return results
 
 
-# =====================================================================
-# Coarsening baselines
-# =====================================================================
-
-
 class _CoarseningBaseExplainer(BaseExplainer):
     """Abstract base for coarsening-based explainers with custom edge scoring.
 
@@ -660,7 +639,6 @@ class _CoarseningBaseExplainer(BaseExplainer):
         self.k = k
         self.alpha = alpha
 
-        # Cached state.
         self._cached_data_id: Optional[int] = None
         self._edge_index: Optional[torch.Tensor] = None
         self._edge_weight: Optional[torch.Tensor] = None
@@ -671,11 +649,7 @@ class _CoarseningBaseExplainer(BaseExplainer):
         self._coarse_ei: Optional[torch.Tensor] = None
         self._coarse_ew: Optional[torch.Tensor] = None
         self._coarse_x: Optional[torch.Tensor] = None
-        self._num_coarse: int = 0
 
-    # ------------------------------------------------------------------
-    # Subclass hook
-    # ------------------------------------------------------------------
 
     def _compute_scores(
         self,
@@ -694,10 +668,6 @@ class _CoarseningBaseExplainer(BaseExplainer):
         A_hat = compute_normalized_adjacency(edge_index, num_nodes)
         eigenvalues, left_vecs, right_vecs = compute_top_k_eigenpairs(A_hat, self.k)
         return compute_perturbation_scores(edge_index, eigenvalues, left_vecs, right_vecs)
-
-    # ------------------------------------------------------------------
-    # Fitting / caching
-    # ------------------------------------------------------------------
 
     def _ensure_fitted(self, data: Data) -> None:
         """Build partition and coarse graph (cached per ``Data`` object)."""
@@ -721,17 +691,13 @@ class _CoarseningBaseExplainer(BaseExplainer):
         )
         assert self._partition is not None
 
-        self._coarse_ei, self._coarse_ew, self._num_coarse = build_coarse_graph(
+        self._coarse_ei, self._coarse_ew, _ = build_coarse_graph(
             self._edge_index, self._edge_weight, self._num_nodes,
             self._partition, self._x,
         )
         self._coarse_x = logsumexp_features(self._x, self._partition)
 
         self._cached_data_id = data_id
-
-    # ------------------------------------------------------------------
-    # Interface
-    # ------------------------------------------------------------------
 
     def explain_link(self, data: Data, node_a: int, node_b: int) -> Data:
         """Build a linkwise-refined coarse-graph explanation."""
@@ -921,7 +887,6 @@ def _effective_resistance_scores(
     row_np = edge_index[0].cpu().numpy().astype(np.int64)
     col_np = edge_index[1].cpu().numpy().astype(np.int64)
 
-    # Build symmetric adjacency.
     vals = np.ones(len(row_np), dtype=np.float64)
     adj = sp.coo_matrix((vals, (row_np, col_np)), shape=(n, n))
     adj = adj.maximum(adj.T).tocsr()
@@ -930,7 +895,6 @@ def _effective_resistance_scores(
     deg = np.asarray(adj.sum(axis=1)).ravel()
     L = sp.diags(deg) - adj
 
-    # Compute bottom-(k+1) eigenpairs (smallest magnitude).
     k_eff = min(k + 1, max(n - 2, 1))
 
     if n <= 500:
@@ -949,12 +913,10 @@ def _effective_resistance_scores(
             eigenvalues = eigenvalues[: k_eff + 1]
             eigenvectors = eigenvectors[:, : k_eff + 1]
 
-    # Sort ascending.
     sort_idx = np.argsort(eigenvalues)
     eigenvalues = eigenvalues[sort_idx]
     eigenvectors = eigenvectors[:, sort_idx]
 
-    # Skip zero eigenvalues, keep at most k non-zero.
     eps = 1e-8
     nonzero = eigenvalues > eps
     eigenvalues = eigenvalues[nonzero]
@@ -963,15 +925,12 @@ def _effective_resistance_scores(
         eigenvalues = eigenvalues[:k]
         eigenvectors = eigenvectors[:, :k]
 
-    # If no non-zero eigenvalues, fall back to uniform scores.
     if len(eigenvalues) == 0:
         return torch.ones(edge_index.size(1), device=device)
 
-    # Convert to torch (keep on CPU for large gather, then move).
     eigvals_t = torch.from_numpy(eigenvalues.copy()).float()
     eigvecs_t = torch.from_numpy(eigenvectors.copy()).float()
 
-    # Move to the edge_index device.
     eigvals_t = eigvals_t.to(device)
     eigvecs_t = eigvecs_t.to(device)
 

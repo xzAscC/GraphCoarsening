@@ -75,8 +75,6 @@ def main():
         print("No JSON result files found")
         return
 
-    os.makedirs(results_dir, exist_ok=True)
-
     for json_path in sorted(json_files):
         md_path = os.path.splitext(json_path)[0] + ".md"
         md_content = json_to_markdown(json_path)

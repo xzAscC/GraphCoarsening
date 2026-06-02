@@ -5,77 +5,59 @@
 
 ### GCN
 
-- **test_auc**: 0.6545
+- **test_auc**: 0.6469
 #### Occlusion
 
-- **mean_fidelity_plus**: 0.3600
-- **std_fidelity_plus**: 0.4800
-- **mean_fidelity_minus**: 0.5000
-- **std_fidelity_minus**: 0.5000
-- **mean_time**: 0.5928
-- **num_samples**: 50
+- **mean_fidelity_plus**: 0.2000
+- **std_fidelity_plus**: 0.4000
+- **mean_fidelity_minus**: 0.4667
+- **std_fidelity_minus**: 0.4989
+- **mean_time**: 0.1678
+- **num_samples**: 30
 
 #### Saliency
 
-- **mean_fidelity_plus**: 0.3600
-- **std_fidelity_plus**: 0.4800
-- **mean_fidelity_minus**: 0.4600
-- **std_fidelity_minus**: 0.4984
-- **mean_time**: 0.0071
-- **num_samples**: 50
+- **mean_fidelity_plus**: 0.2000
+- **std_fidelity_plus**: 0.4000
+- **mean_fidelity_minus**: 0.4000
+- **std_fidelity_minus**: 0.4899
+- **mean_time**: 0.0045
+- **num_samples**: 30
 
 #### Ours
 
-- **mean_fidelity_plus**: 0.0800
-- **std_fidelity_plus**: 0.2713
-- **mean_fidelity_minus**: 0.0800
-- **std_fidelity_minus**: 0.2713
-- **mean_time**: 0.0214
-- **num_samples**: 50
+- **mean_fidelity_plus**: 0.2000
+- **std_fidelity_plus**: 0.4000
+- **mean_fidelity_minus**: 0.2333
+- **std_fidelity_minus**: 0.4230
+- **mean_time**: 0.2734
+- **num_samples**: 30
 
 
 ### GraphSAGE
 
-- **test_auc**: 0.9177
+- **test_auc**: 0.9227
 #### Occlusion
 
-- **mean_fidelity_plus**: 0.3800
-- **std_fidelity_plus**: 0.4854
+- **mean_fidelity_plus**: 0.5333
+- **std_fidelity_plus**: 0.4989
 - **mean_fidelity_minus**: 0.0000
 - **std_fidelity_minus**: 0.0000
-- **mean_time**: 0.4612
-- **num_samples**: 50
-
-#### Ours
-
-- **mean_fidelity_plus**: 0.0800
-- **std_fidelity_plus**: 0.2713
-- **mean_fidelity_minus**: 0.0800
-- **std_fidelity_minus**: 0.2713
-- **mean_time**: 0.0207
-- **num_samples**: 50
+- **mean_time**: 0.1085
+- **num_samples**: 30
 
 
 ### GAT
 
-- **test_auc**: 0.9176
+- **test_auc**: 0.9069
 #### Occlusion
 
 - **mean_fidelity_plus**: 0.4000
 - **std_fidelity_plus**: 0.4899
 - **mean_fidelity_minus**: 0.0000
 - **std_fidelity_minus**: 0.0000
-- **mean_time**: 0.5824
-- **num_samples**: 50
-
-#### Ours
-
-- **mean_fidelity_plus**: 0.0400
-- **std_fidelity_plus**: 0.1960
-- **mean_fidelity_minus**: 0.0400
-- **std_fidelity_minus**: 0.1960
-- **mean_time**: 0.0203
-- **num_samples**: 50
+- **mean_time**: 0.1922
+- **num_samples**: 30
 
 
 

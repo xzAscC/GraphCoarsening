@@ -12,7 +12,7 @@ import torch
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from config import ExperimentConfig
-from experiments.train_gcn import load_dataset, MLPLinkPredictor as TrainMLPLinkPredictor
+from experiments.train_gcn import load_dataset, MLPLinkPredictor
 from src.models.gcn import GCN
 from src.models.link_predictor import LinkPredictionModel
 
@@ -52,21 +52,24 @@ def get_explainer(method: str, model, data, device):
         if GNNExplainerWrapper is not None:
             try:
                 return GNNExplainerWrapper(model, device=device)
-            except Exception:
+            except (RuntimeError, TypeError, ValueError) as e:
+                print(f"  Warning: {method} failed to initialize: {e}")
                 return None
         return None
     if method == "PGExplainer":
         if PGExplainerWrapper is not None:
             try:
                 return PGExplainerWrapper(model, device=device)
-            except Exception:
+            except (RuntimeError, TypeError, ValueError) as e:
+                print(f"  Warning: {method} failed to initialize: {e}")
                 return None
         return None
     if method == "SubgraphX":
         if SubgraphXWrapper is not None:
             try:
                 return SubgraphXWrapper(model, device=device)
-            except Exception:
+            except (RuntimeError, TypeError, ValueError) as e:
+                print(f"  Warning: {method} failed to initialize: {e}")
                 return None
         return None
     if method == "Ours" and CoarsenExplainer is not None:
@@ -100,7 +103,8 @@ def run_explanation_method(method, explainer, model, data, test_edges, device):
         t0 = time.time()
         try:
             explanation = explainer.explain_link(data, node_a, node_b)
-        except Exception:
+        except (RuntimeError, TypeError, ValueError) as e:
+            print(f"  Warning: explain_link failed for edge ({node_a}, {node_b}): {e}")
             explanation = None
         elapsed = time.time() - t0
         times.append(elapsed)
@@ -172,7 +176,7 @@ def main():
     ).to(device)
     gcn.load_state_dict(ckpt["model_state_dict"])
 
-    predictor = TrainMLPLinkPredictor(
+    predictor = MLPLinkPredictor(
         in_channels=model_config["out_channels"],
         hidden_channels=model_config["hidden_channels"],
     ).to(device)

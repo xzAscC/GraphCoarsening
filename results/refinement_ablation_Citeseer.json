@@ -1,0 +1,65 @@
+{
+  "dataset": "Citeseer",
+  "results": {
+    "none": {
+      "mean_fidelity_plus": 0.6428571428571429,
+      "std_fidelity_plus": 0.47915742374995496,
+      "mean_fidelity_minus": 0.6428571428571429,
+      "std_fidelity_minus": 0.47915742374995496,
+      "mean_size": 599.0,
+      "std_size": 0.0,
+      "mean_time": 0.023111513682774136,
+      "num_samples": 14
+    },
+    "split_endpoints": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 5406.966666666666,
+      "std_size": 2410.905617996874,
+      "mean_time": 0.01871525446573893,
+      "num_samples": 30
+    },
+    "split_clusters": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 5406.966666666666,
+      "std_size": 2410.905617996874,
+      "mean_time": 0.018188317616780598,
+      "num_samples": 30
+    },
+    "split_1hop": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 5406.966666666666,
+      "std_size": 2410.905617996874,
+      "mean_time": 0.018548210461934406,
+      "num_samples": 30
+    },
+    "split_2hop": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 5406.966666666666,
+      "std_size": 2410.905617996874,
+      "mean_time": 0.018671274185180664,
+      "num_samples": 30
+    },
+    "full_khop": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 5406.966666666666,
+      "std_size": 2410.905617996874,
+      "mean_time": 0.018396711349487303,
+      "num_samples": 30
+    }
+  }
+}

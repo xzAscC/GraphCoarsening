@@ -7,7 +7,6 @@ import sys
 import torch
 import torch.nn.functional as F
 import numpy as np
-from torch.utils.data import DataLoader
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -127,11 +126,6 @@ def load_dataset(name: str, root: str = "data"):
         return data
 
     raise ValueError(f"Unknown dataset: {name}")
-
-
-class DotProductLinkPredictor(torch.nn.Module):
-    def forward(self, z: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
-        return (z[edge_index[0]] * z[edge_index[1]]).sum(dim=-1)
 
 
 class MLPLinkPredictor(torch.nn.Module):

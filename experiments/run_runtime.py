@@ -13,17 +13,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from config import ExperimentConfig
 from experiments.train_gcn import load_dataset
-from src.models.gcn import GCN
-
 try:
     from src.coarsen import GraphCoarsener
 except ImportError:
     GraphCoarsener = None
-
-try:
-    from src.explainers.coarsen_explainer import CoarsenExplainer
-except ImportError:
-    CoarsenExplainer = None
 
 
 def measure_coarsening_time(data, alpha: float, k: int, device):
@@ -69,26 +62,6 @@ def measure_per_link_time(coarsener, data, device, num_edges=50, seed=42):
     return float(np.mean(times)) if times else 0.0
 
 
-def load_model_for_dataset(dataset: str, device):
-    checkpoint_path = os.path.join("checkpoints", f"{dataset}_gcn.pt")
-    if os.path.exists(checkpoint_path):
-        ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
-        mc = ckpt["config"]
-        model = GCN(mc["in_channels"], mc["hidden_channels"], mc["out_channels"], mc["num_layers"]).to(device)
-        model.load_state_dict(ckpt["model_state_dict"])
-        model.eval()
-
-        from experiments.train_gcn import MLPLinkPredictor
-        predictor = MLPLinkPredictor(mc["out_channels"], mc["hidden_channels"]).to(device)
-        if "predictor_state_dict" in ckpt:
-            predictor.load_state_dict(ckpt["predictor_state_dict"])
-        predictor.eval()
-        return model, predictor
-
-    print(f"  WARNING: No checkpoint for {dataset}, using untrained model")
-    return None, None
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default=None)
@@ -114,7 +87,7 @@ def main():
 
         try:
             data = load_dataset(ds_name)
-        except Exception as e:
+        except (OSError, RuntimeError, ValueError) as e:
             print(f"  SKIP: failed to load ({e})")
             continue
 
@@ -148,7 +121,7 @@ def main():
 
     try:
         _plot_runtime(results)
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError) as e:
         print(f"Plotting skipped: {e}")
 
     _print_table(results)

@@ -1,0 +1,65 @@
+{
+  "dataset": "PubMed",
+  "results": {
+    "none": {
+      "mean_fidelity_plus": 0.16666666666666666,
+      "std_fidelity_plus": 0.3726779962499649,
+      "mean_fidelity_minus": 0.16666666666666666,
+      "std_fidelity_minus": 0.3726779962499649,
+      "mean_size": 10960.0,
+      "std_size": 0.0,
+      "mean_time": 0.02729243040084839,
+      "num_samples": 12
+    },
+    "split_endpoints": {
+      "mean_fidelity_plus": 0.1,
+      "std_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.1,
+      "std_fidelity_minus": 0.3,
+      "mean_size": 62178.46666666667,
+      "std_size": 23547.734932449213,
+      "mean_time": 0.07885166009267171,
+      "num_samples": 30
+    },
+    "split_clusters": {
+      "mean_fidelity_plus": 0.1,
+      "std_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.1,
+      "std_fidelity_minus": 0.3,
+      "mean_size": 60709.666666666664,
+      "std_size": 22891.192200397858,
+      "mean_time": 0.08210375308990478,
+      "num_samples": 30
+    },
+    "split_1hop": {
+      "mean_fidelity_plus": 0.0,
+      "std_fidelity_plus": 0.0,
+      "mean_fidelity_minus": 0.0,
+      "std_fidelity_minus": 0.0,
+      "mean_size": 72825.66666666667,
+      "std_size": 11711.929084864241,
+      "mean_time": 0.08321449756622315,
+      "num_samples": 30
+    },
+    "split_2hop": {
+      "mean_fidelity_plus": 0.1,
+      "std_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.1,
+      "std_fidelity_minus": 0.3,
+      "mean_size": 73493.43333333333,
+      "std_size": 114.45834273753145,
+      "mean_time": 0.09549097220102946,
+      "num_samples": 30
+    },
+    "full_khop": {
+      "mean_fidelity_plus": 0.1,
+      "std_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.1,
+      "std_fidelity_minus": 0.3,
+      "mean_size": 74346.8,
+      "std_size": 107.66224965139823,
+      "mean_time": 0.08740878899892171,
+      "num_samples": 30
+    }
+  }
+}

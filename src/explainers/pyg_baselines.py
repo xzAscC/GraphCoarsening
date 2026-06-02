@@ -3,23 +3,16 @@
 Wraps GNNExplainer, PGExplainer, and SubgraphX from PyTorch Geometric
 into the unified BaseExplainer interface. Includes a custom MCTS-based
 SubgraphX implementation for PyG versions that lack it.
-
-All wrappers handle API differences between PyG versions gracefully
-and log warnings when functionality is degraded.
 """
 
-import logging
 import warnings
-from typing import List, Optional
+from typing import List
 
 import torch
-import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.utils import k_hop_subgraph
 
 from src.explainers.base import BaseExplainer
-
-logger = logging.getLogger(__name__)
 
 
 class _LinkPredAdapter(torch.nn.Module):
@@ -262,11 +255,7 @@ class PGExplainerWrapper(BaseExplainer):
 
 
 class _MCTSNode:
-    """A single node in the Monte Carlo Tree Search.
-
-    Each node stores a subgraph (as a boolean edge mask) and tracks
-    visit counts and cumulative rewards for the UCT selection policy.
-    """
+    """Stores a subgraph edge mask with visit counts and cumulative rewards for UCT."""
 
     __slots__ = ("edge_mask", "children", "visit_count", "total_reward", "parent")
 
@@ -328,7 +317,7 @@ class SubgraphXWrapper(BaseExplainer):
     def _get_neighbourhood(
         self, data: Data, node_a: int, node_b: int,
     ) -> tuple:
-        """Return (sub_edge_index, inv_mapping) for k-hop neighbourhood."""
+        """Extract the k-hop subgraph edges around node_a and node_b."""
         subset, sub_edge_index, _, _ = k_hop_subgraph(
             node_idx=torch.tensor([node_a, node_b], device=self.device),
             num_hops=self.num_hops,
@@ -419,7 +408,6 @@ class SubgraphXWrapper(BaseExplainer):
         return _extract_subgraph_from_mask(data, final_mask.float(), top_k, self.device)
 
     def _best_leaf(self, root: _MCTSNode) -> _MCTSNode:
-        """Find the leaf with the highest mean reward."""
         best = root
         stack = [root]
         while stack:
@@ -434,7 +422,6 @@ class SubgraphXWrapper(BaseExplainer):
         global_edge_index: torch.Tensor,
         sub_edge_index: torch.Tensor,
     ) -> torch.Tensor:
-        """Find indices of sub_edge_index columns in global_edge_index."""
         active = []
         for i in range(sub_edge_index.size(1)):
             src, dst = sub_edge_index[0, i], sub_edge_index[1, i]

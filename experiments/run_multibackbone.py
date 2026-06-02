@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from config import ExperimentConfig
 from experiments.train_gcn import load_dataset, MLPLinkPredictor, train_epoch, evaluate
-from src.models.gcn import GCN, GraphSAGEModel
+from src.models.gcn import GCN
 from torch_geometric.nn import SAGEConv
 from src.models.link_predictor import LinkPredictionModel
 
@@ -111,7 +111,6 @@ def get_encoder(backbone_name, in_channels, hidden_channels, out_channels, num_l
 
 
 def train_backbone(backbone_name, data, device, epochs=100, lr=0.01, hidden=128, layers=3, seed=42):
-    """Train a backbone model and return the LinkPredictionModel."""
     torch.manual_seed(seed)
     in_channels = data.num_features
 
@@ -171,7 +170,6 @@ def load_gcn_checkpoint(dataset, data, device):
 
 
 def run_method(method_name, model, data, test_edges, device):
-    """Run a single explanation method and return results."""
     if method_name == "Occlusion" and OcclusionExplainer is not None:
         explainer = OcclusionExplainer(model, device=device)
     elif method_name == "Saliency" and SaliencyExplainer is not None:

@@ -10,36 +10,36 @@
   "results": {
     "Ours": {
       "0.05": {
-        "sufficiency": 0.64,
-        "necessity": 0.36,
+        "sufficiency": 0.7,
+        "necessity": 0.08,
         "sparsity": 0.99873440285205,
         "num_edges": 11.36,
         "num_samples": 50
       },
       "0.1": {
-        "sufficiency": 0.62,
-        "necessity": 0.38,
+        "sufficiency": 0.72,
+        "necessity": 0.12,
         "sparsity": 0.9974108734402853,
         "num_edges": 23.24,
         "num_samples": 50
       },
       "0.2": {
-        "sufficiency": 0.62,
-        "necessity": 0.38,
+        "sufficiency": 0.72,
+        "necessity": 0.2,
         "sparsity": 0.9947838680926917,
         "num_edges": 46.82,
         "num_samples": 50
       },
       "0.3": {
-        "sufficiency": 0.64,
-        "necessity": 0.36,
+        "sufficiency": 0.72,
+        "necessity": 0.22,
         "sparsity": 0.9921501782531195,
         "num_edges": 70.46,
         "num_samples": 50
       },
       "0.5": {
-        "sufficiency": 0.66,
-        "necessity": 0.34,
+        "sufficiency": 0.72,
+        "necessity": 0.26,
         "sparsity": 0.9868538324420676,
         "num_edges": 118.0,
         "num_samples": 50
@@ -47,36 +47,36 @@
     },
     "Random": {
       "0.05": {
-        "sufficiency": 0.66,
-        "necessity": 0.06,
+        "sufficiency": 0.8,
+        "necessity": 0.02,
         "sparsity": 0.99873440285205,
         "num_edges": 11.36,
         "num_samples": 50
       },
       "0.1": {
-        "sufficiency": 0.68,
-        "necessity": 0.08,
+        "sufficiency": 0.74,
+        "necessity": 0.04,
         "sparsity": 0.9974108734402853,
         "num_edges": 23.24,
         "num_samples": 50
       },
       "0.2": {
-        "sufficiency": 0.68,
-        "necessity": 0.12,
+        "sufficiency": 0.74,
+        "necessity": 0.08,
         "sparsity": 0.9947838680926917,
         "num_edges": 46.82,
         "num_samples": 50
       },
       "0.3": {
-        "sufficiency": 0.66,
-        "necessity": 0.2,
+        "sufficiency": 0.82,
+        "necessity": 0.12,
         "sparsity": 0.9921501782531195,
         "num_edges": 70.46,
         "num_samples": 50
       },
       "0.5": {
-        "sufficiency": 0.74,
-        "necessity": 0.26,
+        "sufficiency": 0.88,
+        "necessity": 0.1,
         "sparsity": 0.9868538324420676,
         "num_edges": 118.0,
         "num_samples": 50
@@ -84,35 +84,35 @@
     },
     "Degree": {
       "0.05": {
-        "sufficiency": 0.62,
-        "necessity": 0.02,
+        "sufficiency": 0.78,
+        "necessity": 0.0,
         "sparsity": 0.99873440285205,
         "num_edges": 11.36,
         "num_samples": 50
       },
       "0.1": {
-        "sufficiency": 0.62,
-        "necessity": 0.04,
+        "sufficiency": 0.82,
+        "necessity": 0.02,
         "sparsity": 0.9974108734402853,
         "num_edges": 23.24,
         "num_samples": 50
       },
       "0.2": {
-        "sufficiency": 0.64,
-        "necessity": 0.12,
+        "sufficiency": 0.86,
+        "necessity": 0.02,
         "sparsity": 0.9947838680926917,
         "num_edges": 46.82,
         "num_samples": 50
       },
       "0.3": {
-        "sufficiency": 0.7,
-        "necessity": 0.22,
+        "sufficiency": 0.82,
+        "necessity": 0.16,
         "sparsity": 0.9921501782531195,
         "num_edges": 70.46,
         "num_samples": 50
       },
       "0.5": {
-        "sufficiency": 0.8,
+        "sufficiency": 0.92,
         "necessity": 0.26,
         "sparsity": 0.9868538324420676,
         "num_edges": 118.0,
@@ -121,36 +121,36 @@
     },
     "KHop": {
       "0.05": {
-        "sufficiency": 0.94,
-        "necessity": 0.36,
+        "sufficiency": 1.0,
+        "necessity": 0.26,
         "sparsity": 0.9737076648841356,
         "num_edges": 236.0,
         "num_samples": 50
       },
       "0.1": {
-        "sufficiency": 0.94,
-        "necessity": 0.36,
+        "sufficiency": 1.0,
+        "necessity": 0.26,
         "sparsity": 0.9737076648841356,
         "num_edges": 236.0,
         "num_samples": 50
       },
       "0.2": {
-        "sufficiency": 0.94,
-        "necessity": 0.36,
+        "sufficiency": 1.0,
+        "necessity": 0.26,
         "sparsity": 0.9737076648841356,
         "num_edges": 236.0,
         "num_samples": 50
       },
       "0.3": {
-        "sufficiency": 0.94,
-        "necessity": 0.36,
+        "sufficiency": 1.0,
+        "necessity": 0.26,
         "sparsity": 0.9737076648841356,
         "num_edges": 236.0,
         "num_samples": 50
       },
       "0.5": {
-        "sufficiency": 0.94,
-        "necessity": 0.36,
+        "sufficiency": 1.0,
+        "necessity": 0.26,
         "sparsity": 0.9737076648841356,
         "num_edges": 236.0,
         "num_samples": 50

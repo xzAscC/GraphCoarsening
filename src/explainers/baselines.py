@@ -157,8 +157,7 @@ class SaliencyExplainer(BaseExplainer):
         score = out.squeeze()
         score.backward()
 
-        saliency = edge_mask.grad.abs()
-        saliency = saliency.detach()
+        saliency = edge_mask.grad.abs().detach()
 
         keep_count = max(1, int(saliency.size(0) * self.k_frac))
         _, top_idx = saliency.topk(keep_count)

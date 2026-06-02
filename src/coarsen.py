@@ -48,7 +48,6 @@ import torch
 from src.partition import (
     build_partition_matrix,
     node_partition,
-    normalize_partition_matrix,
 )
 from src.spectral import (
     compute_normalized_adjacency,
@@ -86,9 +85,8 @@ def build_coarse_graph(
     """
     num_coarse = len(partition)
     device = edge_index.device
-    P_hat = build_partition_matrix(partition, num_nodes).to(device)  # (N, N')
+    P_hat = build_partition_matrix(partition, num_nodes).to(device)
 
-    # Build original adjacency as sparse (N, N)
     if edge_weight is None:
         edge_weight = torch.ones(edge_index.size(1), dtype=torch.float32, device=device)
 
@@ -96,19 +94,14 @@ def build_coarse_graph(
         edge_index, edge_weight, size=(num_nodes, num_nodes)
     ).coalesce()
 
-    # P_hat^T (N', N) as sparse
     P_hat_T = P_hat.t().coalesce()
 
-    # Compute W = P_hat^T A P_hat via sparse-sparse matmul
-    # Step 1: AP = A @ P_hat  -> (N, N')
     AP = torch.sparse.mm(A, P_hat)
-    # Step 2: W = P_hat^T @ AP -> (N', N')
     if AP.is_sparse:
         W = torch.sparse.mm(P_hat_T, AP)
     else:
         W = torch.mm(P_hat_T.to_dense(), AP)
 
-    # Convert W to edge_index format
     W_sparse = W.to_sparse_coo().coalesce()
     coarse_edge_index = W_sparse.indices()
     coarse_edge_weight = W_sparse.values()
@@ -139,8 +132,7 @@ def logsumexp_features(
     for class_idx, members in enumerate(partition):
         if len(members) == 0:
             continue
-        member_features = x[members]  # (|C_i|, d)
-        # logsumexp along the member dimension: (1, d) -> (d,)
+        member_features = x[members]
         x_coarse[class_idx] = torch.logsumexp(member_features, dim=0)
 
     return x_coarse
@@ -183,7 +175,6 @@ def linkwise_coarse_graph(
             - supernode_b_idx: index of the supernode containing node_b.
             - involved_original_nodes: tensor of all original node indices.
     """
-    # Find clusters containing node_a and node_b
     cluster_a_idx: Optional[int] = None
     cluster_b_idx: Optional[int] = None
     for i, members in enumerate(partition):
@@ -197,9 +188,6 @@ def linkwise_coarse_graph(
             f"Nodes {node_a} or {node_b} not found in any partition class."
         )
 
-    # Build refined partition:
-    # - Keep classes not involved in the target link
-    # - Split cluster_a and cluster_b into singletons
     split_indices = {cluster_a_idx}
     if cluster_b_idx != cluster_a_idx:
         split_indices.add(cluster_b_idx)
@@ -217,12 +205,10 @@ def linkwise_coarse_graph(
 
     num_coarse = len(refined_partition)
 
-    # Build coarse graph with refined partition
     coarse_edge_index, coarse_edge_weight, num_coarse_nodes = build_coarse_graph(
         edge_index, edge_weight, num_nodes, refined_partition, x
     )
 
-    # Track supernode indices for node_a and node_b in refined partition
     supernode_a_idx = None
     supernode_b_idx = None
     for class_idx, members in enumerate(refined_partition):
@@ -231,7 +217,6 @@ def linkwise_coarse_graph(
         if members == [node_b]:
             supernode_b_idx = class_idx
 
-    # Build features: logsumexp for intact supernodes, original for singletons
     d = x.size(1)
     coarse_features = torch.zeros(num_coarse, d, dtype=x.dtype, device=x.device)
     for class_idx, members in enumerate(refined_partition):
@@ -338,7 +323,6 @@ class GraphCoarsener:
             edge_index, self.scores, num_nodes, self.alpha
         )
 
-        # Build coarse graph
         self.coarse_edge_index, self.coarse_edge_weight, self.num_coarse_nodes = (
             build_coarse_graph(
                 edge_index, edge_weight, num_nodes, self.partition, x
@@ -440,8 +424,6 @@ class GraphCoarsener:
             size_norm = (super_sizes_t[su] * super_sizes_t[sv]).sqrt().item()
             edge_importance[i] = w / max(size_norm, 1.0)
 
-        from src.explainers.coarsen_explainer import CoarsenExplainer
-        all_scores = self.scores
         spectral = torch.zeros(num_sub, device=self.edge_index.device)
         for i in range(num_sub):
             u, v = sub_ei[0, i], sub_ei[1, i]
@@ -452,7 +434,7 @@ class GraphCoarsener:
             )
             idx = matches.nonzero(as_tuple=True)[0]
             if idx.numel() > 0:
-                spectral[i] = all_scores[idx[0]]
+                spectral[i] = self.scores[idx[0]]
 
         def norm01(t):
             if t.numel() == 0: return t

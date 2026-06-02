@@ -1,47 +1,49 @@
 # Experiment Results: explanation_PubMed
 
 - **dataset**: PubMed
-- **num_edges**: 10
+- **num_edges**: 50
 ## methods
-
-### Ours
-
-- **fidelity_plus**: mean=0.8866, std=0.2664, n=10
-- **fidelity_minus**: mean=0.8866, std=0.2664, n=10
-- **mean_fidelity_plus**: 0.8866
-- **mean_fidelity_minus**: 0.8866
-- **std_fidelity_plus**: 0.2664
-- **std_fidelity_minus**: 0.2664
-- **mean_time**: 34.0331
 
 ### Occlusion
 
-- **fidelity_plus**: mean=0.5000, std=0.5000, n=20
-- **fidelity_minus**: mean=0.4500, std=0.4975, n=20
-- **mean_fidelity_plus**: 0.5000
-- **mean_fidelity_minus**: 0.4500
-- **std_fidelity_plus**: 0.5000
-- **std_fidelity_minus**: 0.4975
-- **mean_time**: 10.0510
-- **note**: num_edges=20
+- **fidelity_plus**: mean=0.5800, std=0.4936, n=50
+- **fidelity_minus**: mean=0.2600, std=0.4386, n=50
+- **mean_fidelity_plus**: 0.5800
+- **mean_fidelity_minus**: 0.2600
+- **std_fidelity_plus**: 0.4936
+- **std_fidelity_minus**: 0.4386
+- **mean_time**: 1.9273
 
 ### Saliency
 
-- **mean_fidelity_plus**: 0.5000
-- **mean_fidelity_minus**: 0.4000
-- **std_fidelity_plus**: 0.5000
-- **std_fidelity_minus**: 0.4899
-- **mean_time**: 0.0296
-- **note**: num_edges=20
+- **fidelity_plus**: mean=0.5600, std=0.4964, n=50
+- **fidelity_minus**: mean=0.2000, std=0.4000, n=50
+- **mean_fidelity_plus**: 0.5600
+- **mean_fidelity_minus**: 0.2000
+- **std_fidelity_plus**: 0.4964
+- **std_fidelity_minus**: 0.4000
+- **mean_time**: 0.0055
 
 ### GNNExplainer
 
-- **mean_fidelity_plus**: 0.5000
-- **mean_fidelity_minus**: 0.1000
-- **std_fidelity_plus**: 0.5000
-- **std_fidelity_minus**: 0.3000
-- **mean_time**: 1.2300
-- **note**: num_edges=20
+- **fidelity_plus**: mean=0.5600, std=0.4964, n=50
+- **fidelity_minus**: mean=0.1200, std=0.3250, n=50
+- **mean_fidelity_plus**: 0.5600
+- **mean_fidelity_minus**: 0.1200
+- **std_fidelity_plus**: 0.4964
+- **std_fidelity_minus**: 0.3250
+- **mean_time**: 0.4453
+
+### PGExplainer
+
+- **status**: no_results
+
+### SubgraphX
+
+- **status**: no_results
+
+### Ours
+
+- **status**: no_results
 
 
-- **num_edges_note**: Baselines run with num_edges=20, Ours with num_edges=10

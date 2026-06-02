@@ -49,7 +49,7 @@ def normalized_adjacency_eigenvalues(num_nodes, edge_index, k):
         return np.array([0.0])
     try:
         eigenvalues, _ = eigsh(A_norm, k=k_clamped, which="LM")
-    except Exception:
+    except (ValueError, RuntimeError):
         eigenvalues = np.zeros(k_clamped)
     return np.sort(eigenvalues)[::-1]
 
@@ -116,7 +116,7 @@ def main():
 
         try:
             data = load_dataset(ds_name)
-        except Exception as e:
+        except (OSError, ValueError, RuntimeError) as e:
             print(f"  SKIP: {e}")
             continue
 

@@ -1,0 +1,54 @@
+{
+  "dataset": "Citeseer",
+  "results": {
+    "GCN": {
+      "test_auc": 0.5964231373022582,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.1111111111111111,
+        "std_fidelity_plus": 0.3142696805273545,
+        "mean_fidelity_minus": 0.2222222222222222,
+        "std_fidelity_minus": 0.41573970964154905,
+        "mean_time": 1.142636396266796,
+        "num_samples": 27
+      },
+      "Saliency": {
+        "mean_fidelity_plus": 0.1,
+        "std_fidelity_plus": 0.3,
+        "mean_fidelity_minus": 0.2,
+        "std_fidelity_minus": 0.4,
+        "mean_time": 0.0189939816792806,
+        "num_samples": 30
+      },
+      "Ours": {
+        "mean_fidelity_plus": 0.13333333333333333,
+        "std_fidelity_plus": 0.33993463423951903,
+        "mean_fidelity_minus": 0.13333333333333333,
+        "std_fidelity_minus": 0.33993463423951903,
+        "mean_time": 0.2384501854578654,
+        "num_samples": 30
+      }
+    },
+    "GraphSAGE": {
+      "test_auc": 0.9280763192851106,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.4444444444444444,
+        "std_fidelity_plus": 0.4969039949999533,
+        "mean_fidelity_minus": 0.0,
+        "std_fidelity_minus": 0.0,
+        "mean_time": 4.12179935420001,
+        "num_samples": 27
+      }
+    },
+    "GAT": {
+      "test_auc": 0.9084313488709093,
+      "Occlusion": {
+        "mean_fidelity_plus": 0.14814814814814814,
+        "std_fidelity_plus": 0.3552467795046459,
+        "mean_fidelity_minus": 0.0,
+        "std_fidelity_minus": 0.0,
+        "mean_time": 4.432654469101517,
+        "num_samples": 27
+      }
+    }
+  }
+}

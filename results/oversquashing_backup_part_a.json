@@ -5,16 +5,525 @@
     "num_edges": 20
   },
   "part_a": {
-    "barbell_test": {
-      "num_nodes": 12,
+    "barbell_L2": {
+      "num_nodes": 22,
+      "num_edges": 93,
       "accuracy_original": {
         "1": 1.0
       },
       "resistance_original": {
-        "1": 0.39999999999999586
+        "1": 0.20000000000000046
       },
-      "coarse_nodes_random": 6,
-      "coarse_nodes_spectral": 3
+      "resistance_random": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 11,
+      "resistance_heavy_edge": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 11,
+      "resistance_spectral": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 6,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L5": {
+      "num_nodes": 25,
+      "num_edges": 96,
+      "accuracy_original": {
+        "1": 1.0
+      },
+      "resistance_original": {
+        "1": 0.19999999999999957
+      },
+      "resistance_random": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 13,
+      "resistance_heavy_edge": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 13,
+      "resistance_spectral": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 7,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L10": {
+      "num_nodes": 30,
+      "num_edges": 101,
+      "accuracy_original": {
+        "1": 0.995
+      },
+      "resistance_original": {
+        "1": 0.5200000000000055
+      },
+      "resistance_random": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_random": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_random": 15,
+      "resistance_heavy_edge": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_heavy_edge": 15,
+      "resistance_spectral": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_spectral": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_spectral": 8,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L20": {
+      "num_nodes": 40,
+      "num_edges": 111,
+      "accuracy_original": {
+        "1": 0.9975
+      },
+      "resistance_original": {
+        "1": 0.3599999999999888
+      },
+      "resistance_random": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_random": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_random": 20,
+      "resistance_heavy_edge": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_heavy_edge": 20,
+      "resistance_spectral": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_spectral": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_spectral": 10,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N20": {
+      "num_nodes": 20,
+      "num_edges": 19,
+      "accuracy_original": {
+        "1": 0.9058171745152355
+      },
+      "resistance_original": {
+        "1": 1.0000000000000024
+      },
+      "resistance_random": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_random": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_random": 10,
+      "resistance_heavy_edge": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_heavy_edge": 10,
+      "resistance_spectral": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_spectral": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_spectral": 5,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N50": {
+      "num_nodes": 50,
+      "num_edges": 49,
+      "accuracy_original": {
+        "1": 0.9774999999999999
+      },
+      "resistance_original": {
+        "1": 0.9999999999999865
+      },
+      "resistance_random": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_random": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_random": 25,
+      "resistance_heavy_edge": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_heavy_edge": 25,
+      "resistance_spectral": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_spectral": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_spectral": 13,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N100": {
+      "num_nodes": 100,
+      "num_edges": 99,
+      "accuracy_original": {
+        "1": 0.9775
+      },
+      "resistance_original": {
+        "1": 0.9999999999998679
+      },
+      "resistance_random": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_random": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_random": 50,
+      "resistance_heavy_edge": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_heavy_edge": 50,
+      "resistance_spectral": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_spectral": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_spectral": 25,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "lollipop": {
+      "num_nodes": 20,
+      "num_edges": 55,
+      "accuracy_original": {
+        "1": 1.0
+      },
+      "resistance_original": {
+        "1": 0.20000000000000112
+      },
+      "resistance_random": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 10,
+      "resistance_heavy_edge": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 10,
+      "resistance_spectral": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 5,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_5": {
+      "num_nodes": 25,
+      "num_edges": 40,
+      "accuracy_original": {
+        "1": 0.5975
+      },
+      "resistance_original": {
+        "1": 0.5735757575757578
+      },
+      "resistance_random": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_random": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_random": 13,
+      "resistance_heavy_edge": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_heavy_edge": 13,
+      "resistance_spectral": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_spectral": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_spectral": 7,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_10": {
+      "num_nodes": 100,
+      "num_edges": 180,
+      "accuracy_original": {
+        "1": 0.94
+      },
+      "resistance_original": {
+        "1": 0.5538693434112465
+      },
+      "resistance_random": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_random": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_random": 50,
+      "resistance_heavy_edge": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_heavy_edge": 50,
+      "resistance_spectral": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_spectral": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_spectral": 25,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_20": {
+      "num_nodes": 400,
+      "num_edges": 760,
+      "accuracy_original": {
+        "1": 0.92
+      },
+      "resistance_original": {
+        "1": 0.5053930646554339
+      },
+      "resistance_random": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_random": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_random": 200,
+      "resistance_heavy_edge": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_heavy_edge": 200,
+      "resistance_spectral": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_spectral": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_spectral": 100,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "tree_d4": {
+      "num_nodes": 31,
+      "num_edges": 30,
+      "accuracy_original": {
+        "1": 0.915
+      },
+      "resistance_original": {
+        "1": 1.0000000000000018
+      },
+      "resistance_random": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_random": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_random": 16,
+      "resistance_heavy_edge": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_heavy_edge": 16,
+      "resistance_spectral": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_spectral": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_spectral": 8,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "tree_d5": {
+      "num_nodes": 63,
+      "num_edges": 62,
+      "accuracy_original": {
+        "1": 0.8300000000000001
+      },
+      "resistance_original": {
+        "1": 1.0
+      },
+      "resistance_random": {
+        "1": 1.0
+      },
+      "accuracy_random": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_random": 32,
+      "resistance_heavy_edge": {
+        "1": 1.0
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_heavy_edge": 32,
+      "resistance_spectral": {
+        "1": 1.0
+      },
+      "accuracy_spectral": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_spectral": 16,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
     }
   }
 }

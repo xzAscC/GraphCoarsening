@@ -1,35 +1,27 @@
 {
   "dataset": "PubMed",
-  "n_edges": 100,
+  "n_edges": 30,
   "seed": 42,
   "method": "Pathway-Calibrated Gradient Selection",
   "results": {
     "Ours": {
-      "bin_fid": 0.49,
-      "cont_fid": 1.53
+      "bin_fid": 0.6333333333333333,
+      "cont_fid": 0.6333333333333333
     },
     "Saliency": {
-      "bin_fid": 0.41,
-      "cont_fid": 1.16
+      "bin_fid": 0.6,
+      "cont_fid": 0.6
     }
   },
   "significance": {
     "Ours_vs_Saliency": {
-      "p": 0.0,
+      "p": 0.3255819880161935,
       "metric": "continuous_fid",
       "test": "paired_ttest"
     }
   },
-  "redundancy_diagnostic": {
-    "mean_R": 0.61,
-    "median_R": 0.57,
-    "pct_subadditive": 97.5
-  },
   "parameters": {
     "k": 100,
-    "alpha": 0.75,
-    "k_hop": 2,
-    "k_frac": 0.5,
-    "mode": "edge"
+    "alpha": 0.75
   }
 }

@@ -5,31 +5,23 @@
   "method": "Pathway-Calibrated Gradient Selection",
   "results": {
     "Ours": {
-      "bin_fid": 0.33,
-      "cont_fid": 1.04
+      "bin_fid": 0.2,
+      "cont_fid": 0.2
     },
     "Saliency": {
-      "bin_fid": 0.24,
-      "cont_fid": 0.93
+      "bin_fid": 0.18,
+      "cont_fid": 0.18
     }
   },
   "significance": {
     "Ours_vs_Saliency": {
-      "p": 0.0359,
+      "p": 0.4169571495062344,
       "metric": "continuous_fid",
       "test": "paired_ttest"
     }
   },
-  "redundancy_diagnostic": {
-    "mean_R": 0.61,
-    "median_R": 0.57,
-    "pct_subadditive": 97.5
-  },
   "parameters": {
     "k": 100,
-    "alpha": 0.75,
-    "k_hop": 2,
-    "k_frac": 0.5,
-    "mode": "edge"
+    "alpha": 0.75
   }
 }

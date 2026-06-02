@@ -55,8 +55,7 @@ def generate_ba_shapes(num_bars=80, attachment=1, shape_nodes=5, seed=42):
             G.add_edge(u, v)
             ground_truth_edges.add((min(u,v), max(u,v)))
         G.add_edge(anchor, start)
-        for n in range(start, start + shape_nodes):
-            motif_nodes.add(n)
+        motif_nodes.update(range(start, start + shape_nodes))
 
     edge_index = torch.tensor(list(G.edges()), dtype=torch.long).t().contiguous()
     edge_index = torch.cat([edge_index, edge_index[[1,0]]], dim=1)
@@ -88,8 +87,7 @@ def generate_tree_cycles(depth=8, cycle_len=6, num_motifs=20, seed=42):
             ground_truth_edges.add((min(nodes[i], nodes[(i+1)%cycle_len]),
                                      max(nodes[i], nodes[(i+1)%cycle_len])))
         G.add_edge(anchor, start)
-        for n in nodes:
-            motif_nodes.add(n)
+        motif_nodes.update(nodes)
 
     edge_index = torch.tensor(list(G.edges()), dtype=torch.long).t().contiguous()
     edge_index = torch.cat([edge_index, edge_index[[1,0]]], dim=1)
@@ -114,8 +112,7 @@ def generate_link_motif_task(num_nodes=200, motif_size=10, num_motifs=15, seed=4
         start = G.number_of_nodes()
         motif_nodes_list = list(range(start, start + motif_size))
 
-        for i in range(motif_size):
-            G.add_node(motif_nodes_list[i])
+        G.add_nodes_from(motif_nodes_list)
 
         for i in range(motif_size):
             for j in range(i+1, min(i+3, motif_size)):
@@ -129,20 +126,16 @@ def generate_link_motif_task(num_nodes=200, motif_size=10, num_motifs=15, seed=4
     edge_index = torch.cat([edge_index, edge_index[[1,0]]], dim=1)
     total_nodes = G.number_of_nodes()
     x = torch.eye(total_nodes)
-    motif_edge_set = set()
-    for u, v in motif_edges_list:
-        motif_edge_set.add((min(u,v), max(u,v)))
+    motif_edge_set = {(min(u, v), max(u, v)) for u, v in motif_edges_list}
 
     return edge_index, total_nodes, x, motif_edge_set, target_links
 
 
 def compute_edge_precision_recall(explanation_edges, ground_truth_edges):
     """Compute edge-level precision, recall, F1."""
-    pred_set = set()
-    for i in range(explanation_edges.size(1)):
-        u = int(explanation_edges[0, i].item())
-        v = int(explanation_edges[1, i].item())
-        pred_set.add((min(u,v), max(u,v)))
+    u = explanation_edges[0].tolist()
+    v = explanation_edges[1].tolist()
+    pred_set = {(min(a, b), max(a, b)) for a, b in zip(u, v)}
 
     tp = len(pred_set & ground_truth_edges)
     fp = len(pred_set - ground_truth_edges)
@@ -245,7 +238,8 @@ def evaluate_on_synthetic(data, model, test_links, ground_truth_edges, device,
         t0 = time.time()
         try:
             explanation = explainer.explain_link(data, a, b)
-        except Exception:
+        except (RuntimeError, ValueError) as e:
+            print(f"    Warning: explain_link({a},{b}) failed: {e}")
             continue
         times.append(time.time() - t0)
 
@@ -328,12 +322,7 @@ def main():
             edge_index, num_nodes, x, gt_edges, motif_nodes = generate_tree_cycles(seed=args.seed)
         elif ds_name == "Link-Motif":
             edge_index, num_nodes, x, gt_edges, target_links = generate_link_motif_task(seed=args.seed)
-            motif_nodes = set()
-            for u, v in gt_edges:
-                motif_nodes.add(u)
-                motif_nodes.add(v)
-        else:
-            continue
+            motif_nodes = {n for u, v in gt_edges for n in (u, v)}
 
         from torch_geometric.data import Data
         data = Data(x=x, edge_index=edge_index, num_nodes=num_nodes)
@@ -342,7 +331,6 @@ def main():
 
         print(f"  |V|={num_nodes}, |E|={edge_index.size(1)}, GT edges={len(gt_edges)}")
 
-        # Train a simple GCN on this graph
         from src.models.gcn import GCN
         from experiments.train_gcn import MLPLinkPredictor
         from src.models.link_predictor import LinkPredictionModel
@@ -415,9 +403,9 @@ def main():
             md_lines.append(f"### {method_name}\n")
             edge_metrics = ["precision", "recall", "f1", "mean_fidelity_plus",
                             "mean_fidelity_minus", "mean_time", "num_samples"]
-            for k in edge_metrics:
-                if k in metrics:
-                    md_lines.append(f"- **{k}**: {metrics[k]:.4f}")
+            md_lines.extend(
+                f"- **{k}**: {metrics[k]:.4f}" for k in edge_metrics if k in metrics
+            )
             if "region_precision" in metrics:
                 md_lines.append(f"- **region_precision**: {metrics['region_precision']:.4f}")
                 md_lines.append(f"- **region_recall**: {metrics['region_recall']:.4f}")

@@ -17,14 +17,10 @@ from torch_geometric.data import Data
 from torch_geometric.utils import k_hop_subgraph
 
 from src.evaluation.fidelity import (
+    _build_removal_mask,
     _is_coarse_explanation,
     _to_global_edges,
 )
-
-
-# ---------------------------------------------------------------------------
-# Internal helpers
-# ---------------------------------------------------------------------------
 
 
 def _get_probability(
@@ -49,33 +45,6 @@ def _get_coarse_target_nodes(explanation: Data) -> Tuple[int, int]:
         int(getattr(explanation, "target_a", 0)),
         int(getattr(explanation, "target_b", 1)),
     )
-
-
-def _build_removal_mask(
-    data_edge_index: torch.Tensor,
-    edges_to_remove: torch.Tensor,
-    device: str,
-) -> torch.Tensor:
-    """Boolean mask that is *False* for every edge in *edges_to_remove*.
-
-    Matching is **undirected**: an edge (u, v) in *data_edge_index* is
-    masked out when either (u, v) or (v, u) appears in *edges_to_remove*.
-    """
-    mask = torch.ones(data_edge_index.size(1), dtype=torch.bool, device=device)
-
-    remove_set = set()
-    for i in range(edges_to_remove.size(1)):
-        s = edges_to_remove[0, i].item()
-        d = edges_to_remove[1, i].item()
-        remove_set.add((min(s, d), max(s, d)))
-
-    for i in range(data_edge_index.size(1)):
-        s = data_edge_index[0, i].item()
-        d = data_edge_index[1, i].item()
-        if (min(s, d), max(s, d)) in remove_set:
-            mask[i] = False
-
-    return mask
 
 
 def _sort_edges_by_importance(
@@ -138,10 +107,7 @@ def _compute_necessity_components(
                 edge_weight=modified_weight, device=device,
             )
         else:
-            # Fallback: compare prediction on coarse graph vs full graph.
-            # For coarse explanations without node mapping, use the coarse
-            # graph prediction as p_remove.  This measures how much the
-            # coarse representation changes the model's prediction.
+            # Fallback: use coarse graph prediction as p_remove when no node mapping exists.
             target_a, target_b = _get_coarse_target_nodes(explanation)
             exp_x = explanation.x.to(device) if explanation.x is not None else data.x
             exp_edges = explanation.edge_index.to(device)
@@ -167,11 +133,6 @@ def _compute_necessity_components(
         )
 
     return p_full, p_remove
-
-
-# ---------------------------------------------------------------------------
-# Subgraph helpers for deletion / insertion (subgraph explanations)
-# ---------------------------------------------------------------------------
 
 
 def _deletion_auc_subgraph(
@@ -371,11 +332,6 @@ def _insertion_auc_coarse(
         scores.append(p_k)
 
     return float(auc(np.array(fractions), np.array(scores)))
-
-
-# ---------------------------------------------------------------------------
-# Public metric functions
-# ---------------------------------------------------------------------------
 
 
 def sufficiency(
@@ -646,11 +602,6 @@ def insertion_auc(
     )
 
 
-# ---------------------------------------------------------------------------
-# Convenience aggregators
-# ---------------------------------------------------------------------------
-
-
 def compute_all_metrics(
     model: torch.nn.Module,
     data: Data,
@@ -678,10 +629,6 @@ def compute_all_metrics(
         ``comprehensiveness``, ``sparsity``, ``sparsity_abs_edges``,
         ``deletion_auc``, ``insertion_auc``.
     """
-    model = model.to(device)
-    model.eval()
-    data = data.to(device)
-
     p_full, p_remove = _compute_necessity_components(
         model, data, explanation, node_a, node_b, device,
     )

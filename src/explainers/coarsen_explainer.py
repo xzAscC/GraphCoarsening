@@ -9,11 +9,6 @@ the Protect-and-Project method:
    with gradient saliency as prediction-aware booster.
 3. Returns top-k edges as standard edge-level explanation.
 
-The coarsening pipeline (partition.py, coarsen.py) is genuinely modified:
-- node_partition() accepts protected_nodes to prevent merging near the target
-- GraphCoarsener.fit_partition() enables per-link partitions cheaply
-- project_back_edges() uses coarse graph structure for edge importance
-
 Supports two modes:
 - ``mode="edge"`` (default): Protect-and-Project.
 - ``mode="coarse"``: Returns the coarse graph directly (legacy mode).
@@ -129,7 +124,6 @@ class CoarsenExplainer(BaseExplainer):
             fidelity_threshold=self.fidelity_threshold,
         )
 
-        # Get candidate edges from 2-hop subgraph
         _, sub_ei, _, _ = k_hop_subgraph(
             node_idx=torch.tensor([node_a, node_b], device=self.device),
             num_hops=self.k_hop,
@@ -147,25 +141,21 @@ class CoarsenExplainer(BaseExplainer):
                 original_node_indices=nodes,
             )
 
-        # Map edges to pathways (supernode pairs)
-        node_to_super = {}
-        for si, members in enumerate(partition):
-            for nd in members:
-                node_to_super[nd] = si
+        node_to_super = {nd: si for si, members in enumerate(partition) for nd in members}
 
         pathway_edges = {}
+        edge_pathway = {}
         for j in range(num_sub):
             u, v = int(sub_ei[0, j].item()), int(sub_ei[1, j].item())
             su, sv = node_to_super.get(u, u), node_to_super.get(v, v)
             key = (min(su, sv), max(su, sv))
             pathway_edges.setdefault(key, []).append(j)
+            edge_pathway[j] = key
 
-        # Gradient scores for subgraph edges
         gradient_scores = self._spectral_scores_for_subgraph(
             gradient_all, data.edge_index, sub_ei, num_sub,
         )
 
-        # Pathway group occlusion: baseline prediction
         target = torch.tensor([[node_a], [node_b]], device=self.device)
         with torch.no_grad():
             baseline = self.model(
@@ -173,14 +163,12 @@ class CoarsenExplainer(BaseExplainer):
                 edge_weight=getattr(data, "edge_weight", None),
             ).squeeze().item()
 
-        # Compute calibration factor per pathway
         pathway_cf = {}
         for key, edge_indices in pathway_edges.items():
             if len(edge_indices) < 2:
                 pathway_cf[key] = 1.0
                 continue
 
-            # Group occlusion: remove all edges in this pathway
             mask = torch.ones(data.edge_index.size(1), dtype=torch.bool)
             for j in edge_indices:
                 src, dst = sub_ei[0, j], sub_ei[1, j]
@@ -208,13 +196,9 @@ class CoarsenExplainer(BaseExplainer):
                 cf = 1.0
             pathway_cf[key] = cf
 
-        # Apply calibration: score(e) = |gradient(e)| × CF(pathway(e))
         calibrated = torch.zeros(num_sub, device=self.device)
         for j in range(num_sub):
-            u, v = int(sub_ei[0, j].item()), int(sub_ei[1, j].item())
-            su, sv = node_to_super.get(u, u), node_to_super.get(v, v)
-            key = (min(su, sv), max(su, sv))
-            calibrated[j] = abs(gradient_scores[j]) * pathway_cf.get(key, 1.0)
+            calibrated[j] = abs(gradient_scores[j]) * pathway_cf.get(edge_pathway[j], 1.0)
 
         keep_count = max(1, int(num_sub * self.k_frac))
         _, top_idx = calibrated.topk(keep_count)
@@ -271,15 +255,6 @@ class CoarsenExplainer(BaseExplainer):
             num_nodes=data.x.size(0),
         )
         return set(int(n.item()) for n in subset)
-
-    @staticmethod
-    def _normalize_to_01(tensor):
-        if tensor.numel() == 0:
-            return tensor
-        t_min, t_max = tensor.min(), tensor.max()
-        if t_max - t_min < 1e-12:
-            return torch.zeros_like(tensor)
-        return (tensor - t_min) / (t_max - t_min)
 
     def _explain_link_coarse(self, data: Data, node_a: int, node_b: int) -> Data:
         """Legacy mode: return coarse graph directly."""

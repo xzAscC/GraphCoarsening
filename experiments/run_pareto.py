@@ -74,7 +74,6 @@ def _compute_basic_metrics(model, data, explanation, node_a, node_b, device):
     """Compute sufficiency, necessity, sparsity using existing functions."""
     p_full = _get_link_score(model, data, node_a, node_b, device)
 
-    # Sparsity
     if compute_sparsity is not None:
         sparsity = compute_sparsity(explanation, data)
     else:
@@ -82,22 +81,20 @@ def _compute_basic_metrics(model, data, explanation, node_a, node_b, device):
         num_orig = data.edge_index.size(1)
         sparsity = 1.0 - num_exp / max(num_orig, 1)
 
-    # Sufficiency (fidelity_minus): run on explanation alone
     if fidelity_minus is not None:
         fid_m = fidelity_minus(model, data, explanation, node_a, node_b, device)
     else:
         fid_m = 0.0
 
-    # Necessity (fidelity_plus): remove explanation, check change
     if fidelity_plus is not None:
         fid_p = fidelity_plus(model, data, explanation, node_a, node_b, device)
     else:
         fid_p = 0.0
 
     return {
-        "sufficiency": 1.0 - fid_m,  # Higher = more sufficient (prediction preserved)
-        "necessity": fid_p,           # Higher = more necessary
-        "sparsity": sparsity,         # Higher = more sparse (fewer edges)
+        "sufficiency": 1.0 - fid_m,
+        "necessity": fid_p,
+        "sparsity": sparsity,
         "num_edges": explanation.edge_index.size(1),
         "p_full": p_full,
     }
@@ -175,9 +172,8 @@ def run_method_at_size(method_name, model, data, test_edges, device, size_frac, 
                 explanation = _prune_explanation_by_weight(explanation, target_edges, device)
             metrics = _compute_basic_metrics(model, data, explanation, a, b, device)
             results.append(metrics)
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
+        except (RuntimeError, ValueError) as e:
+            print(f"    Edge ({a},{b}) failed: {e}")
             continue
 
     if not results:
@@ -235,7 +231,6 @@ def main():
     model = LinkPredictionModel(gcn, predictor).to(device)
     model.eval()
 
-    # Sample test edges
     if hasattr(data, "test_pos_edge_index") and data.test_pos_edge_index is not None:
         pos = data.test_pos_edge_index
     else:
@@ -269,7 +264,7 @@ def main():
 
     try:
         _plot_pareto(args.dataset, results)
-    except Exception as e:
+    except (ImportError, OSError, RuntimeError, ValueError) as e:
         print(f"Plotting skipped: {e}")
 
 

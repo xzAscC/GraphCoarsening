@@ -1,371 +1,724 @@
 {
   "config": {
-    "device": "cuda",
+    "device": "cpu",
     "seed": 42,
-    "num_edges": 30
+    "num_edges": 20
   },
   "part_a": {
-    "barbell_test": {
-      "num_nodes": 12,
+    "barbell_L2": {
+      "num_nodes": 22,
+      "num_edges": 93,
       "accuracy_original": {
         "1": 1.0
       },
       "resistance_original": {
-        "1": 0.39999999999999586
+        "1": 0.20000000000000046
       },
-      "coarse_nodes_random": 6,
-      "coarse_nodes_spectral": 3
+      "resistance_random": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 11,
+      "resistance_heavy_edge": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 11,
+      "resistance_spectral": {
+        "1": 0.20000000000000046
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 6,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L5": {
+      "num_nodes": 25,
+      "num_edges": 96,
+      "accuracy_original": {
+        "1": 1.0
+      },
+      "resistance_original": {
+        "1": 0.19999999999999957
+      },
+      "resistance_random": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 13,
+      "resistance_heavy_edge": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 13,
+      "resistance_spectral": {
+        "1": 0.19999999999999957
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 7,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L10": {
+      "num_nodes": 30,
+      "num_edges": 101,
+      "accuracy_original": {
+        "1": 0.995
+      },
+      "resistance_original": {
+        "1": 0.5200000000000055
+      },
+      "resistance_random": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_random": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_random": 15,
+      "resistance_heavy_edge": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_heavy_edge": 15,
+      "resistance_spectral": {
+        "1": 0.5200000000000055
+      },
+      "accuracy_spectral": {
+        "1": 0.995
+      },
+      "coarse_num_nodes_spectral": 8,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "barbell_L20": {
+      "num_nodes": 40,
+      "num_edges": 111,
+      "accuracy_original": {
+        "1": 0.9975
+      },
+      "resistance_original": {
+        "1": 0.3599999999999888
+      },
+      "resistance_random": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_random": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_random": 20,
+      "resistance_heavy_edge": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_heavy_edge": 20,
+      "resistance_spectral": {
+        "1": 0.3599999999999888
+      },
+      "accuracy_spectral": {
+        "1": 0.9975
+      },
+      "coarse_num_nodes_spectral": 10,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N20": {
+      "num_nodes": 20,
+      "num_edges": 19,
+      "accuracy_original": {
+        "1": 0.9058171745152355
+      },
+      "resistance_original": {
+        "1": 1.0000000000000024
+      },
+      "resistance_random": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_random": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_random": 10,
+      "resistance_heavy_edge": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_heavy_edge": 10,
+      "resistance_spectral": {
+        "1": 1.0000000000000024
+      },
+      "accuracy_spectral": {
+        "1": 0.9058171745152355
+      },
+      "coarse_num_nodes_spectral": 5,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N50": {
+      "num_nodes": 50,
+      "num_edges": 49,
+      "accuracy_original": {
+        "1": 0.9774999999999999
+      },
+      "resistance_original": {
+        "1": 0.9999999999999865
+      },
+      "resistance_random": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_random": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_random": 25,
+      "resistance_heavy_edge": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_heavy_edge": 25,
+      "resistance_spectral": {
+        "1": 0.9999999999999865
+      },
+      "accuracy_spectral": {
+        "1": 0.9774999999999999
+      },
+      "coarse_num_nodes_spectral": 13,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "chain_N100": {
+      "num_nodes": 100,
+      "num_edges": 99,
+      "accuracy_original": {
+        "1": 0.9775
+      },
+      "resistance_original": {
+        "1": 0.9999999999998679
+      },
+      "resistance_random": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_random": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_random": 50,
+      "resistance_heavy_edge": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_heavy_edge": 50,
+      "resistance_spectral": {
+        "1": 0.9999999999998679
+      },
+      "accuracy_spectral": {
+        "1": 0.9775
+      },
+      "coarse_num_nodes_spectral": 25,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "lollipop": {
+      "num_nodes": 20,
+      "num_edges": 55,
+      "accuracy_original": {
+        "1": 1.0
+      },
+      "resistance_original": {
+        "1": 0.20000000000000112
+      },
+      "resistance_random": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_random": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_random": 10,
+      "resistance_heavy_edge": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_heavy_edge": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_heavy_edge": 10,
+      "resistance_spectral": {
+        "1": 0.20000000000000112
+      },
+      "accuracy_spectral": {
+        "1": 1.0
+      },
+      "coarse_num_nodes_spectral": 5,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_5": {
+      "num_nodes": 25,
+      "num_edges": 40,
+      "accuracy_original": {
+        "1": 0.5975
+      },
+      "resistance_original": {
+        "1": 0.5735757575757578
+      },
+      "resistance_random": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_random": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_random": 13,
+      "resistance_heavy_edge": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_heavy_edge": 13,
+      "resistance_spectral": {
+        "1": 0.5735757575757578
+      },
+      "accuracy_spectral": {
+        "1": 0.5975
+      },
+      "coarse_num_nodes_spectral": 7,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_10": {
+      "num_nodes": 100,
+      "num_edges": 180,
+      "accuracy_original": {
+        "1": 0.94
+      },
+      "resistance_original": {
+        "1": 0.5538693434112465
+      },
+      "resistance_random": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_random": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_random": 50,
+      "resistance_heavy_edge": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_heavy_edge": 50,
+      "resistance_spectral": {
+        "1": 0.5538693434112465
+      },
+      "accuracy_spectral": {
+        "1": 0.94
+      },
+      "coarse_num_nodes_spectral": 25,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "grid_20": {
+      "num_nodes": 400,
+      "num_edges": 760,
+      "accuracy_original": {
+        "1": 0.92
+      },
+      "resistance_original": {
+        "1": 0.5053930646554339
+      },
+      "resistance_random": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_random": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_random": 200,
+      "resistance_heavy_edge": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_heavy_edge": 200,
+      "resistance_spectral": {
+        "1": 0.5053930646554339
+      },
+      "accuracy_spectral": {
+        "1": 0.92
+      },
+      "coarse_num_nodes_spectral": 100,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "tree_d4": {
+      "num_nodes": 31,
+      "num_edges": 30,
+      "accuracy_original": {
+        "1": 0.915
+      },
+      "resistance_original": {
+        "1": 1.0000000000000018
+      },
+      "resistance_random": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_random": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_random": 16,
+      "resistance_heavy_edge": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_heavy_edge": 16,
+      "resistance_spectral": {
+        "1": 1.0000000000000018
+      },
+      "accuracy_spectral": {
+        "1": 0.915
+      },
+      "coarse_num_nodes_spectral": 8,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
+    },
+    "tree_d5": {
+      "num_nodes": 63,
+      "num_edges": 62,
+      "accuracy_original": {
+        "1": 0.8300000000000001
+      },
+      "resistance_original": {
+        "1": 1.0
+      },
+      "resistance_random": {
+        "1": 1.0
+      },
+      "accuracy_random": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_random": 32,
+      "resistance_heavy_edge": {
+        "1": 1.0
+      },
+      "accuracy_heavy_edge": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_heavy_edge": 32,
+      "resistance_spectral": {
+        "1": 1.0
+      },
+      "accuracy_spectral": {
+        "1": 0.8300000000000001
+      },
+      "coarse_num_nodes_spectral": 16,
+      "resistance_preservation_random": {
+        "1": 1.0
+      },
+      "resistance_preservation_heavy_edge": {
+        "1": 1.0
+      },
+      "resistance_preservation_spectral": {
+        "1": 1.0
+      }
     }
   },
   "part_b": {
     "Cora": {
-      "num_test_edges": 30,
+      "num_test_edges": 10,
       "k_eigenvectors": 100,
       "resistance_stats": {
-        "mean": 0.04151239764327421,
-        "std": 0.07907724066436256,
-        "q33": 0.0025866235163610266,
-        "q66": 0.02585203591695905,
-        "bucket_low_size": 10,
-        "bucket_medium_size": 10,
-        "bucket_high_size": 10
-      },
-      "Occlusion": {
-        "low": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.5,
-          "sparsity": 0.9902963458110516,
-          "sufficiency_std": 0.48989794855663565,
-          "necessity_std": 0.5
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.7,
-          "necessity": 0.3,
-          "sparsity": 0.9797571301247772,
-          "sufficiency_std": 0.45825756949558394,
-          "necessity_std": 0.45825756949558405
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.3,
-          "sparsity": 0.991800356506239,
-          "sufficiency_std": 0.48989794855663565,
-          "necessity_std": 0.45825756949558394
-        }
+        "mean": 0.056312453001737595,
+        "std": 0.11660441756248474,
+        "q33": 0.004979531746357679,
+        "q66": 0.03259582445025444,
+        "bucket_low_size": 3,
+        "bucket_medium_size": 4,
+        "bucket_high_size": 3
       },
       "Saliency": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.5,
+          "n_edges": 3,
+          "sufficiency": 0.6666666666666666,
+          "necessity": 0.0,
           "sparsity": 0.5,
-          "sufficiency_std": 0.48989794855663565,
-          "necessity_std": 0.5
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.0
         },
         "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.8,
-          "necessity": 0.3,
+          "n_edges": 4,
+          "sufficiency": 0.25,
+          "necessity": 0.0,
           "sparsity": 0.5,
-          "sufficiency_std": 0.4,
-          "necessity_std": 0.45825756949558405
+          "sufficiency_std": 0.4330127018922193,
+          "necessity_std": 0.0
         },
         "high": {
-          "n_edges": 10,
-          "sufficiency": 0.3,
-          "necessity": 0.3,
+          "n_edges": 3,
+          "sufficiency": 0.3333333333333333,
+          "necessity": 0.3333333333333333,
           "sparsity": 0.5,
-          "sufficiency_std": 0.45825756949558394,
-          "necessity_std": 0.45825756949558394
-        }
-      },
-      "GNNExplainer": {
-        "low": {
-          "n_edges": 10,
-          "sufficiency": 0.1,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.30000000000000004,
-          "necessity_std": 0.5
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.2,
-          "necessity": 0.3,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.4000000000000001,
-          "necessity_std": 0.45825756949558405
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.0,
-          "necessity": 0.3,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.0,
-          "necessity_std": 0.45825756949558394
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.4714045207910317
         }
       },
       "Ours": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 0.10000029802322388,
-          "necessity": 0.10000034570693969,
-          "sparsity": 0.0873328877005348,
-          "sufficiency_std": 0.29999990065904397,
-          "necessity_std": 0.2999998847644649
+          "n_edges": 3,
+          "sufficiency": 0.0,
+          "necessity": 0.0,
+          "sparsity": 0.9951723113487819,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.0
         },
         "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.21010871529579161,
-          "necessity": 0.2101086974143982,
-          "sparsity": 0.0873328877005348,
-          "sufficiency_std": 0.3960759508983454,
-          "necessity_std": 0.3960759603839824
+          "n_edges": 4,
+          "sufficiency": 0.5,
+          "necessity": 0.0,
+          "sparsity": 0.9891098484848485,
+          "sufficiency_std": 0.5,
+          "necessity_std": 0.0
         },
         "high": {
-          "n_edges": 10,
-          "sufficiency": 0.20000020563602447,
-          "necessity": 0.20000016391277314,
-          "sparsity": 0.17176916221033872,
-          "sufficiency_std": 0.3999998971820368,
-          "necessity_std": 0.3999999180436311
+          "n_edges": 3,
+          "sufficiency": 0.3333333333333333,
+          "necessity": 0.3333333333333333,
+          "sparsity": 0.9808006535947712,
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.4714045207910317
         }
       }
     },
     "Citeseer": {
-      "num_test_edges": 30,
+      "num_test_edges": 10,
       "k_eigenvectors": 100,
       "resistance_stats": {
-        "mean": 0.49540802618315516,
-        "std": 1.471395820906294,
-        "q33": 0.00042381876998909485,
-        "q66": 0.07543685742138873,
-        "bucket_low_size": 10,
-        "bucket_medium_size": 10,
-        "bucket_high_size": 10
-      },
-      "Occlusion": {
-        "low": {
-          "n_edges": 9,
-          "sufficiency": 0.1111111111111111,
-          "necessity": 0.1111111111111111,
-          "sparsity": 0.9976169968418032,
-          "sufficiency_std": 0.31426968052735443,
-          "necessity_std": 0.31426968052735443
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.5,
-          "necessity": 0.5,
-          "sparsity": 0.9853875968992248,
-          "sufficiency_std": 0.5,
-          "necessity_std": 0.5
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.0,
-          "necessity": 0.5,
-          "sparsity": 0.9977777777777777,
-          "sufficiency_std": 0.0,
-          "necessity_std": 0.5
-        }
+        "mean": 0.7667394876480103,
+        "std": 2.258106231689453,
+        "q33": 7.59597020377065e-31,
+        "q66": 0.0016298944829031825,
+        "bucket_low_size": 3,
+        "bucket_medium_size": 4,
+        "bucket_high_size": 3
       },
       "Saliency": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 0.1,
-          "necessity": 0.2,
+          "n_edges": 3,
+          "sufficiency": 0.3333333333333333,
+          "necessity": 0.6666666666666666,
           "sparsity": 0.5,
-          "sufficiency_std": 0.30000000000000004,
-          "necessity_std": 0.4000000000000001
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.4714045207910317
         },
         "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.5,
-          "necessity": 0.5,
+          "n_edges": 4,
+          "sufficiency": 0.75,
+          "necessity": 0.75,
           "sparsity": 0.5,
-          "sufficiency_std": 0.5,
-          "necessity_std": 0.5
+          "sufficiency_std": 0.4330127018922193,
+          "necessity_std": 0.4330127018922193
         },
         "high": {
-          "n_edges": 10,
+          "n_edges": 3,
           "sufficiency": 0.0,
-          "necessity": 0.5,
+          "necessity": 0.0,
           "sparsity": 0.5,
           "sufficiency_std": 0.0,
-          "necessity_std": 0.5
-        }
-      },
-      "GNNExplainer": {
-        "low": {
-          "n_edges": 10,
-          "sufficiency": 0.0,
-          "necessity": 0.2,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.0,
-          "necessity_std": 0.4000000000000001
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.3,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.45825756949558405,
-          "necessity_std": 0.5
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.1,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.30000000000000004,
-          "necessity_std": 0.5
+          "necessity_std": 0.0
         }
       },
       "Ours": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 9.5367431640625e-08,
-          "necessity": 1.5497207641601563e-07,
-          "sparsity": 0.7013695090439277,
-          "sufficiency_std": 1.488923549270248e-07,
-          "necessity_std": 1.8506258364033728e-07
+          "n_edges": 3,
+          "sufficiency": 0.3333333333333333,
+          "necessity": 0.6666666666666666,
+          "sparsity": 0.9960809646856159,
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.4714045207910317
         },
         "medium": {
-          "n_edges": 10,
-          "sufficiency": 2.8312206268310547e-07,
-          "necessity": 2.905726432800293e-07,
-          "sparsity": 0.18074935400516798,
-          "sufficiency_std": 2.3437968183793737e-07,
-          "necessity_std": 2.1993730284542017e-07
+          "n_edges": 4,
+          "sufficiency": 0.75,
+          "necessity": 0.25,
+          "sparsity": 0.9931201550387597,
+          "sufficiency_std": 0.4330127018922193,
+          "necessity_std": 0.4330127018922193
         },
         "high": {
-          "n_edges": 10,
-          "sufficiency": 2.652406692504883e-07,
-          "necessity": 2.652406692504883e-07,
-          "sparsity": 0.18069767441860468,
-          "sufficiency_std": 2.408094039322825e-07,
-          "necessity_std": 2.408094039322825e-07
+          "n_edges": 3,
+          "sufficiency": 0.0,
+          "necessity": 0.3333333333333333,
+          "sparsity": 0.9986649440137811,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.4714045207910317
         }
       }
     },
     "PubMed": {
-      "num_test_edges": 30,
+      "num_test_edges": 10,
       "k_eigenvectors": 100,
       "resistance_stats": {
-        "mean": 0.0030265532474150437,
-        "std": 0.011020754459222428,
-        "q33": 6.155210483428818e-05,
-        "q66": 0.0004161089668358339,
-        "bucket_low_size": 10,
-        "bucket_medium_size": 10,
-        "bucket_high_size": 10
-      },
-      "Occlusion": {
-        "low": {
-          "n_edges": 10,
-          "sufficiency": 0.6,
-          "necessity": 0.5,
-          "sparsity": 0.9831948720670984,
-          "sufficiency_std": 0.4898979485566356,
-          "necessity_std": 0.5
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.3,
-          "necessity": 0.4,
-          "sparsity": 0.9861967830979934,
-          "sufficiency_std": 0.45825756949558394,
-          "necessity_std": 0.48989794855663565
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.3,
-          "necessity": 0.5,
-          "sparsity": 0.9962642000212337,
-          "sufficiency_std": 0.45825756949558394,
-          "necessity_std": 0.5
-        }
+        "mean": 0.0018858866533264518,
+        "std": 0.005098596215248108,
+        "q33": 5.75290214328561e-05,
+        "q66": 0.00018742872634902596,
+        "bucket_low_size": 3,
+        "bucket_medium_size": 4,
+        "bucket_high_size": 3
       },
       "Saliency": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 0.6,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.4898979485566356,
-          "necessity_std": 0.5
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.2,
-          "necessity": 0.4,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.4000000000000001,
-          "necessity_std": 0.48989794855663565
-        },
-        "high": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.48989794855663565,
-          "necessity_std": 0.5
-        }
-      },
-      "GNNExplainer": {
-        "low": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.5,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.48989794855663565,
-          "necessity_std": 0.5
-        },
-        "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.2,
-          "necessity": 0.4,
-          "sparsity": 0.5,
-          "sufficiency_std": 0.4000000000000001,
-          "necessity_std": 0.48989794855663565
-        },
-        "high": {
-          "n_edges": 10,
+          "n_edges": 3,
           "sufficiency": 0.0,
-          "necessity": 0.5,
+          "necessity": 0.0,
           "sparsity": 0.5,
           "sufficiency_std": 0.0,
+          "necessity_std": 0.0
+        },
+        "medium": {
+          "n_edges": 4,
+          "sufficiency": 0.5,
+          "necessity": 0.5,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.5,
           "necessity_std": 0.5
+        },
+        "high": {
+          "n_edges": 3,
+          "sufficiency": 0.3333333333333333,
+          "necessity": 1.0,
+          "sparsity": 0.5,
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.0
         }
       },
       "Ours": {
         "low": {
-          "n_edges": 10,
-          "sufficiency": 0.3,
-          "necessity": 0.3,
-          "sparsity": 0.17820097674912408,
-          "sufficiency_std": 0.45825756949558405,
-          "necessity_std": 0.45825756949558405
+          "n_edges": 3,
+          "sufficiency": 0.0,
+          "necessity": 0.0,
+          "sparsity": 0.9809516226067877,
+          "sufficiency_std": 0.0,
+          "necessity_std": 0.0
         },
         "medium": {
-          "n_edges": 10,
-          "sufficiency": 0.2,
-          "necessity": 0.2,
-          "sparsity": 0.17814789255759628,
-          "sufficiency_std": 0.4000000000000001,
-          "necessity_std": 0.4000000000000001
+          "n_edges": 4,
+          "sufficiency": 0.25,
+          "necessity": 0.75,
+          "sparsity": 0.995534292387727,
+          "sufficiency_std": 0.4330127018922193,
+          "necessity_std": 0.4330127018922193
         },
         "high": {
-          "n_edges": 10,
-          "sufficiency": 0.4,
-          "necessity": 0.4,
-          "sparsity": 0.17816381781505464,
-          "sufficiency_std": 0.4898979485566356,
-          "necessity_std": 0.4898979485566356
+          "n_edges": 3,
+          "sufficiency": 0.6666666666666666,
+          "necessity": 1.0,
+          "sparsity": 0.99566921470786,
+          "sufficiency_std": 0.4714045207910317,
+          "necessity_std": 0.0
         }
       }
     }

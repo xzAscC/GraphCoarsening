@@ -15,7 +15,7 @@ import json
 import os
 import sys
 import time
-from typing import List, Optional
+from typing import List
 
 import numpy as np
 import torch
@@ -29,8 +29,7 @@ from experiments.train_gcn import load_dataset, MLPLinkPredictor
 from src.models.gcn import GCN
 from src.models.link_predictor import LinkPredictionModel
 from src.coarsen import GraphCoarsener, build_coarse_graph
-from src.partition import node_partition
-from src.spectral import compute_normalized_adjacency, compute_top_k_eigenpairs, compute_perturbation_scores
+
 
 try:
     from src.evaluation.fidelity import fidelity_plus, fidelity_minus
@@ -80,10 +79,7 @@ def _build_refined_partition(
         for i, members in enumerate(partition):
             if i in split_indices:
                 for v in members:
-                    if v in (node_a, node_b):
-                        refined.append([v])
-                    else:
-                        refined.append([v])  # Each becomes singleton
+                    refined.append([v])
             else:
                 refined.append(members)
         return refined
@@ -117,10 +113,7 @@ def _build_refined_partition(
             has_overlap = any(v in neighborhood for v in members)
             if has_overlap:
                 for v in members:
-                    if v in neighborhood:
-                        refined.append([v])
-                    else:
-                        refined.append([v])
+                    refined.append([v])
             else:
                 refined.append(members)
         return refined
@@ -294,7 +287,7 @@ def main():
 
     try:
         _plot_refinement(args.dataset, results)
-    except Exception as e:
+    except (ImportError, OSError, RuntimeError, ValueError) as e:
         print(f"Plotting skipped: {e}")
 
 

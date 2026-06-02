@@ -129,7 +129,8 @@ def main():
             t0 = time.time()
             try:
                 explanation = explainer.explain_link(data, a, b)
-            except Exception:
+            except Exception as e:
+                print(f"    Edge ({a},{b}) explanation failed: {e}")
                 continue
             elapsed = time.time() - t0
             times.append(elapsed)

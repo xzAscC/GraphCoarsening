@@ -8,14 +8,12 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
-import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.utils import negative_sampling
 from sklearn.metrics import roc_auc_score
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from config import ExperimentConfig
 from src.models.gcn import GCN
 from src.models.link_predictor import (
     LinkPredictionModel,
@@ -140,7 +138,7 @@ def compute_laplacian_pseudoinverse(edge_index: torch.Tensor, num_nodes: int) ->
             # L^+ ≈ sum_i (1/lambda_i) * v_i v_i^T
             L_plus = (eigenvectors * (1.0 / eigenvalues)[np.newaxis, :]) @ eigenvectors.T
             return L_plus
-        except Exception:
+        except (ValueError, RuntimeError):
             return np.zeros((N, N))
 
 
@@ -175,7 +173,7 @@ def effective_resistance_approx(
 
     try:
         eigenvalues, eigenvectors = spla.eigsh(L, k=k_clamped, which="SM")
-    except Exception:
+    except (ValueError, RuntimeError):
         return 0.0
 
     idx = np.argsort(eigenvalues)
@@ -192,24 +190,6 @@ def effective_resistance_approx(
     diff = eigenvectors[a] - eigenvectors[b]
     R = float(np.sum((diff ** 2) / eigenvalues))
     return max(R, 0.0)
-
-
-def shortest_path_distance(edge_index: torch.Tensor, num_nodes: int, a: int, b: int) -> int:
-    row = edge_index[0].numpy()
-    col = edge_index[1].numpy()
-    N = num_nodes
-    vals = np.ones(len(row), dtype=np.float64)
-    A = sp.coo_matrix((vals, (row, col)), shape=(N, N)).tocsr()
-    A = A + A.T
-    A.data = np.clip(A.data, 0, 1)
-    A.setdiag(0)
-    A.eliminate_zeros()
-
-    g = nx.from_scipy_sparse_array(A)
-    try:
-        return nx.shortest_path_length(g, source=a, target=b)
-    except nx.NetworkXNoPath:
-        return -1
 
 
 def generate_target_edges_by_distance(
@@ -577,7 +557,7 @@ def get_explainer(method: str, model, data, device):
     if method == "GNNExplainer" and GNNExplainerWrapper is not None:
         try:
             return GNNExplainerWrapper(model, device=device)
-        except Exception:
+        except (ImportError, RuntimeError, TypeError):
             return None
     if method == "Ours" and CoarsenExplainer is not None:
         return CoarsenExplainer(model, device=device)
@@ -740,7 +720,7 @@ def run_part_b(args) -> Dict:
 
                     try:
                         explanation = explainer.explain_link(data, a, b)
-                    except Exception:
+                    except (ValueError, RuntimeError):
                         continue
 
                     if explanation is None:
@@ -993,23 +973,6 @@ def plot_part_b(results: Dict, save_dir: str = "figures"):
         fig.savefig(fig_path, dpi=150)
         plt.close(fig)
         print(f"  Saved: {fig_path}")
-
-
-def _compute_resistance_array(
-    edge_index: torch.Tensor,
-    num_nodes: int,
-    test_edges: torch.Tensor,
-    k: int = 100,
-) -> np.ndarray:
-    n_edges = test_edges.size(1)
-    resistances = np.zeros(n_edges, dtype=np.float64)
-    for i in range(n_edges):
-        a = int(test_edges[0, i].item())
-        b = int(test_edges[1, i].item())
-        resistances[i] = effective_resistance_approx(
-            edge_index, num_nodes, a, b, k=k,
-        )
-    return resistances
 
 
 def main():

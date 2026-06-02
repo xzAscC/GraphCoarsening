@@ -13,6 +13,7 @@ import time
 
 import numpy as np
 import torch
+from torch_geometric.data import Data
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -65,7 +66,6 @@ def evaluate_at_params(model, data, test_edges, device, k, alpha, num_edges=30):
         t1 = time.time()
         try:
             edge_index, edge_weight, feat, num_coarse, sa, sb, _orig_nodes = coarsener.explain_link(a, b)
-            from torch_geometric.data import Data
             explanation = Data(
                 x=feat, edge_index=edge_index, edge_weight=edge_weight,
                 is_coarse_graph=True, target_a=sa, target_b=sb,
@@ -87,7 +87,6 @@ def evaluate_at_params(model, data, test_edges, device, k, alpha, num_edges=30):
             "num_samples": 0,
         }
 
-    # Spectral error
     eig_orig = normalized_adjacency_eigenvalues(
         data.num_nodes, data.train_pos_edge_index, min(k, 500)
     )
@@ -184,7 +183,6 @@ def main():
             count += 1
             print(f"\n[{count}/{total}] k={k}, alpha={alpha:.2f}", flush=True)
             try:
-                # Per-config timeout: 120 seconds
                 old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
                 signal.alarm(120)
                 result = evaluate_at_params(model, data, test_edges, device, k, alpha, args.num_edges)
@@ -201,7 +199,6 @@ def main():
                     fm_str = f"{fm:.4f}" if fm is not None else "N/A"
                     se_str = f"{se:.4f}" if se is not None else "N/A"
                     print(f"  Fid+: {fp_str}  Fid-: {fm_str}  SpecErr: {se_str}  CoarseNodes: {nc}", flush=True)
-                    # Incremental save after each config
                     _save_results()
             except Exception as e:
                 signal.alarm(0)
