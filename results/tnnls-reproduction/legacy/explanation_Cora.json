@@ -1,0 +1,112 @@
+{
+  "dataset": "Cora",
+  "num_edges": 10,
+  "seed": 42,
+  "checkpoint": "checkpoints/tnnls-reproduction/Cora_gcn.pt",
+  "query_edges": [
+    [
+      392,
+      1619
+    ],
+    [
+      1206,
+      2671
+    ],
+    [
+      186,
+      1228
+    ],
+    [
+      1501,
+      2228
+    ],
+    [
+      2251,
+      2252
+    ],
+    [
+      1501,
+      2395
+    ],
+    [
+      1169,
+      1719
+    ],
+    [
+      1203,
+      1410
+    ],
+    [
+      110,
+      1161
+    ],
+    [
+      20,
+      1072
+    ]
+  ],
+  "methods": {
+    "Saliency": {
+      "fidelity_plus": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "fidelity_minus": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "mean_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.6,
+      "std_fidelity_plus": 0.45825756949558394,
+      "std_fidelity_minus": 0.4898979485566356,
+      "mean_time": 0.030069446563720702
+    },
+    "Ours": {
+      "fidelity_plus": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "fidelity_minus": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "mean_fidelity_plus": 0.3,
+      "mean_fidelity_minus": 0.3,
+      "std_fidelity_plus": 0.45825756949558394,
+      "std_fidelity_minus": 0.45825756949558394,
+      "mean_time": 0.5911408185958862
+    }
+  }
+}

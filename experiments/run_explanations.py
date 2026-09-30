@@ -143,6 +143,9 @@ def main():
     parser.add_argument("--num_edges", type=int, default=100)
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--checkpoint-dir", default="checkpoints")
+    parser.add_argument("--results-dir", default="results")
+    parser.add_argument("--no-plot", action="store_true")
     args = parser.parse_args()
 
     cfg = ExperimentConfig()
@@ -161,7 +164,7 @@ def main():
         data.edge_index = data.train_pos_edge_index
     print(f"  Nodes: {data.num_nodes}, Edges: {data.train_pos_edge_index.size(1)}")
 
-    checkpoint_path = os.path.join("checkpoints", f"{args.dataset}_gcn.pt")
+    checkpoint_path = os.path.join(args.checkpoint_dir, f"{args.dataset}_gcn.pt")
     if not os.path.exists(checkpoint_path):
         print(f"ERROR: No checkpoint at {checkpoint_path}. Run train_gcn.py first.")
         sys.exit(1)
@@ -210,11 +213,16 @@ def main():
             )
             print(f"  Avg time: {method_result['mean_time']:.4f}s")
 
-    os.makedirs("results", exist_ok=True)
-    out_path = os.path.join("results", f"explanation_{args.dataset}.json")
+    os.makedirs(args.results_dir, exist_ok=True)
+    out_path = os.path.join(args.results_dir, f"explanation_{args.dataset}.json")
     with open(out_path, "w") as f:
-        json.dump({"dataset": args.dataset, "num_edges": args.num_edges, "methods": results}, f, indent=2)
+        json.dump({"dataset": args.dataset, "num_edges": args.num_edges,
+                   "seed": args.seed, "checkpoint": checkpoint_path,
+                   "query_edges": test_edges.t().tolist(), "methods": results}, f, indent=2)
     print(f"\nResults saved to {out_path}")
+
+    if args.no_plot:
+        return
 
     try:
         _plot_results(args.dataset, results)

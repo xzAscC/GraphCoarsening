@@ -224,6 +224,8 @@ def main():
     parser.add_argument("--hidden", type=int, default=None, help="Override hidden channels")
     parser.add_argument("--layers", type=int, default=None, help="Override number of layers")
     parser.add_argument("--seed", type=int, default=None, help="Random seed")
+    parser.add_argument("--checkpoint-dir", default="checkpoints",
+                        help="Output directory; use a separate directory for reproduction runs")
     args = parser.parse_args()
 
     cfg = ExperimentConfig()
@@ -277,7 +279,7 @@ def main():
             val_auc = evaluate(model, predictor, data, device, "val")
             print(f"  Epoch {epoch:03d} | Loss: {loss:.4f} | Val AUC: {val_auc:.4f}")
 
-    checkpoint_dir = "checkpoints"
+    checkpoint_dir = args.checkpoint_dir
     os.makedirs(checkpoint_dir, exist_ok=True)
     checkpoint_path = os.path.join(checkpoint_dir, f"{args.dataset}_gcn.pt")
     torch.save({
