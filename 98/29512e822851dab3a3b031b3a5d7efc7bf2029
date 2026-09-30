@@ -1,0 +1,25 @@
+experiments/benchmark_coverage_union.py
+  s_6574c9512bb1f0::t_b52719c32ce639 1-183
+results/tnnls-reproduction/coverage_union_plan.json
+  s_6574c9512bb1f0::t_e8cb5610923665 1-17
+tests/test_coverage_union.py
+  s_6574c9512bb1f0::t_7d0a2115a1712b 1-79
+src/explainers/support_refinement.py
+  s_6574c9512bb1f0::t_7d0a2115a1712b 43-65,107,116-119,126-128,146,154-155,166-169,221,259-260
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9829512e822851dab3a3b031b3a5d7efc7bf2029",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
