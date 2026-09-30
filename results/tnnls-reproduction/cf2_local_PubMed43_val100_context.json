@@ -1,0 +1,21 @@
+{
+  "status": "expanded-fixed-baseline-validation-not-final-method-evidence",
+  "plan": "cf2_local_PubMed43_val100_plan.json",
+  "run": "cf2_local_PubMed43_val100.json",
+  "paired_audit": "frozen_baselines_PubMed43_val100_audit.json",
+  "queries": 100,
+  "class_counts": {"positive": 50, "negative": 50},
+  "optimization": "99 nonempty-candidate queries each completed all 2000 steps. One query [18130,18672] has no candidate edges, so all methods return the empty support and CF2 correctly performs zero updates. This query is retained in all denominators, not excluded after observing outcomes.",
+  "verification": "All source hashes verified; 300 CF2 rows checked and 900 reference supports independently replayed without failure. Cross-run audit verifies 1500 unique rows across five methods and 900 repeated reference rows, with identical query/budget coverage and metric arithmetic. The 12 overlapping local-CF2 pilot supports match the expanded run. Full suite: 132 passed.",
+  "necessity_and_sufficiency_by_budget": {
+    "CF2-link-local": {"5": [0.28, 0.82], "10": [0.43, 0.91], "20": [0.45, 0.98]},
+    "GNNExplainer": {"5": [0.15, 0.73], "10": [0.29, 0.84], "20": [0.32, 0.91]},
+    "Swap-global12": {"5": [0.32, 0.86], "10": [0.43, 0.94], "20": [0.53, 0.96]},
+    "Swap-union-diffusion": {"5": [0.32, 0.86], "10": [0.43, 0.94], "20": [0.53, 0.96]}
+  },
+  "finding": "Support search is not uniformly superior to CF2. Its mean necessity is higher or equal at these budgets, but CF2 has higher mean sufficiency at budget 20. On individual queries each method has wins and losses. Both search variants still have identical binary outcomes, so neither comparison with CF2 nor GNNExplainer establishes an independent coarsening benefit.",
+  "cf2_versus_ungrouped_binary_pareto_win_loss_tie_tradeoff": {"5": [4, 12, 84, 0], "10": [5, 7, 87, 1], "20": [10, 16, 74, 0]},
+  "limitations": "One dataset/checkpoint and mask seed per query, already inspected validation data, default rather than tuned CF2/GNNExplainer settings, no independent significance claim. CF2 uses an explicitly labeled binary-link adaptation and optional local backend; this is not an exact original-paper reproduction. Equal support budgets do not imply equal optimization compute. Cross-run timing is not a controlled runtime comparison.",
+  "decision": "Keep necessity/sufficiency tradeoffs visible, including CF2's favorable results. Do not turn a search benefit shared by the ungrouped control into a coarsening claim. Further method work should diagnose the remaining query-level failures against the joint-objective baseline rather than repeat ranking-only coarsening sweeps.",
+  "manuscript": "No LaTeX source or empirical numbers changed during this expanded run. All measurements and their paired audit remain in JSON."
+}
