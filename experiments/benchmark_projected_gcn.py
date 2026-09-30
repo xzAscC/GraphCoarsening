@@ -51,6 +51,8 @@ def main():
     parser.add_argument('--queries-per-class', type=int, default=10)
     parser.add_argument('--timing-repeats', type=int, default=4)
     parser.add_argument('--device', default='cuda')
+    parser.add_argument('--feature-controls', action='store_true',
+                        help='Add fixed raw-feature and frozen first-linear feature rankings; no label/outcome tuning')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Preserve prior measurements')
@@ -91,8 +93,18 @@ def main():
     start = time.perf_counter()
     builder = GroupingControls(data.edge_index, data.num_nodes, getattr(data, 'edge_weight', None))
     memberships, global_metadata = {}, {}
-    for policy in ('diffusion', 'random', 'normalized-edge'):
-        partition, details = builder.partition(policy, seed=0, alpha=.75, width=100, steps=4)
+    policies = ['diffusion', 'random', 'normalized-edge']
+    if args.feature_controls:
+        policies.extend(['raw-feature', 'first-linear-feature'])
+    for policy in policies:
+        signals = None
+        if policy == 'raw-feature':
+            signals = data.x
+        elif policy == 'first-linear-feature':
+            signals = encoder.convs[0].lin(data.x)
+        partition, details = builder.partition('signal' if signals is not None else policy,
+                                               seed=0, alpha=.75, width=100, steps=4, signals=signals)
+        details['signal_source'] = policy
         memberships[policy] = membership_vector(partition, data.num_nodes, args.device)
         global_metadata[policy] = details | {'partition_sha256': hashlib.sha256(json.dumps(partition).encode()).hexdigest()}
     synchronize(args.device)
@@ -129,6 +141,12 @@ def main():
             preparation[name] = {'seconds': time.perf_counter() - start,
                                  'nodes': prepared[name].num_coarse_nodes,
                                  'relative_feature_residual': prepared[name].relative_feature_residual()}
+            projected = prepared[name]
+            transformed = encoder.convs[0].lin(region.data.x)
+            lifted = encoder.convs[0].lin(projected.features)[projected.membership] * projected.node_scale[:, None]
+            denominator = torch.linalg.vector_norm(transformed)
+            residual = torch.linalg.vector_norm(transformed - lifted)
+            preparation[name]['relative_first_linear_residual'] = float(residual / denominator) if denominator > 0 else float(residual)
         exact = prepared['local-operator']
 
         def evaluate(name):
@@ -192,12 +210,14 @@ def main():
                       for row in records]
             item['median_local_operator_over_variant_seconds'] = statistics.median(ratios)
         summaries[name] = item
-    report = {'study': 'projected-gcn-forward-feasibility-v1', 'scope': __doc__,
+    report = {'study': 'projected-gcn-forward-feasibility-v2', 'scope': __doc__,
               'input': str(args.input), 'input_sha256': sha(args.input), 'checkpoint_sha256': sha(checkpoint),
               'split_sha256': reference['split_sha256'], 'source_sha256_at_start': sources,
               'dataset': config['dataset'], 'training_seed': config['seed'], 'device': args.device,
               'selection': 'First requested count per class in input order, without outcome selection.',
               'method': args.method, 'timing_repeats': args.timing_repeats, 'torch': torch.__version__,
+              'feature_controls': args.feature_controls,
+              'compression_scope': 'Same global merge budget, not matched query-local cluster counts after restriction and endpoint isolation.',
               'offline_seconds_all_partitions': offline_seconds, 'global_partitions': global_metadata,
               'timing_labels': {'full': 'exact local singleton/operator-reuse baseline', 'local': 'named comparison variant'},
               'memory_scope': 'Peak extra allocation per process, excluding resident model/data/projected features; not total GPU memory.',

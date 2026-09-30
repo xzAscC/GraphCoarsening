@@ -53,6 +53,34 @@ class GroupingControlsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             control.partition('random', alpha=-.1)
 
+    def test_signal_ranking_matches_singleton_loss_and_preserves_rng(self):
+        edges = torch.tensor([[0, 1, 1, 2, 2, 3], [1, 0, 2, 1, 3, 2]])
+        signals = torch.tensor([[0., 0.], [10., 0.], [10., 1.], [20., 0.]])
+        before = torch.random.get_rng_state().clone()
+        partition, details = GroupingControls(edges, 4).partition('signal', alpha=.25, signals=signals)
+        self.assertEqual(partition, [[0], [1, 2], [3]])
+        self.assertEqual(details['signal_width'], 2)
+        torch.testing.assert_close(before, torch.random.get_rng_state())
+        # Orthogonal transforms and offsets leave pair distances unchanged.
+        rotated = signals @ torch.tensor([[0., -1.], [1., 0.]]) + 5
+        self.assertEqual(partition, GroupingControls(edges.flip(1), 4).partition(
+            'signal', alpha=.25, signals=rotated)[0])
+        if torch.cuda.is_available():
+            self.assertEqual(partition, GroupingControls(edges.cuda(), 4).partition(
+                'signal', alpha=.25, signals=signals.cuda())[0])
+
+    def test_signal_validation_empty_edges_and_cluster_budget(self):
+        control = GroupingControls(self.fixture(), 7)
+        for signals in (None, torch.ones(6, 2), torch.ones(7, 0), torch.ones(7, 2, dtype=torch.long),
+                        torch.full((7, 2), float('nan'))):
+            with self.assertRaises(ValueError):
+                control.partition('signal', signals=signals)
+        partition, _ = control.partition('signal', alpha=.5, signals=torch.arange(7.).reshape(-1, 1))
+        self.assertEqual(len(partition), 4)
+        self.assertIn([6], partition)
+        empty = GroupingControls(torch.empty(2, 0, dtype=torch.long), 3)
+        self.assertEqual(empty.partition('signal', signals=torch.ones(3, 1))[0], [[0], [1], [2]])
+
 
 if __name__ == '__main__':
     unittest.main()

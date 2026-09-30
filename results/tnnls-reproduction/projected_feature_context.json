@@ -1,0 +1,22 @@
+{
+  "status": "development-diagnostic-not-promoted",
+  "plan": "projected_feature_plan.json",
+  "runs": ["projected_feature_Cora42_val20.json", "projected_feature_PubMed43_val20.json"],
+  "implementation": "GPU singleton-pair distances computed in edge chunks; stable CPU ordering and connected union-find. Raw features and the frozen first GCN linear transform are separate controls. No labels or explanation outcomes enter the scores. Existing defaults remain unchanged.",
+  "compression": "All five variants have the same global cluster count within each dataset. Query-local cluster counts differ, so these are not equal-local-compression comparisons.",
+  "binary_disagreements_out_of_140_per_run": {
+    "Cora42": {"diffusion": 9, "random": 22, "normalized-edge": 14, "raw-feature": 11, "first-linear-feature": 20},
+    "PubMed43": {"diffusion": 30, "random": 29, "normalized-edge": 15, "raw-feature": 29, "first-linear-feature": 28}
+  },
+  "mean_absolute_logit_error": {
+    "Cora42": {"diffusion": 4.308025, "raw-feature": 3.700758, "first-linear-feature": 4.816582},
+    "PubMed43": {"diffusion": 1.442824, "raw-feature": 1.776876, "first-linear-feature": 1.783709}
+  },
+  "finding": "Raw-feature ranking reduces the measured raw feature projection residual relative to diffusion in both runs, but does not consistently improve prediction errors or decisions. First-linear ranking likewise gives no consistent fidelity advantage. This is evidence against promoting these fixed rankings, not a general impossibility result for feature-aware clustering.",
+  "timing": "All approximate variants remain slower than the exact singleton/operator-reuse implementation in the measured serial forward workload. Shared GPU, four alternating repetitions, no gradients, batching or full-search timing. Ratios are baseline time divided by variant time; below one means the variant is slower.",
+  "verification": "All exact controls pass saved/full/local numerical and binary comparisons. Source hashes, equal global cluster counts, raw error arithmetic, decision mismatches, timing positivity and alternating order independently checked after both runs.",
+  "tests_passed": 119,
+  "interpretation_limits": "These are the same previously inspected development queries. Static singleton-edge scores are not dynamic cluster-merge losses, and connected single-link-style unions can accumulate large within-cluster variation. Neither a lower feature residual alone nor fewer nodes certifies decision agreement.",
+  "next_method_question": "If continuing approximate inference, use an explicit aggregate cluster-loss constraint or query-dependent refinement and evaluate the resulting accuracy/compression tradeoff. Merely changing fixed edge-ranking signals has not solved the observed problem. Coarse-guided support search remains a separate method whose independent value is still unverified.",
+  "manuscript": "No LaTeX source, empirical values, tables or figures changed in this study. All outcomes are retained in JSON."
+}

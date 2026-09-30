@@ -1,0 +1,15 @@
+{
+  "status": "fixed-before-feature-control-runs",
+  "question": "Does replacing structural singleton-pair merge scores with feature-distance scores reduce projected-GCN prediction errors at the same global merge budget?",
+  "variants": ["diffusion", "random", "normalized-edge", "raw-feature", "first-linear-feature"],
+  "feature_scores": "Half squared Euclidean distance between original features or frozen first-layer linear features. Scores are fixed before greedy connected unions, not updated Ward costs.",
+  "alpha": 0.75,
+  "diffusion": {"width": 100, "steps": 4, "seed": 0},
+  "validation_inputs": ["diffusion_Cora42_val20_steps8.json", "coverage_union_PubMed43_additional_val100.json"],
+  "methods": ["Swap-gradient", "Swap-global12"],
+  "query_selection": "First ten existing queries per class, same queries as the preceding projected-forward study. These are already inspected development queries, not fresh confirmation data.",
+  "timing_repeats": 4,
+  "metrics": ["binary disagreements with original full model", "absolute logit errors", "raw feature residual", "first-linear feature residual", "propagation residual", "query-local node count", "paired forward time"],
+  "limits": "Global cluster counts should match, but local counts can differ. No claim of matched local compression, search speed, test performance, or multi-merge feature-loss optimality.",
+  "decision": "Preserve all variants and outcomes. Do not replace authoritative fidelity evaluation or paper numbers. A positive development result requires independent validation before method promotion."
+}

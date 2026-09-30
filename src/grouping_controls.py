@@ -21,7 +21,7 @@ class GroupingControls:
         keep = (indices[0] < indices[1]) & (values > 0)
         self.edges, self.weights = indices[:, keep], values[keep]
 
-    def partition(self, policy, *, seed=0, alpha=.75, width=100, steps=4):
+    def partition(self, policy, *, seed=0, alpha=.75, width=100, steps=4, signals=None):
         if not 0 <= alpha <= 1:
             raise ValueError('alpha must be between zero and one')
         diagnostics = {'policy': policy, 'seed': seed, 'alpha': alpha,
@@ -35,6 +35,23 @@ class GroupingControls:
             signals = self.diffusion.sketch(width=width, steps=steps, seed=seed)
             scores = pair_projection_scores(self.edges, signals)
             diagnostics.update(width=width, steps=steps)
+        elif policy == 'signal':
+            if (not isinstance(signals, torch.Tensor) or signals.ndim != 2
+                    or signals.shape[0] != self.n or signals.shape[1] == 0
+                    or not signals.is_floating_point() or not torch.isfinite(signals).all()):
+                raise ValueError('Finite floating-point signal matrix with one row per node required')
+            # Exact loss for a singleton-pair merge, NOT a dynamic Ward cost
+            # after clusters grow. Chunking bounds temporary GPU storage.
+            signals = signals.detach().to(self.edges.device)
+            scores = signals.new_empty(self.edges.shape[1])
+            for start in range(0, self.edges.shape[1], 4096):
+                scores[start:start + 4096] = pair_projection_scores(
+                    self.edges[:, start:start + 4096], signals)
+            if not torch.isfinite(scores).all():
+                raise ValueError('Signal-distance overflow')
+            diagnostics.update(signal_width=signals.shape[1],
+                               score='half squared singleton-pair signal distance',
+                               warning='Fixed edge ranking is not dynamic Ward clustering or a multi-merge loss guarantee.')
         elif policy == 'eigen':
             values, _, signals = compute_top_k_eigenpairs(self.diffusion.operator, width)
             scores = pair_projection_scores(self.edges, signals)
