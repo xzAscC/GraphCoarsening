@@ -70,10 +70,51 @@ def audit(path):
                 summary['mean_accepted_steps'] = statistics.mean(r['accepted_steps'] for r in comparison)
                 summary['mean_evaluated_proposals'] = statistics.mean(r['evaluated_proposals'] for r in comparison)
             summaries.append(summary)
+    candidate_comparison = None
+    reference_path = report['args'].get('query_reference')
+    if reference_path:
+        reference_raw = Path(reference_path).read_bytes()
+        if hashlib.sha256(reference_raw).hexdigest() != report['query_reference_sha256']:
+            raise AssertionError('Query reference changed since the run')
+        reference = json.loads(reference_raw)
+        if reference['checkpoint_sha256'] != report['checkpoint_sha256'] or reference['split_sha256'] != report['split_sha256']:
+            raise AssertionError('Reference checkpoint or splits differ')
+        reference_rows = {(tuple(r['query']), r['method'], r['budget']): r for r in reference['rows']}
+        if set(reference_rows) != set(keys):
+            raise AssertionError('Reference query/method/budget pairs differ')
+        comparisons = []
+        for method in sorted({r['method'] for r in rows}):
+            for budget in sorted({r['budget'] for r in rows}):
+                matched, mismatched = [], []
+                for row in rows:
+                    if row['method'] != method or row['budget'] != budget:
+                        continue
+                    prior = reference_rows[(tuple(row['query']), method, budget)]
+                    if abs(row['full_logit'] - prior['full_logit']) > 1e-5:
+                        raise AssertionError('Original predictions differ')
+                    if row['effective_budget'] == prior['effective_budget']:
+                        matched.append({m: row[m] - prior[m] for m in METRICS})
+                    else:
+                        mismatched.append({'query': row['query'],
+                                           'reference_edges': prior['effective_budget'],
+                                           'current_edges': row['effective_budget']})
+                comparisons.append({'method': method, 'budget': budget,
+                                    'matched_actual_budget_queries': len(matched),
+                                    'different_actual_budget_queries': mismatched,
+                                    'paired_mean_difference_on_matched_actual_budgets':
+                                        {m: statistics.mean(r[m] for r in matched) for m in METRICS}
+                                        if matched else None})
+        candidate_comparison = {
+            'reference': reference_path,
+            'reference_candidate_region': reference['args'].get('candidate_region', 'induced'),
+            'scope': 'Descriptive differences conditional on equal actual edge counts; unequal counts are listed, not pooled.',
+            'comparisons': comparisons}
     return {'input': str(path), 'sha256': hashlib.sha256(raw).hexdigest(),
             'dataset': report['args']['dataset'], 'seed': report['args']['seed'],
             'query_split': report['args']['query_split'], 'device': report['args']['device'],
-            'audited_swap_rows': len(paired), 'summaries': summaries}
+            'candidate_region': report['args'].get('candidate_region', 'induced'),
+            'audited_swap_rows': len(paired), 'summaries': summaries,
+            'reference_comparison': candidate_comparison}
 
 
 def main():
