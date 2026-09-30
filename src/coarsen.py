@@ -275,7 +275,7 @@ class GraphCoarsener:
         self.x = x
 
         # Step 1: Normalized adjacency
-        self.A_hat = compute_normalized_adjacency(edge_index, num_nodes)
+        self.A_hat = compute_normalized_adjacency(edge_index, num_nodes, edge_weight)
 
         # Step 2: Top-k eigenpairs
         self.eigenvalues, self.left_vecs, self.right_vecs = compute_top_k_eigenpairs(

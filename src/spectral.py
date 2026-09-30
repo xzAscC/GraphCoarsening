@@ -6,7 +6,7 @@ The pair-projection score has an exact single-merge signal-loss interpretation,
 not an eigenvalue-shift or multi-merge fidelity guarantee.
 """
 
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 import scipy.sparse as sp
@@ -17,6 +17,7 @@ import torch
 def compute_normalized_adjacency(
     edge_index: torch.Tensor,
     num_nodes: int,
+    edge_weight: Optional[torch.Tensor] = None,
 ) -> torch.Tensor:
     """Compute symmetric normalized adjacency with self-loops.
 
@@ -26,6 +27,9 @@ def compute_normalized_adjacency(
     Args:
         edge_index: Edge list in COO format, shape (2, E).
         num_nodes: Number of nodes in the graph.
+        edge_weight: Nonnegative floating-point weights. Duplicate entries
+            are summed. One unit of diagonal mass is added even when an
+            input self-loop exists (the operator is explicitly A + I).
 
     Returns:
         Sparse tensor of shape (num_nodes, num_nodes) representing Â.
@@ -33,21 +37,28 @@ def compute_normalized_adjacency(
     loop_index = torch.arange(num_nodes, device=edge_index.device).unsqueeze(0).expand(2, -1)
     edge_index_plus = torch.cat([edge_index, loop_index], dim=1)
 
-    num_edges_plus = edge_index_plus.size(1)
-    values = torch.ones(num_edges_plus, dtype=torch.float32, device=edge_index.device)
+    if edge_weight is None:
+        edge_weight = torch.ones(edge_index.size(1), device=edge_index.device)
+    if edge_weight.shape != (edge_index.size(1),) or not edge_weight.is_floating_point():
+        raise ValueError('edge_weight must be a floating-point vector with one weight per edge')
+    if edge_weight.device != edge_index.device:
+        raise ValueError('edge weights and indices must share a device')
+    if not torch.isfinite(edge_weight).all() or (edge_weight < 0).any():
+        raise ValueError('edge weights must be finite and nonnegative')
+    values = torch.cat([edge_weight, edge_weight.new_ones(num_nodes)])
     A_plus = torch.sparse_coo_tensor(
         edge_index_plus, values, size=(num_nodes, num_nodes)
     ).coalesce()
 
     row = A_plus.indices()[0]
-    deg = torch.zeros(num_nodes, dtype=torch.float32, device=edge_index.device)
+    deg = values.new_zeros(num_nodes)
     deg.scatter_add_(0, row, A_plus.values())
 
     deg_inv_sqrt = torch.where(deg > 0, deg.pow(-0.5), torch.zeros_like(deg))
 
     row_idx = A_plus.indices()[0]
     col_idx = A_plus.indices()[1]
-    norm_values = deg_inv_sqrt[row_idx] * deg_inv_sqrt[col_idx]
+    norm_values = A_plus.values() * deg_inv_sqrt[row_idx] * deg_inv_sqrt[col_idx]
 
     A_hat = torch.sparse_coo_tensor(
         torch.stack([row_idx, col_idx]),
@@ -104,16 +115,16 @@ def compute_top_k_eigenpairs(
             if not sp.issparse(A_np):
                 A_np = sp.csr_matrix(A_np)
 
-        # eigsh with which='LM' gives largest magnitude eigenvalues
-        eigenvalues_np, eigenvectors_np = spla.eigsh(A_np, k=k, which="LM")
+        # Match the dense branch: largest algebraic, not largest magnitude.
+        eigenvalues_np, eigenvectors_np = spla.eigsh(A_np, k=k, which="LA")
 
         # eigsh returns eigenvalues in ascending order; reverse to descending
         sort_idx = np.argsort(-eigenvalues_np)
         eigenvalues_np = eigenvalues_np[sort_idx]
         eigenvectors_np = eigenvectors_np[:, sort_idx]
 
-        eigenvalues = torch.from_numpy(eigenvalues_np.copy()).float()
-        eigenvectors = torch.from_numpy(eigenvectors_np.copy()).float()
+        eigenvalues = torch.as_tensor(eigenvalues_np.copy(), dtype=A_hat.dtype, device=A_hat.device)
+        eigenvectors = torch.as_tensor(eigenvectors_np.copy(), dtype=A_hat.dtype, device=A_hat.device)
 
     left_vecs = eigenvectors
     right_vecs = eigenvectors.clone()
