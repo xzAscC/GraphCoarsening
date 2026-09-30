@@ -1,0 +1,45 @@
+experiments/audit_short_search.py
+  s_6574c9512bb1f0::t_85c4c98f417eba 1-66
+tests/test_short_search_config.py
+  s_6574c9512bb1f0::t_aaae0eb3bb56c7 1-6
+results/tnnls-reproduction/acceptance_short_context.json
+  s_6574c9512bb1f0::t_a22572817fbea2 1-23
+experiments/benchmark_acceptance_policy.py
+  s_6574c9512bb1f0::t_aaae0eb3bb56c7 4-6,34-37,43,95,110,117-120
+results/tnnls-reproduction/acceptance_short_Citeseer42_val100.json
+  s_6574c9512bb1f0::t_96be20e5ad9166 1-91896
+results/tnnls-reproduction/acceptance_short_Citeseer42_val100_audit.json
+  s_6574c9512bb1f0::t_b51861e9b2f4d7 1-276
+results/tnnls-reproduction/acceptance_short_Citeseer43_val100.json
+  s_6574c9512bb1f0::t_d2078bdd10f042 1-96052
+results/tnnls-reproduction/acceptance_short_Citeseer43_val100_audit.json
+  s_6574c9512bb1f0::t_8cba5d77f3c5ae 1-276
+results/tnnls-reproduction/acceptance_short_Cora42_val100.json
+  s_6574c9512bb1f0::t_02e13c30acdb73 1-111146
+results/tnnls-reproduction/acceptance_short_Cora42_val100_audit.json
+  s_6574c9512bb1f0::t_5f8de9181803e2 1-276
+results/tnnls-reproduction/acceptance_short_Cora43_val100.json
+  s_6574c9512bb1f0::t_3181550aa57d92 1-112582
+results/tnnls-reproduction/acceptance_short_Cora43_val100_audit.json
+  s_6574c9512bb1f0::t_df63932e649aa0 1-276
+results/tnnls-reproduction/acceptance_short_PubMed43_val100.json
+  s_6574c9512bb1f0::t_c862a3f172e31b 1-112877
+results/tnnls-reproduction/acceptance_short_PubMed43_val100_audit.json
+  s_6574c9512bb1f0::t_6b25e6d57387c4 1-276
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "666d0ec20629aca3829af420955270958167c527",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
