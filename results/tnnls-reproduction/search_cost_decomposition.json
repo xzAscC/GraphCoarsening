@@ -1,0 +1,240 @@
+{
+  "scope": "Search only: one full prediction and two initial interventions, two gradient forwards per attempted step, retained/deleted screening batches, and two serial forwards per recheck. Excludes grouping, saliency initialization, final evaluation, and training.",
+  "limitations": "Calls and graph copies are not FLOPs, latency, or memory. Batched calls contain multiple graphs; retained and deleted graphs differ in edge count. Local screening and full rechecks have different graph sizes. One autograd.grad invocation differentiates both gradient forwards. No equal-cost quality claim follows from these counts.",
+  "cohorts": [
+    {
+      "input": "results/tnnls-reproduction/acceptance_PubMed43_val100.json",
+      "sha256": "ff1fee3f762924e2bb02c18db2d317c233b3c387de93b13ca6c1f43a3569e72d",
+      "methods": {
+        "Swap-componentwise": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.1666666666666665,
+            "screened_proposals": 113.97,
+            "serial_rechecks": 2.3233333333333333,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.333333333333333,
+            "screen_forward_calls": 31.66,
+            "recheck_forward_calls": 4.6466666666666665,
+            "total_forward_calls": 45.64,
+            "graph_evaluations": 241.92,
+            "autograd_grad_calls": 3.1666666666666665
+          }
+        },
+        "Swap-binary-monotone": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.023333333333333,
+            "screened_proposals": 144.81,
+            "serial_rechecks": 3.15,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.046666666666667,
+            "screen_forward_calls": 40.22666666666667,
+            "recheck_forward_calls": 6.3,
+            "total_forward_calls": 57.57333333333333,
+            "graph_evaluations": 306.96666666666664,
+            "autograd_grad_calls": 4.023333333333333
+          }
+        }
+      }
+    },
+    {
+      "input": "results/tnnls-reproduction/acceptance_Cora42_val100.json",
+      "sha256": "c95f4206e0d5ea4878550cf230ffefc0106f58e104047a4b34d74b90ab4771dd",
+      "methods": {
+        "Swap-componentwise": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.27,
+            "screened_proposals": 116.64,
+            "serial_rechecks": 2.953333333333333,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.54,
+            "screen_forward_calls": 32.42,
+            "recheck_forward_calls": 5.906666666666666,
+            "total_forward_calls": 47.86666666666667,
+            "graph_evaluations": 248.72666666666666,
+            "autograd_grad_calls": 3.27
+          }
+        },
+        "Swap-binary-monotone": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.4233333333333333,
+            "screened_proposals": 121.75,
+            "serial_rechecks": 3.02,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.846666666666667,
+            "screen_forward_calls": 33.86,
+            "recheck_forward_calls": 6.04,
+            "total_forward_calls": 49.74666666666667,
+            "graph_evaluations": 259.38666666666666,
+            "autograd_grad_calls": 3.4233333333333333
+          }
+        }
+      }
+    },
+    {
+      "input": "results/tnnls-reproduction/binary_grouping_PubMed43_val100.json",
+      "sha256": "2daf7cce1f72236f8f4dfd5d36f330d4e4f97b5de64f3bd57eb0e83b6ed87a3a",
+      "methods": {
+        "Swap-global12": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.023333333333333,
+            "screened_proposals": 144.81,
+            "serial_rechecks": 3.1433333333333335,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.046666666666667,
+            "screen_forward_calls": 40.22666666666667,
+            "recheck_forward_calls": 6.286666666666667,
+            "total_forward_calls": 57.56,
+            "graph_evaluations": 306.9533333333333,
+            "autograd_grad_calls": 4.023333333333333
+          }
+        },
+        "Swap-diverse12": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.0633333333333335,
+            "screened_proposals": 146.25,
+            "serial_rechecks": 3.183333333333333,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.126666666666667,
+            "screen_forward_calls": 40.626666666666665,
+            "recheck_forward_calls": 6.366666666666666,
+            "total_forward_calls": 58.12,
+            "graph_evaluations": 309.99333333333334,
+            "autograd_grad_calls": 4.0633333333333335
+          }
+        },
+        "Swap-union-diffusion": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.06,
+            "screened_proposals": 146.13,
+            "serial_rechecks": 3.1766666666666667,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.12,
+            "screen_forward_calls": 40.593333333333334,
+            "recheck_forward_calls": 6.3533333333333335,
+            "total_forward_calls": 58.06666666666667,
+            "graph_evaluations": 309.73333333333335,
+            "autograd_grad_calls": 4.06
+          }
+        },
+        "Swap-union-random": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.033333333333333,
+            "screened_proposals": 145.17,
+            "serial_rechecks": 3.1866666666666665,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.066666666666666,
+            "screen_forward_calls": 40.32666666666667,
+            "recheck_forward_calls": 6.373333333333333,
+            "total_forward_calls": 57.766666666666666,
+            "graph_evaluations": 307.78,
+            "autograd_grad_calls": 4.033333333333333
+          }
+        },
+        "Swap-union-structural": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 4.036666666666667,
+            "screened_proposals": 145.29,
+            "serial_rechecks": 3.1366666666666667,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 8.073333333333334,
+            "screen_forward_calls": 40.36,
+            "recheck_forward_calls": 6.273333333333333,
+            "total_forward_calls": 57.70666666666666,
+            "graph_evaluations": 307.9266666666667,
+            "autograd_grad_calls": 4.036666666666667
+          }
+        }
+      }
+    },
+    {
+      "input": "results/tnnls-reproduction/binary_grouping_Cora42_val100.json",
+      "sha256": "8b3da773151e67baa07bd88f6649d8405a6b95c046ef53a45cfbd7f6a2c585ca",
+      "methods": {
+        "Swap-global12": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.4233333333333333,
+            "screened_proposals": 121.75,
+            "serial_rechecks": 3.1,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.846666666666667,
+            "screen_forward_calls": 33.86,
+            "recheck_forward_calls": 6.2,
+            "total_forward_calls": 49.906666666666666,
+            "graph_evaluations": 259.5466666666667,
+            "autograd_grad_calls": 3.4233333333333333
+          }
+        },
+        "Swap-diverse12": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.4433333333333334,
+            "screened_proposals": 122.47,
+            "serial_rechecks": 3.033333333333333,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.886666666666667,
+            "screen_forward_calls": 34.06,
+            "recheck_forward_calls": 6.066666666666666,
+            "total_forward_calls": 50.013333333333335,
+            "graph_evaluations": 260.8933333333333,
+            "autograd_grad_calls": 3.4433333333333334
+          }
+        },
+        "Swap-union-diffusion": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.43,
+            "screened_proposals": 121.99,
+            "serial_rechecks": 2.95,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.86,
+            "screen_forward_calls": 33.92666666666667,
+            "recheck_forward_calls": 5.9,
+            "total_forward_calls": 49.68666666666667,
+            "graph_evaluations": 259.74,
+            "autograd_grad_calls": 3.43
+          }
+        },
+        "Swap-union-random": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.46,
+            "screened_proposals": 123.07,
+            "serial_rechecks": 3.0233333333333334,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.92,
+            "screen_forward_calls": 34.22666666666667,
+            "recheck_forward_calls": 6.046666666666667,
+            "total_forward_calls": 50.193333333333335,
+            "graph_evaluations": 262.1066666666667,
+            "autograd_grad_calls": 3.46
+          }
+        },
+        "Swap-union-structural": {
+          "conditions": 300,
+          "means": {
+            "gradient_steps": 3.4266666666666667,
+            "screened_proposals": 121.87,
+            "serial_rechecks": 3.026666666666667,
+            "initial_forward_calls": 3,
+            "gradient_forward_calls": 6.8533333333333335,
+            "screen_forward_calls": 33.89333333333333,
+            "recheck_forward_calls": 6.053333333333334,
+            "total_forward_calls": 49.8,
+            "graph_evaluations": 259.64666666666665,
+            "autograd_grad_calls": 3.4266666666666667
+          }
+        }
+      }
+    }
+  ]
+}
