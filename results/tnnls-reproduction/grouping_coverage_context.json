@@ -1,0 +1,39 @@
+{
+  "status": "causal-development-diagnostic-not-a-method-improvement",
+  "query": [15167, 19061],
+  "dataset": "PubMed",
+  "training_seed": 42,
+  "query_split": "validation",
+  "support_budget": 5,
+  "device": "cuda",
+  "records": [
+    "grouping_coverage_PubMed42_15167_19061_b5.json",
+    "grouping_coverage_random_PubMed42_15167_19061_b5.json",
+    "grouping_coverage_structural_PubMed42_15167_19061_b5.json"
+  ],
+  "reproduction": "Checkpoint, split, candidate-region and partition hashes were checked. Ungrouped, diffusion-0, random-0 and normalized-edge-0 final supports exactly matched the preceding grouping-control run; saved intervention logits matched within the stated replay tolerances. Diagnostic source hashes were verified after all three runs completed.",
+  "finding": {
+    "shared_state": "After the first accepted exchange",
+    "omitted_edge": [1312, 15167],
+    "ungrouped_gradient_rank": 3,
+    "mechanism": "Diffusion-0 and random-0 exclude this addition because another higher-ranked edge has already represented its group. The one-per-group shortlist therefore omits an exchange accepted by ungrouped search.",
+    "structural_control": "Normalized-edge-0 retains the accepted ungrouped proposals at shared states and reproduces the ungrouped final support.",
+    "ungrouped_retained_logit": -0.04614713788032532,
+    "diffusion_retained_logit": 0.039679914712905884,
+    "full_prediction_class": "negative"
+  },
+  "counterfactual": {
+    "change": "Append the omitted accepted ungrouped support once, at the matching second-step state, without modifying the predictor, partition, gradients or acceptance checks.",
+    "normal_proposals_at_that_step": 18,
+    "counterfactual_proposals_at_that_step": 19,
+    "outcome": "Both diffusion-0 and random-0 recover exactly the ungrouped final support and restore binary sufficiency agreement.",
+    "limitation": "The candidate was identified using an ungrouped reference and the replay spends an extra proposal evaluation. This is a targeted inclusion intervention, not a new deployable algorithm, a matched-budget comparison, or a general fidelity guarantee."
+  },
+  "tests_passed": 105,
+  "tests_added": [
+    "Recording snapshots leaves search outputs and traces unchanged and restores the original proposal function.",
+    "An injected proposal is explicitly counted and reported as extra work."
+  ],
+  "method_decision": "The next method change should address candidate coverage, not merely replace the spectral score. Any coverage-preserving or restricted-diversity policy must be compared with ungrouped search at matched actual work; fixing this selected case is insufficient to establish independent coarsening value.",
+  "manuscript": "Only the qualitative limitation and XZ20 diagnostic caveat were updated. Numerical experimental results remain unchanged."
+}
