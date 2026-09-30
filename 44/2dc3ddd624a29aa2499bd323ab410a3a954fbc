@@ -1,0 +1,28 @@
+experiments/audit_support_refinement.py
+  s_6574c9512bb1f0::t_6d7de719dbfbb8 10,89,99-103,121,123
+  s_6574c9512bb1f0::t_a948f7fffd8370 104,122
+tests/test_refinement_audit.py
+  s_6574c9512bb1f0::t_a948f7fffd8370 60-77
+results/tnnls-reproduction/gnnexplainer_Citeseer43_val100_batch8.json
+  s_6574c9512bb1f0::t_9eb8f422e939a5 1-223986
+results/tnnls-reproduction/gnnexplainer_Cora42_val100_batch8.json
+  s_6574c9512bb1f0::t_00d5337ee1fa5d 1-239520
+results/tnnls-reproduction/gnnexplainer_validation_audit.json
+  s_6574c9512bb1f0::t_0fe6dd22098c18 1-1520
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "442dc3ddd624a29aa2499bd323ab410a3a954fbc",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
