@@ -1,0 +1,28 @@
+tests/test_normalization_boundary.py
+  s_6574c9512bb1f0::t_c3b5da9fa22e2b 9,13-44,63-64
+src/explainers/candidates.py
+  s_6574c9512bb1f0::t_1567111a2f19f0 11-13
+  s_6574c9512bb1f0::t_fc05e571fab3aa 1-10,14-23
+tests/test_query_reference.py
+  s_6574c9512bb1f0::t_c3b5da9fa22e2b 1-22
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_fc05e571fab3aa 24-43,91-92,127-137,191-193,197-201,206-207,210,259-260
+src/explainers/coarsen_explainer.py
+  s_6574c9512bb1f0::t_fc05e571fab3aa 62,85-87,156-159
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "851dadb6bc448d840335d512246d6630ba655551",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
