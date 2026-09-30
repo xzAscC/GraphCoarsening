@@ -1,0 +1,21 @@
+{
+  "status": "frozen-policy-replication-on-development-cohorts",
+  "plan": "acceptance_cross_cohort_plan.json",
+  "audit": "acceptance_five_cohorts_audit.json",
+  "new_runs": ["acceptance_Cora42_val100.json", "acceptance_Cora43_val100.json", "acceptance_Citeseer42_val100.json", "acceptance_Citeseer43_val100.json"],
+  "new_query_budget_pairs": 1200,
+  "new_binary_pareto_outcomes": {"wins": 37, "losses": 0, "ties": 1163, "tradeoffs": 0},
+  "including_prior_pubmed": {"pairs": 1500, "wins": 59, "losses": 1, "ties": 1440, "tradeoffs": 0},
+  "cohort_totals": {
+    "Cora42": {"wins": 15, "losses": 0, "ties": 285},
+    "Cora43": {"wins": 9, "losses": 0, "ties": 291},
+    "Citeseer42": {"wins": 8, "losses": 0, "ties": 292},
+    "Citeseer43": {"wins": 5, "losses": 0, "ties": 295}
+  },
+  "actual_proposal_count_ratio_binary_over_componentwise": {"Cora42": 1.043810013717421, "Cora43": 1.0575616146728894, "Citeseer42": 1.0349037632864118, "Citeseer43": 1.033505514449253, "PubMed43": 1.2705975256646487},
+  "finding": "The frozen binary-monotone acceptance policy improves or ties both mean binary metrics at all three budgets in each new cohort; no query-level binary regressions occurred in these four runs. Most improvements repair sufficiency. This is more consistent development evidence than the previous grouping-score changes, but it does not establish universal dominance or independent coarsening value.",
+  "verification": "All five runs' algorithm source hashes match the current frozen files. Each new run contains 900 records, no initial-support replay failures, and matched achieved budgets. The audit independently checks metric arithmetic, query pairing, every accepted objective increase, binary guards, default continuous guards, proposal counts and final trace agreement. Full suite: 136 passed.",
+  "limits": "Previously inspected validation cohorts, not new held-out test sets. Conditions within a graph/checkpoint are correlated; aggregate win counts are descriptive, not independent trials or significance. Actual work increases despite equal proposal/step caps. Timing includes search only, not initialization or full pipeline. The prior PubMed regression is retained.",
+  "decision": "Keep the binary-monotone policy as a supported candidate without claiming its continuous componentwise non-regression. Next isolate grouping under this frozen rule and assess quality versus actual cost. Existing API default remains componentwise for compatibility; no final method or numerical paper results are frozen yet.",
+  "manuscript": "No LaTeX source, empirical values, tables or figures changed in this replication turn."
+}

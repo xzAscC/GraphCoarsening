@@ -1,0 +1,12 @@
+{
+  "status": "fixed-before-cross-cohort-runs",
+  "purpose": "Replicate the PubMed-motivated acceptance change on different dataset/checkpoint cohorts without further tuning.",
+  "inputs": ["mixed_Cora42_val100_steps8.json", "mixed_Cora43_val100_steps8.json", "mixed_Citeseer42_val100_steps8.json", "mixed_Citeseer43_val100_steps8.json"],
+  "queries": "All 100 validation queries from each input. These lists were used in prior development, not newly held-out confirmation. No outcomes filter the lists.",
+  "variants": ["componentwise", "binary-monotone"],
+  "settings": {"steps": 8, "additions": 12, "removals": 3, "batch_size": 8, "exchange_size": 1, "local_gcn": false, "groups": null},
+  "control": "Rerun both acceptance policies with the same settings on the saved saliency initialization. Historical mixed-search runs used other proposal caps, so do not substitute their terminal supports for the new matched control.",
+  "metrics": "Paired binary necessity/sufficiency wins, losses, ties and tradeoffs; continuous confidence drops; support identity; actual proposal counts and search time. Audit every accepted step against the appropriate invariants.",
+  "cost_scope": "Sequential runs on the shared GPU. Equal proposal and step caps do not imply equal actual work. No cross-method timing claim from historical runs.",
+  "decision": "Preserve all results and regressions. No grouping contribution is implied, no default promotion or LaTeX numerical changes before reviewing replication and cost."
+}

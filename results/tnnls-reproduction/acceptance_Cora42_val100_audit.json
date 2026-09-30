@@ -1,0 +1,166 @@
+{
+  "cohorts": [
+    {
+      "dataset": "Cora",
+      "training_seed": 42,
+      "input": "results/tnnls-reproduction/acceptance_Cora42_val100.json",
+      "input_sha256": "c95f4206e0d5ea4878550cf230ffefc0106f58e104047a4b34d74b90ab4771dd",
+      "summaries": {
+        "Saliency-supportive": {
+          "5": {
+            "queries": 100,
+            "necessity_flip": 0.37,
+            "sufficiency_agreement": 0.92,
+            "necessity_confidence_drop": 0.24032885124874487,
+            "sufficiency_confidence_drop": -0.008220963635080033,
+            "both_binary_criteria": 0.3
+          },
+          "10": {
+            "queries": 100,
+            "necessity_flip": 0.39,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.2685421761515222,
+            "sufficiency_confidence_drop": -0.032294434760145305,
+            "both_binary_criteria": 0.33
+          },
+          "20": {
+            "queries": 100,
+            "necessity_flip": 0.39,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.27199381357208113,
+            "sufficiency_confidence_drop": -0.033877897928035014,
+            "both_binary_criteria": 0.33
+          }
+        },
+        "Swap-binary-monotone": {
+          "5": {
+            "queries": 100,
+            "necessity_flip": 0.51,
+            "sufficiency_agreement": 0.99,
+            "necessity_confidence_drop": 0.3560340846688005,
+            "sufficiency_confidence_drop": -0.0555250001136797,
+            "both_binary_criteria": 0.5
+          },
+          "10": {
+            "queries": 100,
+            "necessity_flip": 0.57,
+            "sufficiency_agreement": 1.0,
+            "necessity_confidence_drop": 0.40855231756021165,
+            "sufficiency_confidence_drop": -0.06904052746188565,
+            "both_binary_criteria": 0.57
+          },
+          "20": {
+            "queries": 100,
+            "necessity_flip": 0.62,
+            "sufficiency_agreement": 1.0,
+            "necessity_confidence_drop": 0.4502059568012427,
+            "sufficiency_confidence_drop": -0.0703111053538223,
+            "both_binary_criteria": 0.62
+          }
+        },
+        "Swap-componentwise": {
+          "5": {
+            "queries": 100,
+            "necessity_flip": 0.5,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.3463143279384442,
+            "sufficiency_confidence_drop": -0.023003417303679295,
+            "both_binary_criteria": 0.44
+          },
+          "10": {
+            "queries": 100,
+            "necessity_flip": 0.57,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.4080507353042116,
+            "sufficiency_confidence_drop": -0.03525974704861422,
+            "both_binary_criteria": 0.52
+          },
+          "20": {
+            "queries": 100,
+            "necessity_flip": 0.61,
+            "sufficiency_agreement": 0.97,
+            "necessity_confidence_drop": 0.442996937150518,
+            "sufficiency_confidence_drop": -0.05151440883863345,
+            "both_binary_criteria": 0.58
+          }
+        }
+      },
+      "paired": [
+        {
+          "left": "Swap-binary-monotone",
+          "right": "Swap-componentwise",
+          "budget": 5,
+          "paired_queries": 100,
+          "binary_pareto_left_vs_right": {
+            "wins": 6,
+            "losses": 0,
+            "ties": 94,
+            "tradeoffs": 0
+          },
+          "identical_supports": 83,
+          "mean_difference_left_minus_right": {
+            "necessity_flip": 0.01,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.009719756730356282,
+            "sufficiency_confidence_drop": -0.03252158281000041
+          }
+        },
+        {
+          "left": "Swap-binary-monotone",
+          "right": "Swap-componentwise",
+          "budget": 10,
+          "paired_queries": 100,
+          "binary_pareto_left_vs_right": {
+            "wins": 5,
+            "losses": 0,
+            "ties": 95,
+            "tradeoffs": 0
+          },
+          "identical_supports": 86,
+          "mean_difference_left_minus_right": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.0005015822560000547,
+            "sufficiency_confidence_drop": -0.03378078041327142
+          }
+        },
+        {
+          "left": "Swap-binary-monotone",
+          "right": "Swap-componentwise",
+          "budget": 20,
+          "paired_queries": 100,
+          "binary_pareto_left_vs_right": {
+            "wins": 4,
+            "losses": 0,
+            "ties": 96,
+            "tradeoffs": 0
+          },
+          "identical_supports": 83,
+          "mean_difference_left_minus_right": {
+            "necessity_flip": 0.01,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.007209019650724698,
+            "sufficiency_confidence_drop": -0.01879669651518886
+          }
+        }
+      ],
+      "cost": {
+        "Swap-componentwise": {
+          "mean_evaluated_proposals": 116.64,
+          "total_search_seconds": 18.84680605106405
+        },
+        "Swap-binary-monotone": {
+          "mean_evaluated_proposals": 121.75,
+          "total_search_seconds": 19.56178005806578
+        }
+      }
+    }
+  ],
+  "descriptive_aggregate_binary_outcomes": {
+    "wins": 15,
+    "losses": 0,
+    "ties": 285,
+    "tradeoffs": 0
+  },
+  "scope": "Recorded metric and trace audit, not model rerun or significance. Query/budget conditions share graphs and checkpoints. Costs are actual proposal counts and scoped search timings, not full-pipeline times."
+}
