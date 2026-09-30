@@ -1,0 +1,23 @@
+experiments/audit_support_refinement.py
+  s_6574c9512bb1f0::t_ed667170b2eba4 19-59,85-95,198-204,210
+tests/test_refinement_audit.py
+  s_6574c9512bb1f0::t_ed667170b2eba4 8,12-43
+results/tnnls-reproduction/mixed_four_runs_paired_policy_audit.json
+  s_6574c9512bb1f0::t_3fbc693101c63e 1-4770
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0ab33bbb31e2bc8eb63447c21da6ca5c476600ff",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
