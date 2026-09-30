@@ -1,0 +1,23 @@
+results/tnnls-reproduction/cf2_local_PubMed43_val100_context.json
+  s_6574c9512bb1f0::t_341c8b50d5368e 1-21
+results/tnnls-reproduction/cf2_local_PubMed43_val100.json
+  s_6574c9512bb1f0::t_a7eb89d484a2ac 1-92179
+results/tnnls-reproduction/frozen_baselines_PubMed43_val100_audit.json
+  s_6574c9512bb1f0::t_3e161b5e2f859d 1-713
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c771e0da264680e3f476e8f2368754b85c47359",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
