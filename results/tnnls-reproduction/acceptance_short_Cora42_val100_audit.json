@@ -1,0 +1,276 @@
+{
+  "unique_rows": 900,
+  "duplicate_reference_rows_verified": 0,
+  "summaries": {
+    "Saliency-supportive": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.37,
+        "sufficiency_agreement": 0.92,
+        "necessity_confidence_drop": 0.2403288492082116,
+        "sufficiency_confidence_drop": -0.00822096320633908,
+        "both_binary_criteria": 0.3
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.39,
+        "sufficiency_agreement": 0.94,
+        "necessity_confidence_drop": 0.26854217948588577,
+        "sufficiency_confidence_drop": -0.032294431637654844,
+        "both_binary_criteria": 0.33
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.39,
+        "sufficiency_agreement": 0.94,
+        "necessity_confidence_drop": 0.27199381759676833,
+        "sufficiency_confidence_drop": -0.033877896120933955,
+        "both_binary_criteria": 0.33
+      }
+    },
+    "Swap-binary-monotone": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.5,
+        "sufficiency_agreement": 0.99,
+        "necessity_confidence_drop": 0.3514888552745105,
+        "sufficiency_confidence_drop": -0.05566205909145903,
+        "both_binary_criteria": 0.49
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.57,
+        "sufficiency_agreement": 1.0,
+        "necessity_confidence_drop": 0.4068102456209981,
+        "sufficiency_confidence_drop": -0.06837026327466349,
+        "both_binary_criteria": 0.57
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.62,
+        "sufficiency_agreement": 1.0,
+        "necessity_confidence_drop": 0.44343780907064584,
+        "sufficiency_confidence_drop": -0.06997259475255385,
+        "both_binary_criteria": 0.62
+      }
+    },
+    "Swap-componentwise": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.5,
+        "sufficiency_agreement": 0.94,
+        "necessity_confidence_drop": 0.34631432264024387,
+        "sufficiency_confidence_drop": -0.0230034208036938,
+        "both_binary_criteria": 0.44
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.57,
+        "sufficiency_agreement": 0.95,
+        "necessity_confidence_drop": 0.4080507446024324,
+        "sufficiency_confidence_drop": -0.0358898493850091,
+        "both_binary_criteria": 0.52
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.61,
+        "sufficiency_agreement": 0.97,
+        "necessity_confidence_drop": 0.44292593968281485,
+        "sufficiency_confidence_drop": -0.051510208583680175,
+        "both_binary_criteria": 0.58
+      }
+    }
+  },
+  "paired_comparisons": [
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 20,
+        "ties": 80,
+        "tradeoffs": 0
+      },
+      "identical_supports": 22,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.13,
+        "sufficiency_agreement": -0.07,
+        "necessity_confidence_drop": -0.11116000606629894,
+        "sufficiency_confidence_drop": 0.047441095885119945
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 24,
+        "ties": 76,
+        "tradeoffs": 0
+      },
+      "identical_supports": 21,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.18,
+        "sufficiency_agreement": -0.06,
+        "necessity_confidence_drop": -0.13826806613511233,
+        "sufficiency_confidence_drop": 0.03607583163700865
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 29,
+        "ties": 71,
+        "tradeoffs": 0
+      },
+      "identical_supports": 22,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.23,
+        "sufficiency_agreement": -0.06,
+        "necessity_confidence_drop": -0.17144399147387748,
+        "sufficiency_confidence_drop": 0.0360946986316199
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 15,
+        "ties": 85,
+        "tradeoffs": 0
+      },
+      "identical_supports": 27,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.13,
+        "sufficiency_agreement": -0.02,
+        "necessity_confidence_drop": -0.1059854734320323,
+        "sufficiency_confidence_drop": 0.014782457597354718
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 19,
+        "ties": 81,
+        "tradeoffs": 0
+      },
+      "identical_supports": 25,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.18,
+        "sufficiency_agreement": -0.01,
+        "necessity_confidence_drop": -0.13950856511654663,
+        "sufficiency_confidence_drop": 0.0035954177473542614
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 25,
+        "ties": 75,
+        "tradeoffs": 0
+      },
+      "identical_supports": 24,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.22,
+        "sufficiency_agreement": -0.03,
+        "necessity_confidence_drop": -0.17093212208604652,
+        "sufficiency_confidence_drop": 0.017632312462746224
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 5,
+        "losses": 0,
+        "ties": 95,
+        "tradeoffs": 0
+      },
+      "identical_supports": 82,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.0,
+        "sufficiency_agreement": 0.05,
+        "necessity_confidence_drop": 0.005174532634266656,
+        "sufficiency_confidence_drop": -0.032658638287765225
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 5,
+        "losses": 0,
+        "ties": 95,
+        "tradeoffs": 0
+      },
+      "identical_supports": 74,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.0,
+        "sufficiency_agreement": 0.05,
+        "necessity_confidence_drop": -0.0012404989814342904,
+        "sufficiency_confidence_drop": -0.032480413889654385
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 4,
+        "losses": 0,
+        "ties": 96,
+        "tradeoffs": 0
+      },
+      "identical_supports": 50,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.01,
+        "sufficiency_agreement": 0.03,
+        "necessity_confidence_drop": 0.0005118693878309648,
+        "sufficiency_confidence_drop": -0.018462386168873673
+      }
+    }
+  ],
+  "scope": "Direct GPU search with independent final original-support evaluation; this tool audits saved arithmetic, coverage and acceptance traces. Previously inspected validation data, not held-out confirmation. Timings include search only on shared hardware; counts are not FLOPs. Four-step selection was retrospective. No coarsening benefit is measured.",
+  "costs": {
+    "componentwise": {
+      "mean_forward_calls": 47.806666666666665,
+      "mean_graph_evaluations": 249.08,
+      "mean_gradient_steps": 3.276666666666667,
+      "total_search_seconds": 18.906474221788812,
+      "median_search_seconds": 0.05670524550077971
+    },
+    "binary-monotone": {
+      "mean_forward_calls": 40.12,
+      "mean_graph_evaluations": 207.22666666666666,
+      "mean_gradient_steps": 2.736666666666667,
+      "total_search_seconds": 15.736927053090767,
+      "median_search_seconds": 0.057087496505118906
+    }
+  },
+  "input": "results/tnnls-reproduction/acceptance_short_Cora42_val100.json",
+  "input_sha256": "0fe134049a274e6d6bf9f4c75496594ec2a61b0e9c9f986d805ec802fa8a3e6d"
+}

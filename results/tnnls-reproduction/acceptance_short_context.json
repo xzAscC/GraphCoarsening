@@ -1,0 +1,23 @@
+{
+  "status": "completed development replay; not final method selection",
+  "design": "Five cohorts, 100 saved validation queries each, budgets 5/10/20. Binary-monotone four steps versus componentwise eight steps; all other proposal settings and initial supports matched. GPU execution with alternating policy order. Final supports independently evaluated on original graphs.",
+  "aggregate_binary_pareto": {"wins": 58, "losses": 5, "ties": 1437, "tradeoffs": 0},
+  "per_cohort_wins_losses_ties": {
+    "PubMed43": [22, 5, 273], "Cora42": [14, 0, 286], "Cora43": [9, 0, 291],
+    "Citeseer42": [8, 0, 292], "Citeseer43": [5, 0, 295]
+  },
+  "joint_success_componentwise8_binary4": {
+    "PubMed43": [0.36, 0.41], "Cora42": [0.5133333333333333, 0.56],
+    "Cora43": [0.4866666666666667, 0.5166666666666667],
+    "Citeseer42": [0.32666666666666666, 0.35333333333333333],
+    "Citeseer43": [0.25666666666666665, 0.2733333333333333]
+  },
+  "cost_interpretation": "Mean forward calls and graph evaluations are lower for binary4 in every cohort, and aggregate joint success is higher. This is not per-query dominance or equal-cost evidence. Total search time is lower in these runs, but median time is higher for binary4 in every cohort; do not claim uniform acceleration.",
+  "timing_caveats": [
+    "Shared GPU, no repeated isolated timing study. Search-only timing excludes grouping, initialization, final evaluation and training.",
+    "PubMed run briefly overlapped the full pytest suite, including CUDA tests. Treat its timings as diagnostic only. The four subsequent cohort runs were sequential with no overlapping tests launched by this agent."
+  ],
+  "verification": "All five record audits passed: source, input and frozen-plan hashes; final metric arithmetic and support budgets; matched query coverage; binary and objective acceptance invariants; policy-specific step limits. 4500 saved rows total. Full test suite: 141 passed. Tiny trajectory differences relative to historical runs are not claimed to be bitwise replay.",
+  "limitations": "Four steps were selected retrospectively on the same validation cohorts. Conditions share queries, graphs and checkpoints, so counts are descriptive, not independent replicates or significance evidence. This ungrouped search study establishes no spectral-coarsening advantage.",
+  "decision": "Keep binary4 as a promising development candidate, retaining the five losses. Do not promote it to the default or replace LaTeX empirical data yet. Broader baseline/backbone and independently reserved validation evidence remain necessary before final selection."
+}

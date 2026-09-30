@@ -1,7 +1,9 @@
 """Matched proposal-cap validation of continuous versus binary acceptance guards.
 
 No baseline support is injected into search. Both policies start from the same
-saved saliency support and use the same proposals, gradients and step cap.
+saved saliency support and use the same proposal and gradient rules.
+The default step cap is eight for both; --short-search uses four binary-policy
+steps versus eight componentwise steps, following the saved development plan.
 Trajectories and actual costs may diverge after different acceptance choices.
 """
 import argparse
@@ -29,11 +31,16 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def policy_steps(short_search):
+    return {'componentwise': 8, 'binary-monotone': 4 if short_search else 8}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--device', default='cuda')
+    parser.add_argument('--short-search', action='store_true')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Preserve prior outcomes')
@@ -85,7 +92,7 @@ def main():
             synchronize(args.device)
             start = time.perf_counter()
             support, trace = refine_support(model, data, *query, candidates, initial,
-                                            steps=8, additions=12, removals=3, batch_size=8,
+                                            steps=policy_steps(args.short_search)[policy], additions=12, removals=3, batch_size=8,
                                             acceptance_policy=policy)
             synchronize(args.device)
             seconds = time.perf_counter() - start
@@ -100,13 +107,17 @@ def main():
                                    'evaluated_proposals': sum(t['proposals'] for t in trace), **metrics})
         if (index + 1) % 3 == 0:
             print(f'Completed {(index + 1)//3}/{len(initial_rows)//3} queries', flush=True)
-    result = {'study': 'acceptance-policy-ablation-v1', 'protocol': PROTOCOL,
+    result = {'study': 'acceptance-short-search-v1' if args.short_search else 'acceptance-policy-ablation-v1', 'protocol': PROTOCOL,
               'input': str(args.input), 'input_sha256': sha(args.input), 'checkpoint_sha256': sha(checkpoint),
               'split_sha256': saved['split_sha256'], 'source_sha256_at_start': sources,
               'dataset': config['dataset'], 'training_seed': config['seed'], 'device': args.device,
               'settings': {'steps': 8, 'additions': 12, 'removals': 3, 'batch_size': 8, 'exchange_size': 1,
                            'local_gcn': False, 'groups': None},
               'scope': __doc__, 'reference_replay_failures': failures, 'rows': rows}
+    if args.short_search:
+        result['settings']['steps'] = policy_steps(True)
+        plan = Path('results/tnnls-reproduction/acceptance_short_search_plan.json')
+        result['plan_sha256'] = sha(plan)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open('x') as output:
         json.dump(result, output, indent=2)

@@ -1,0 +1,276 @@
+{
+  "unique_rows": 900,
+  "duplicate_reference_rows_verified": 0,
+  "summaries": {
+    "Saliency-supportive": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.23,
+        "sufficiency_agreement": 0.98,
+        "necessity_confidence_drop": 0.17738540626134047,
+        "sufficiency_confidence_drop": -0.025130227459811486,
+        "both_binary_criteria": 0.21
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.18,
+        "sufficiency_agreement": 0.97,
+        "necessity_confidence_drop": 0.17355686631618356,
+        "sufficiency_confidence_drop": -0.016476411715243673,
+        "both_binary_criteria": 0.15
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.25,
+        "sufficiency_agreement": 0.98,
+        "necessity_confidence_drop": 0.19849963586596125,
+        "sufficiency_confidence_drop": -0.018015141074783282,
+        "both_binary_criteria": 0.23
+      }
+    },
+    "Swap-binary-monotone": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.3,
+        "sufficiency_agreement": 1.0,
+        "necessity_confidence_drop": 0.21876535243587078,
+        "sufficiency_confidence_drop": -0.03410407914839929,
+        "both_binary_criteria": 0.3
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.36,
+        "sufficiency_agreement": 1.0,
+        "necessity_confidence_drop": 0.28287575134483955,
+        "sufficiency_confidence_drop": -0.03675279820049119,
+        "both_binary_criteria": 0.36
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.4,
+        "sufficiency_agreement": 1.0,
+        "necessity_confidence_drop": 0.32051108791479993,
+        "sufficiency_confidence_drop": -0.028439776538659676,
+        "both_binary_criteria": 0.4
+      }
+    },
+    "Swap-componentwise": {
+      "5": {
+        "queries": 100,
+        "necessity_flip": 0.29,
+        "sufficiency_agreement": 0.98,
+        "necessity_confidence_drop": 0.214436711117995,
+        "sufficiency_confidence_drop": -0.025668302658587685,
+        "both_binary_criteria": 0.27
+      },
+      "10": {
+        "queries": 100,
+        "necessity_flip": 0.36,
+        "sufficiency_agreement": 0.98,
+        "necessity_confidence_drop": 0.28232491312716557,
+        "sufficiency_confidence_drop": -0.021535702721774484,
+        "both_binary_criteria": 0.34
+      },
+      "20": {
+        "queries": 100,
+        "necessity_flip": 0.39,
+        "sufficiency_agreement": 0.98,
+        "necessity_confidence_drop": 0.32150335039653677,
+        "sufficiency_confidence_drop": -0.01799813965807214,
+        "both_binary_criteria": 0.37
+      }
+    }
+  },
+  "paired_comparisons": [
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 9,
+        "ties": 91,
+        "tradeoffs": 0
+      },
+      "identical_supports": 53,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.07,
+        "sufficiency_agreement": -0.02,
+        "necessity_confidence_drop": -0.041379946174530315,
+        "sufficiency_confidence_drop": 0.008973851688587805
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 21,
+        "ties": 79,
+        "tradeoffs": 0
+      },
+      "identical_supports": 44,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.18,
+        "sufficiency_agreement": -0.03,
+        "necessity_confidence_drop": -0.10931888502865603,
+        "sufficiency_confidence_drop": 0.020276386485247516
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-binary-monotone",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 17,
+        "ties": 83,
+        "tradeoffs": 0
+      },
+      "identical_supports": 50,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.15,
+        "sufficiency_agreement": -0.02,
+        "necessity_confidence_drop": -0.12201145204883869,
+        "sufficiency_confidence_drop": 0.01042463546387639
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 6,
+        "ties": 94,
+        "tradeoffs": 0
+      },
+      "identical_supports": 55,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.06,
+        "sufficiency_agreement": 0.0,
+        "necessity_confidence_drop": -0.03705130485665452,
+        "sufficiency_confidence_drop": 0.0005380751987761978
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 19,
+        "ties": 81,
+        "tradeoffs": 0
+      },
+      "identical_supports": 47,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.18,
+        "sufficiency_agreement": -0.01,
+        "necessity_confidence_drop": -0.10876804681098202,
+        "sufficiency_confidence_drop": 0.005059291006530811
+      }
+    },
+    {
+      "left": "Saliency-supportive",
+      "right": "Swap-componentwise",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 0,
+        "losses": 14,
+        "ties": 86,
+        "tradeoffs": 0
+      },
+      "identical_supports": 52,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": -0.14,
+        "sufficiency_agreement": 0.0,
+        "necessity_confidence_drop": -0.12300371453057553,
+        "sufficiency_confidence_drop": -1.7001416711140866e-05
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 5,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 3,
+        "losses": 0,
+        "ties": 97,
+        "tradeoffs": 0
+      },
+      "identical_supports": 93,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.01,
+        "sufficiency_agreement": 0.02,
+        "necessity_confidence_drop": 0.0043286413178757945,
+        "sufficiency_confidence_drop": -0.008435776489811607
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 10,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 2,
+        "losses": 0,
+        "ties": 98,
+        "tradeoffs": 0
+      },
+      "identical_supports": 86,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.0,
+        "sufficiency_agreement": 0.02,
+        "necessity_confidence_drop": 0.0005508382176740092,
+        "sufficiency_confidence_drop": -0.015217095478716703
+      }
+    },
+    {
+      "left": "Swap-binary-monotone",
+      "right": "Swap-componentwise",
+      "budget": 20,
+      "paired_queries": 100,
+      "binary_pareto_left_vs_right": {
+        "wins": 3,
+        "losses": 0,
+        "ties": 97,
+        "tradeoffs": 0
+      },
+      "identical_supports": 75,
+      "mean_difference_left_minus_right": {
+        "necessity_flip": 0.01,
+        "sufficiency_agreement": 0.02,
+        "necessity_confidence_drop": -0.0009922624817368282,
+        "sufficiency_confidence_drop": -0.010441636880587532
+      }
+    }
+  ],
+  "scope": "Direct GPU search with independent final original-support evaluation; this tool audits saved arithmetic, coverage and acceptance traces. Previously inspected validation data, not held-out confirmation. Timings include search only on shared hardware; counts are not FLOPs. Four-step selection was retrospective. No coarsening benefit is measured.",
+  "costs": {
+    "componentwise": {
+      "mean_forward_calls": 29.04,
+      "mean_graph_evaluations": 148.42,
+      "mean_gradient_steps": 2.033333333333333,
+      "total_search_seconds": 17.92305300515727,
+      "median_search_seconds": 0.03110262250265805
+    },
+    "binary-monotone": {
+      "mean_forward_calls": 25.8,
+      "mean_graph_evaluations": 129.56,
+      "mean_gradient_steps": 1.7966666666666666,
+      "total_search_seconds": 15.676463337804307,
+      "median_search_seconds": 0.031226471000991296
+    }
+  },
+  "input": "results/tnnls-reproduction/acceptance_short_Citeseer42_val100.json",
+  "input_sha256": "4f979bb9c492c33b873217d31cd6c9fcfb4bdb877208647f7df6bb00dc563ab8"
+}
