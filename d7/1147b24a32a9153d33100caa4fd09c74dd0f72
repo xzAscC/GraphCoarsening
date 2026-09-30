@@ -1,0 +1,23 @@
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_27046fc0f4a355 84-89,176-181
+tests/test_cf2_link.py
+  s_6574c9512bb1f0::t_9d50c32a37e5d0 1-80
+src/explainers/cf2_link.py
+  s_6574c9512bb1f0::t_27046fc0f4a355 1-123
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d71147b24a32a9153d33100caa4fd09c74dd0f72",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
