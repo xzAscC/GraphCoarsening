@@ -1,0 +1,39 @@
+experiments/audit_acceptance_policy.py
+  s_6574c9512bb1f0::t_b316dcf94e52be 1-104
+tests/test_acceptance_audit.py
+  s_6574c9512bb1f0::t_b316dcf94e52be 1-36
+results/tnnls-reproduction/acceptance_cross_cohort_plan.json
+  s_6574c9512bb1f0::t_4382d6a3d70983 1-12
+results/tnnls-reproduction/acceptance_cross_cohort_context.json
+  s_6574c9512bb1f0::t_702606b3419257 1-21
+results/tnnls-reproduction/acceptance_Citeseer42_val100.json
+  s_6574c9512bb1f0::t_c6f2478717e79f 1-93912
+results/tnnls-reproduction/acceptance_Citeseer43_val100.json
+  s_6574c9512bb1f0::t_91e5e2609fdcf7 1-97488
+results/tnnls-reproduction/acceptance_Cora42_val100.json
+  s_6574c9512bb1f0::t_6826a0ca353851 1-115222
+results/tnnls-reproduction/acceptance_Cora42_val100_audit.json
+  s_6574c9512bb1f0::t_0e44834fa595e6 1-166
+results/tnnls-reproduction/acceptance_Cora43_val100.json
+  s_6574c9512bb1f0::t_7cfabed787559c 1-117338
+results/tnnls-reproduction/acceptance_Cora_two_seeds_audit.json
+  s_6574c9512bb1f0::t_3c5e23ce43eb64 1-321
+results/tnnls-reproduction/acceptance_five_cohorts_audit.json
+  s_6574c9512bb1f0::t_646aa77079d49f 1-786
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3c3ea8cb53de8a923fa0b89e176683f2a62bd2ff",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
