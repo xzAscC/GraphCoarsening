@@ -92,6 +92,8 @@ def main():
     p.add_argument('--support-swaps', action='store_true',
                    help='Compare ungrouped and coarse-diverse swaps from the same signed saliency support')
     p.add_argument('--swap-steps', type=int, default=2)
+    p.add_argument('--pair-swaps', action='store_true',
+                   help='Also compare two-edge exchanges with matched proposal counts')
     p.add_argument('--swap-additions', type=int, default=6)
     p.add_argument('--swap-removals', type=int, default=3)
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
@@ -102,6 +104,8 @@ def main():
     args = p.parse_args()
     if args.support_swaps and not args.signed_ablation:
         p.error('--support-swaps requires --signed-ablation for a shared initial support')
+    if args.pair_swaps and not args.support_swaps:
+        p.error('--pair-swaps requires --support-swaps')
     if args.score_ablation and args.merge_score != 'legacy':
         p.error('--score-ablation uses legacy as its reference; do not combine with --merge-score projection')
     source_files = [Path(__file__), Path('experiments/train_gcn.py'), *Path('src').rglob('*.py')]
@@ -252,13 +256,17 @@ def main():
                         from src.partition import isolate_query_endpoints
                         partition = isolate_query_endpoints(coarsener.partition, a, b)
                         group_ids = candidate_groups(candidates, partition, n)
-                        for variant, grouping in [('Swap-gradient', None), ('Swap-coarse', group_ids)]:
+                        swap_variants = [('Swap-gradient', None, 1), ('Swap-coarse', group_ids, 1)]
+                        if args.pair_swaps:
+                            swap_variants += [('Swap-pair-gradient', None, 2), ('Swap-pair-coarse', group_ids, 2)]
+                        for variant, grouping, exchange_size in swap_variants:
                             sync()
                             swap_start = time.perf_counter()
                             refined, trace = refine_support(
                                 model, data, a, b, candidates, support, groups=grouping,
                                 steps=args.swap_steps, additions=args.swap_additions,
-                                removals=args.swap_removals, batch_size=args.intervention_batch_size)
+                                removals=args.swap_removals, batch_size=args.intervention_batch_size,
+                                exchange_size=exchange_size)
                             sync()
                             swap_seconds = time.perf_counter() - swap_start
                             refined_metrics = evaluate_support(model, data, refined, a, b, args.device)
@@ -269,6 +277,7 @@ def main():
                                          'ranking_seconds': duration + swap_seconds,
                                          'refinement_seconds': swap_seconds, 'search_trace': trace,
                                          'initial_method': name,
+                                         'requested_exchange_size': exchange_size,
                                          'support': refined.edge_index.t().cpu().tolist(),
                                          'grouping': {'clusters': len(partition)} if grouping is not None else {},
                                          **refined_metrics})

@@ -5,6 +5,7 @@ Coarse groups diversify gradient-proposed additions; an ungrouped control uses
 the same initial support, proposal counts, and acceptance rule. No labels from
 the data set or held-out results are used to optimize a query's explanation.
 """
+import itertools
 import torch
 from torch_geometric.data import Data
 
@@ -38,8 +39,49 @@ def diversify(order, groups, count):
     return torch.tensor(selected[:count], device=order.device, dtype=torch.long)
 
 
+def ranked_bundles(order, gradient, count, size, *, groups=None, largest=True):
+    """Bounded pair proposals; grouping prioritizes two edges in one group.
+
+    For ungrouped pairs, the best ``count`` additive scores occur among the
+    first ``count+1`` individually ranked entries (up to ties). A grouped
+    proposal pool first takes the best pair per group, then fills from the
+    global list. This additive proposal score is not a joint-effect estimate.
+    """
+    if size not in (1, 2) or count < 1:
+        raise ValueError('Positive proposal count and bundle size 1 or 2 required')
+    if size == 1:
+        return diversify(order, groups, min(count, len(order))).reshape(-1, 1)
+    indices = order.tolist()
+    scores = gradient.detach().cpu().tolist()
+    direction = -1 if largest else 1
+
+    def rank(pairs):
+        return sorted(pairs, key=lambda pair: (direction * sum(scores[i] for i in pair), pair))
+
+    global_pairs = rank([tuple(sorted(pair)) for pair in
+                         itertools.combinations(indices[:count + 1], 2)])
+    preferred = []
+    if groups is not None:
+        ids = groups.detach().cpu().tolist()
+        buckets = {}
+        for idx in indices:
+            bucket = buckets.setdefault(ids[idx], [])
+            if len(bucket) < 2:
+                bucket.append(idx)
+        preferred = rank([tuple(sorted(bucket)) for bucket in buckets.values() if len(bucket) == 2])
+    selected, seen = [], set()
+    for pair in itertools.chain(preferred, global_pairs):
+        if pair not in seen:
+            selected.append(pair)
+            seen.add(pair)
+        if len(selected) == count:
+            break
+    return torch.tensor(selected, dtype=torch.long, device=order.device).reshape(-1, 2)
+
+
 def refine_support(model, data, a, b, candidates, initial, *, groups=None,
-                   steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7):
+                   steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7,
+                   exchange_size=1):
     """Return a same-size original-edge support and an auditable search trace.
 
     Accept only exact interventions whose removed-graph class probability does
@@ -49,7 +91,8 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     This is a finite-search invariant, not a fidelity or global-optimum theorem.
     Batched forwards require graph-separable inference; tested with GCN.
     """
-    if steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0:
+    if (steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0
+            or exchange_size not in (1, 2)):
         raise ValueError('Invalid refinement budget')
     if model.training:
         raise ValueError('Frozen evaluation-mode model required')
@@ -88,8 +131,9 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     current = tuple(x[0] for x in assess([selected], 1))
     trace = []
 
-    def record(step, proposals, accepted):
+    def record(step, proposals, accepted, actual_exchange_size=0):
         trace.append({'step': step, 'proposals': proposals, 'accepted': accepted,
+                      'exchange_size': actual_exchange_size,
                       'objective': current[0].item(), 'capped_retained_probability': current[1].item(),
                       'removed_probability': current[2].item(),
                       'retained_logit': current[5].item(), 'removed_logit': current[6].item()})
@@ -118,16 +162,18 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
             raise ValueError('Nonfinite support-gradient proposal')
         inside, outside = active.nonzero().flatten(), (~active).nonzero().flatten()
         out_order = outside[torch.argsort(gradient[outside], descending=True, stable=True)]
-        add = diversify(out_order, groups, min(additions, outside.numel()))
-        drop = inside[torch.argsort(gradient[inside], stable=True)[:removals]]
-        proposals = [torch.cat((selected[selected != candidates[d]], candidates[i:i+1])).sort().values
-                     for d in drop.tolist() for i in add.tolist()]
+        in_order = inside[torch.argsort(gradient[inside], stable=True)]
+        size = min(exchange_size, inside.numel(), outside.numel())
+        add = ranked_bundles(out_order, gradient, additions, size, groups=groups)
+        drop = ranked_bundles(in_order, gradient, removals, size, largest=False)
+        proposals = [torch.cat((selected[~torch.isin(selected, candidates[d])], candidates[i])).sort().values
+                     for d in drop for i in add]
         values = assess(proposals, batch_size)
         eligible = ((values[1] >= current[1]) & (values[2] <= current[2])
                     & (values[3] >= current[3]) & (values[4] >= current[4])
                     & (values[0] > current[0] + min_gain))
         if not eligible.any():
-            record(step, len(proposals), False)
+            record(step, len(proposals), False, size)
             break
         ranking = torch.argsort(values[0].masked_fill(~eligible, -torch.inf), descending=True)
         accepted = False
@@ -138,7 +184,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                     and checked[0] > current[0] + min_gain):
                 selected, current, accepted = proposals[index], checked, True
                 break
-        record(step, len(proposals), accepted)
+        record(step, len(proposals), accepted, size)
         if not accepted:
             break
     return Data(edge_index=torch.stack((selected // n, selected % n))), trace
