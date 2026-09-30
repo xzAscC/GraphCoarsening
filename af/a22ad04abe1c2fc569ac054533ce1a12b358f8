@@ -1,0 +1,38 @@
+src/explainers/coarsen_explainer.py
+  s_6574c9512bb1f0::t_f3782c846eee37 63,76-78,129-143
+  s_6574c9512bb1f0::t_6a2c83d501bc33 39-40,46-48,117-118
+  s_6574c9512bb1f0::t_718652dfdd6e65 62,73-75,79,120,176-191,269
+  s_6574c9512bb1f0::t_437c48f5074dab 145,173-175,201-202,208-210
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_f3782c846eee37 59,116-120
+  s_6574c9512bb1f0::t_718652dfdd6e65 58,111-115,136-137,151-152
+src/coarsen.py
+  s_6574c9512bb1f0::t_e9f13986657e8d 1,3-6
+tests/test_pathway_intervention.py
+  s_6574c9512bb1f0::t_6a2c83d501bc33 22-34
+  s_6574c9512bb1f0::t_9bd4d1fd956dd0 35-55
+src/spectral.py
+  s_6574c9512bb1f0::t_e9f13986657e8d 1,3-6
+results/tnnls-reproduction/global_refine_Cora_seed43.json
+  s_6574c9512bb1f0::t_4b4c213658a046 1-17312
+results/tnnls-reproduction/grouping_Cora_seed43.json
+  s_6574c9512bb1f0::t_ff7366102e5d30 1-17311
+results/tnnls-reproduction/grouping_direction_fixed_Cora_seed43.json
+  s_6574c9512bb1f0::t_3012155d9fbd7f 1-17311
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "afa22ad04abe1c2fc569ac054533ce1a12b358f8",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
