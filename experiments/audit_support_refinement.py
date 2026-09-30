@@ -16,6 +16,47 @@ METRICS = ('necessity_flip', 'sufficiency_agreement', 'necessity_confidence_drop
            'sufficiency_confidence_drop')
 
 
+def paired_policy_comparison(rows, treatment, control):
+    """Descriptive same-run comparison; query pairs are not independent runs."""
+    groups = [{(tuple(r['query']), r['budget']): r for r in rows if r['method'] == name}
+              for name in (treatment, control)]
+    if not groups[0] or not groups[1]:
+        return []
+    if groups[0].keys() != groups[1].keys():
+        raise AssertionError('Policy query/budget coverage differs')
+    comparisons = []
+    for budget in sorted({key[1] for key in groups[0]}):
+        pairs = [(row, groups[1][key]) for key, row in groups[0].items() if key[1] == budget]
+        same_support = 0
+        outcomes = {'wins': 0, 'losses': 0, 'ties': 0, 'tradeoffs': 0}
+        for left, right in pairs:
+            if any(left[k] != right[k] for k in ('effective_budget', 'candidate_edges', 'label')):
+                raise AssertionError('Policy candidate, support budget, or label differs')
+            if ((left['full_logit'] > 0) != (right['full_logit'] > 0)
+                    or not math.isclose(left['full_logit'], right['full_logit'], rel_tol=1e-6, abs_tol=1e-5)):
+                raise AssertionError('Policy original predictions differ')
+            supports = [{tuple(sorted(edge)) for edge in r['support']} for r in (left, right)]
+            same_support += supports[0] == supports[1]
+            delta = [left[k] - right[k] for k in METRICS[:2]]
+            category = ('ties' if all(d == 0 for d in delta) else
+                        'wins' if all(d >= 0 for d in delta) else
+                        'losses' if all(d <= 0 for d in delta) else 'tradeoffs')
+            outcomes[category] += 1
+        comparisons.append({
+            'treatment': treatment, 'control': control, 'budget': budget,
+            'paired_queries': len(pairs), 'identical_supports': same_support,
+            'binary_pareto_outcomes': outcomes,
+            'paired_mean_difference': {
+                metric: statistics.mean(left[metric] - right[metric] for left, right in pairs)
+                for metric in METRICS},
+            'mean_evaluated_proposals': {
+                name: statistics.mean(sum(t['proposals'] for t in pair[index]['search_trace'])
+                                      for pair in pairs)
+                for index, name in enumerate(('treatment', 'control'))},
+            'cost_scope': 'Proposal counts exclude gradients and serial acceptance checks; not total compute.'})
+    return comparisons
+
+
 def validate_proposal_trace(trace, args):
     """Check new mixed-proposal accounting, retaining legacy trace compatibility."""
     for index, step in enumerate(trace):
@@ -41,6 +82,17 @@ def audit(path):
     if report['protocol'] != 'undirected-original-support-v1':
         raise ValueError('Unsupported intervention protocol')
     rows = report['rows']
+    for row in rows:
+        for key in (*METRICS, 'full_logit', 'ranking_seconds'):
+            if not math.isfinite(row[key]):
+                raise AssertionError('Nonfinite recorded metric')
+        for key in ('retained_logit', 'removed_logit'):
+            if key in row and not math.isfinite(row[key]):
+                raise AssertionError('Nonfinite recorded logit')
+        for step in row.get('search_trace', []):
+            if any(not math.isfinite(step[key]) for key in
+                   ('objective', 'capped_retained_probability', 'removed_probability')):
+                raise AssertionError('Nonfinite recorded search state')
     keys = [(tuple(r['query']), r['method'], r['budget']) for r in rows]
     if len(set(keys)) != len(keys):
         raise ValueError('Duplicate query/method/budget row')
@@ -143,12 +195,19 @@ def audit(path):
                                          'require_identical_binary_decision': True},
             'scope': 'Descriptive differences conditional on equal actual edge counts; unequal counts are listed, not pooled.',
             'comparisons': comparisons}
+    policy_pairs = [('Swap-coarse', 'Swap-gradient'),
+                    ('Swap-pair-coarse', 'Swap-pair-gradient'),
+                    ('Swap-mixed-coarse', 'Swap-mixed-gradient'),
+                    ('Swap-pair-gradient', 'Swap-gradient'),
+                    ('Swap-mixed-gradient', 'Swap-gradient')]
+    policies = [comparison for treatment, control in policy_pairs
+                for comparison in paired_policy_comparison(rows, treatment, control)]
     return {'input': str(path), 'sha256': hashlib.sha256(raw).hexdigest(),
             'dataset': report['args']['dataset'], 'seed': report['args']['seed'],
             'query_split': report['args']['query_split'], 'device': report['args']['device'],
             'candidate_region': report['args'].get('candidate_region', 'induced'),
             'audited_swap_rows': len(paired), 'summaries': summaries,
-            'reference_comparison': candidate_comparison}
+            'reference_comparison': candidate_comparison, 'paired_policy_comparisons': policies}
 
 
 def main():

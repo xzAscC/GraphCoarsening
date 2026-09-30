@@ -5,10 +5,42 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from experiments.audit_support_refinement import audit, validate_proposal_trace
+from experiments.audit_support_refinement import audit, validate_proposal_trace, paired_policy_comparison
 
 
 class RefinementAuditTests(unittest.TestCase):
+    def test_paired_outcomes_do_not_hide_cancelling_changes(self):
+        rows = []
+        for index, scores in enumerate(((1, 1), (0, 0), (0, 1), (1, 0))):
+            control = copy.deepcopy(self.report(2)['rows'][1])
+            control.update(query=[index, 9], candidate_edges=5,
+                           necessity_flip=0, sufficiency_agreement=1)
+            treatment = copy.deepcopy(control)
+            treatment.update(method='Swap-coarse', necessity_flip=scores[0],
+                             sufficiency_agreement=scores[1])
+            rows.extend((control, treatment))
+        result = paired_policy_comparison(rows, 'Swap-coarse', 'Swap-gradient')[0]
+        self.assertEqual(result['binary_pareto_outcomes'],
+                         {'wins': 1, 'losses': 1, 'ties': 1, 'tradeoffs': 1})
+        self.assertEqual(result['identical_supports'], 4)
+        rows[-1]['candidate_edges'] = 6
+        with self.assertRaisesRegex(AssertionError, 'candidate'):
+            paired_policy_comparison(rows, 'Swap-coarse', 'Swap-gradient')
+
+    def test_nonfinite_records_fail_audit(self):
+        for location in ('metric', 'trace'):
+            with tempfile.TemporaryDirectory() as directory:
+                report = self.report(2)
+                row = report['rows'][1]
+                if location == 'metric':
+                    row['necessity_confidence_drop'] = float('nan')
+                else:
+                    row['search_trace'][0]['objective'] = float('inf')
+                path = Path(directory) / 'invalid.json'
+                path.write_text(json.dumps(report))
+                with self.assertRaisesRegex(AssertionError, 'Nonfinite'):
+                    audit(path)
+
     def test_mixed_proposal_accounting(self):
         args = {'swap_steps': 2, 'swap_additions': 3, 'swap_removals': 2}
         trace = [{'step': 0, 'proposals': 0, 'accepted': False,
