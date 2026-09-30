@@ -1,0 +1,46 @@
+{
+  "audit": "logged-negative-sample-replay-v1",
+  "scope": "Matches replayed samples to hashes recorded at training time; checks disjoint pairs, source and split hashes, and validation-only checkpoint selection. Does not rerun model optimization.",
+  "runs": [
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/pubmed42-2layer/PubMed_gcn.pt",
+      "checkpoint_sha256": "41aaf0a8fca0f1409d33960984ce19ea44f7930e01d088e958e9ac5dcc2af3f5",
+      "dataset": "PubMed",
+      "seed": 42,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 200,
+      "selected_validation_auc": 0.9242602210376781,
+      "split_sha256": {
+        "train_pos_edge_index": "505655c12d4f9bd67c7ce2876c323f90cd3f161041ce9e5dc10fb03b371f59ed",
+        "val_pos_edge_index": "4af0786e2dd04cd31ac418c4f0b9cfb701981b85ab8b80b3f3a69cf2b591b000",
+        "val_neg_edge_index": "0c460a0174af90f4b5ebd4c1d313a72837b428d351782c3eb8a17d21388ca39f",
+        "test_pos_edge_index": "95c369f7be0b6ac5a0dda9ff18e8b7d281e3c8ab9c2dd7750b44a84febc94e61",
+        "test_neg_edge_index": "5edaa808e8dcc6084c059f3d0907911738e5598b0bb56e9b6a56d8d4b5edb4df"
+      },
+      "source_hashes_match": true
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/pubmed43-2layer/PubMed_gcn.pt",
+      "checkpoint_sha256": "32fc2d16d49bcf63450ad5290818257a2635cfff054ac754e7358912a173af14",
+      "dataset": "PubMed",
+      "seed": 43,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 200,
+      "selected_validation_auc": 0.9359566216815024,
+      "split_sha256": {
+        "train_pos_edge_index": "0d3c9246283e984a48413b92616175582e94b24b0695c5a05a3b52fb8219b6fb",
+        "val_pos_edge_index": "68228b2d6ac26641058337b88a38e5a508023f2da1d476d70e686fe8345ccf24",
+        "val_neg_edge_index": "712795996c9add1fce578e1fb162971df863cd9f81d9f1adbf4034ee71e4e24b",
+        "test_pos_edge_index": "51cff9e2ce4b737ce104ec97a503ec465602dbe717a99cf898ad3e556b0cf4ea",
+        "test_neg_edge_index": "a16d337f7cfa0cf8a2df55731635d8fc378361657d4ea43be610840977eda44b"
+      },
+      "source_hashes_match": true
+    }
+  ]
+}

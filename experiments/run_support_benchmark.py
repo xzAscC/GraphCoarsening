@@ -297,7 +297,14 @@ def main():
               'code_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'working_tree_status': subprocess.check_output(['git', 'status', '--short'], text=True),
               'torch': torch.__version__, 'pyg': torch_geometric.__version__,
-              'offline_seconds': offline, 'rows': rows}
+              'offline_seconds': offline,
+              'spectral_diagnostics': {
+                  'selected_eigenvalues': coarsener.eigenvalues.detach().cpu().tolist(),
+                  'eigenpair_residual_norms': torch.linalg.vector_norm(
+                      torch.sparse.mm(coarsener.A_hat, coarsener.right_vecs)
+                      - coarsener.right_vecs * coarsener.eigenvalues[None, :], dim=0).detach().cpu().tolist(),
+                  'scope': 'Selected normalized-adjacency eigenpairs only; not a full-spectrum eigengap or explanation-fidelity certificate.'},
+              'rows': rows}
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output, 'x') as f:
         json.dump(report, f, indent=2)
