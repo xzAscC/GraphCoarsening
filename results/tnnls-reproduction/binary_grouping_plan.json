@@ -1,0 +1,12 @@
+{
+  "status": "fixed-before-runs",
+  "question": "Does grouping add value after fixing binary-monotone acceptance?",
+  "inputs": ["coverage_union_PubMed43_additional_val100.json", "mixed_Cora42_val100_steps8.json"],
+  "selection": "All 100 existing validation queries per input, no outcome selection. Previously inspected development cohorts, not new held-out evidence.",
+  "acceptance_policy": "binary-monotone",
+  "variants": ["Swap-global12", "Swap-diverse12", "Swap-union-diffusion", "Swap-union-random", "Swap-union-structural"],
+  "settings": {"steps": 8, "additions": 12, "removals": 3, "batch_size": 8, "exchange_size": 1, "local_gcn": false},
+  "grouping": "Fixed alpha 0.75, diffusion width 100 and four steps with seed 0, random seed 0, normalized-edge structural ranking. Reusable global partitions with endpoint isolation. All variants share saved saliency initializations.",
+  "evaluation": "Original weighted undirected support retention/deletion. Record full traces, actual proposal counts and search-only timings. Compare grouped variants against ungrouped and non-spectral grouping controls, not only the smaller shortlist from prior studies.",
+  "decision": "Preserve neutral and negative outcomes. Acceptance-rule benefits do not count as coarsening benefits. No empirical LaTeX changes or method promotion from this development study alone."
+}

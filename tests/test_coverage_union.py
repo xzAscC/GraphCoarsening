@@ -26,6 +26,11 @@ class CoverageUnionTests(unittest.TestCase):
         self.assertNotIn('signal_policy', actual)
         self.assertEqual(actual['queries_per_class'], 50)
         self.assertTrue(reference['pair_swaps'])
+        self.assertEqual(actual['acceptance_policy'], 'componentwise')
+        changed = study_arguments(reference, 'cuda', 'output.json', 0, 100,
+                                  acceptance_policy='binary-monotone', equal_cap_only=True)
+        self.assertEqual(changed['acceptance_policy'], 'binary-monotone')
+        self.assertTrue(changed['equal_cap_only'])
 
     def test_both_half_shortlists_included_and_total_cap_filled(self):
         generator = torch.Generator().manual_seed(4)

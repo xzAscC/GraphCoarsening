@@ -1,0 +1,39 @@
+{
+  "status": "development-only; no empirical manuscript replacements",
+  "reports": ["binary_grouping_PubMed43_val100.json", "binary_grouping_Cora42_val100.json"],
+  "design": "Binary-monotone acceptance fixed across five search variants. Each cohort has 100 saved validation queries and budgets 5, 10, 20. Shared saliency initializations, 12 additions, 3 removals, 8 steps, single exchanges, original-graph evaluation. Including initialization, each report contains 1800 rows.",
+  "comparison_count_order": ["binary_pareto_wins", "binary_pareto_losses", "binary_ties", "binary_tradeoffs"],
+  "aggregate_query_budget_comparisons": {
+    "PubMed43": {
+      "diverse12_vs_global12": [4, 3, 293, 0],
+      "union_diffusion_vs_global12": [2, 0, 298, 0],
+      "union_diffusion_vs_union_random": [1, 0, 299, 0],
+      "union_diffusion_vs_union_structural": [0, 0, 300, 0],
+      "union_random_vs_global12": [1, 0, 299, 0],
+      "union_structural_vs_global12": [2, 0, 298, 0]
+    },
+    "Cora42": {
+      "diverse12_vs_global12": [2, 0, 298, 0],
+      "union_diffusion_vs_global12": [0, 0, 300, 0],
+      "union_diffusion_vs_union_random": [0, 2, 298, 0],
+      "union_diffusion_vs_union_structural": [0, 0, 300, 0],
+      "union_random_vs_global12": [2, 0, 298, 0],
+      "union_structural_vs_global12": [0, 0, 300, 0]
+    }
+  },
+  "interpretation": "Small and mixed grouping gains do not establish a consistent independent spectral advantage. Diffusion union and structural union have identical binary outcomes on both cohorts; random union beats diffusion union on two Cora conditions and loses on one PubMed condition. Acceptance-policy improvements must not be attributed to coarsening. This is not an impossibility result or a significance test.",
+  "limitations": [
+    "Previously inspected validation cohorts, not fresh held-out evidence; no test-set tuning.",
+    "One grouping seed and one checkpoint per dataset in this study.",
+    "Query-budget conditions are dependent, not independent experimental replicates.",
+    "Equal per-step proposal caps do not imply equal realized work or equal runtime.",
+    "Search-only timings exclude offline grouping, initialization and final evaluation; shared GPU execution is not a controlled end-to-end speed benchmark.",
+    "Binary ties do not imply identical supports or continuous confidence metrics."
+  ],
+  "verification": {
+    "rows_audited": 3600,
+    "checks": ["current source hashes", "unique supports and budget arithmetic", "independent metric arithmetic", "initial logits against reference", "query and class coverage", "accepted-step objective gain and binary non-regression", "addition cap 12", "re-derived paired comparisons"],
+    "pytest": {"passed": 136, "warnings": 851}
+  },
+  "decision": "Keep results, including neutral and negative outcomes, in JSON. Do not promote grouping or overwrite historical LaTeX measurements. Further method selection requires validation evidence and controlled cost comparisons; final empirical manuscript updates require a frozen protocol."
+}

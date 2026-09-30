@@ -36,7 +36,8 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def study_arguments(reference_args, device, output, additional_queries, query_count):
+def study_arguments(reference_args, device, output, additional_queries, query_count,
+                    acceptance_policy='componentwise', equal_cap_only=False):
     """Keep reference provenance separate from the actually executed study.
 
 The v1 writer inherited unused pair/mixed flags from its input benchmark.
@@ -48,6 +49,7 @@ Those flags never controlled this driver, but could misdescribe the run.
         'swap_steps': 8, 'swap_additions': 12, 'swap_removals': 3,
         'intervention_batch_size': 8, 'support_swaps': True,
         'pair_swaps': False, 'mixed_swaps': False, 'budgets': [5, 10, 20],
+        'acceptance_policy': acceptance_policy, 'equal_cap_only': equal_cap_only,
         'additional_queries_per_class': additional_queries, 'queries_per_class': query_count // 2}
 
 
@@ -57,6 +59,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--additional-queries-per-class', type=int, default=0)
+    parser.add_argument('--acceptance-policy', choices=('componentwise', 'binary-monotone'), default='componentwise')
+    parser.add_argument('--equal-cap-only', action='store_true', help='Omit half-sized shortlist variants')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Preserve prior measurements')
@@ -125,6 +129,8 @@ def main():
                 ('Swap-union-diffusion', 'diffusion', 12, 'coverage-union'),
                 ('Swap-union-random', 'random', 12, 'coverage-union'),
                 ('Swap-union-structural', 'normalized-edge', 12, 'coverage-union')]
+    if args.equal_cap_only:
+        variants = [v for v in variants if v[2] == 12]
     saliency = SaliencyExplainer(model, k_frac=1., evidence_mode='supportive', device=args.device)
     rows = []
     for index, (query, label) in enumerate(queries):
@@ -160,7 +166,8 @@ def main():
                 start = time.perf_counter()
                 support, trace = refine_support(model, data, a, b, candidates, initial,
                                                 groups=grouping.get(partition_name), additions=additions,
-                                                removals=3, steps=8, batch_size=8, addition_policy=addition_policy)
+                                                removals=3, steps=8, batch_size=8, addition_policy=addition_policy,
+                                                acceptance_policy=args.acceptance_policy)
                 sync()
                 elapsed = time.perf_counter() - start
                 metrics = evaluate_support(model, data, support, a, b, args.device)
@@ -176,10 +183,11 @@ def main():
                          ('Swap-union-diffusion', 'Swap-union-random'), ('Swap-union-diffusion', 'Swap-union-structural')]
     comparisons = [item for treatment, control in comparison_pairs
                    for item in paired_policy_comparison(rows, treatment, control)]
-    report = {'protocol': PROTOCOL, 'study': 'coverage-union-fixed-controls-v2', 'scope': __doc__,
+    report = {'protocol': PROTOCOL, 'study': 'coverage-union-fixed-controls-v3', 'scope': __doc__,
               'input': str(args.input), 'input_sha256': sha(args.input),
               'args': study_arguments(reference['args'], args.device, args.output,
-                                      args.additional_queries_per_class, len(queries)),
+                                      args.additional_queries_per_class, len(queries),
+                                      args.acceptance_policy, args.equal_cap_only),
               'reference_args': reference['args'],
               'variant_configuration': variants, 'query_sampling_seed': 20260930,
               'excluded_reference_query_keys': excluded if args.additional_queries_per_class else [],
