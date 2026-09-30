@@ -1,0 +1,31 @@
+src/explainers/support_refinement.py
+  s_6574c9512bb1f0::t_ec2e32f818baae 1-144
+tests/test_support_refinement.py
+  s_6574c9512bb1f0::t_91a0b8eb1fb0a8 1-81
+src/explainers/group_interventions.py
+  s_6574c9512bb1f0::t_ec2e32f818baae 23,26-27,45-46
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_91a0b8eb1fb0a8 65-69,74-75,193-217,230
+experiments/audit_support_refinement.py
+  s_6574c9512bb1f0::t_dc86d5ada16b84 1-95
+results/tnnls-reproduction/swaps_Cora43_val20_batch8.json
+  s_6574c9512bb1f0::t_69e64a845e4b7f 1-43633
+results/tnnls-reproduction/swaps_pilot_audit.json
+  s_6574c9512bb1f0::t_8c4e267279aabd 1-389
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c55a859f480da6f26ed68d7c63914c9190f7788f",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
