@@ -1,0 +1,46 @@
+experiments/diagnose_support_search.py
+  s_6574c9512bb1f0::t_d36a7b8c5eea4e 1-105
+tests/test_search_diagnostics.py
+  s_6574c9512bb1f0::t_d36a7b8c5eea4e 1-31
+results/tnnls-reproduction/clean_validation20_context.json
+  s_6574c9512bb1f0::t_a607b071de9018 1-30
+experiments/probe_support_neighborhood.py
+  s_6574c9512bb1f0::t_0f75195b2ebc69 70-73,108-109,123
+  s_6574c9512bb1f0::t_a92562634f9d20 1-69,74-107,110-122,124-134
+results/tnnls-reproduction/clean_Citeseer43_val20_cf2_gnn.json
+  s_6574c9512bb1f0::t_541991946f602e 1-48011
+results/tnnls-reproduction/clean_Citeseer43_val20_steps8.json
+  s_6574c9512bb1f0::t_3fca76d9aa2dee 1-40234
+results/tnnls-reproduction/clean_Cora42_query1324_2265_budget5_cf2_neighborhood.json
+  s_6574c9512bb1f0::t_e23b6caeea796f 1-38
+results/tnnls-reproduction/clean_Cora42_query1324_2265_budget5_neighborhood.json
+  s_6574c9512bb1f0::t_d4b47394efe468 1-38
+results/tnnls-reproduction/clean_Cora42_query1324_2265_budget5_neighborhood_serial.json
+  s_6574c9512bb1f0::t_cad6fddc44ae45 1-38
+results/tnnls-reproduction/clean_Cora42_val20_cf2_gnn.json
+  s_6574c9512bb1f0::t_4be1c42696fb66 1-54653
+results/tnnls-reproduction/clean_Cora42_val20_steps8.json
+  s_6574c9512bb1f0::t_151023a35d1424 1-46865
+results/tnnls-reproduction/clean_steps8_audit.json
+  s_6574c9512bb1f0::t_5fc719b0f00675 1-776
+results/tnnls-reproduction/clean_validation20_audit.json
+  s_6574c9512bb1f0::t_bb085a7b823045 1-920
+results/tnnls-reproduction/clean_validation20_search_diagnostics.json
+  s_6574c9512bb1f0::t_4457a56c58e175 1-424
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "802f445c380f94f2d71d7bb7bc3f07d03275f83c",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
