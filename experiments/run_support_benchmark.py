@@ -21,6 +21,7 @@ from src.models.link_predictor import LinkPredictionModel
 from src.explainers.baselines import SaliencyExplainer
 from src.explainers.coarsen_explainer import CoarsenExplainer
 from src.evaluation.interventions import PROTOCOL, evaluate_support
+from src.spectral import compute_perturbation_scores, pair_projection_scores
 
 
 def rank_support(explanation, candidates, n, budget):
@@ -30,7 +31,10 @@ def rank_support(explanation, candidates, n, budget):
     if mapping is not None:
         edges = mapping.cpu()[edges]
     keys = edges.min(dim=0).values * n + edges.max(dim=0).values
-    values = explanation.edge_weight.detach().cpu().abs()
+    weights = getattr(explanation, 'edge_weight', None)
+    if weights is None and edges.size(1):
+        raise ValueError('Nonempty ranked explanations require importance scores')
+    values = torch.empty(0) if weights is None else weights.detach().cpu().abs()
     scores = torch.zeros(len(candidates), dtype=values.dtype)
     positions = torch.searchsorted(candidates, keys)
     valid = positions < len(candidates)
@@ -49,6 +53,8 @@ def main():
     p.add_argument('--budgets', type=int, nargs='+', default=[5, 10, 20])
     p.add_argument('--checkpoint-dir', default='checkpoints/tnnls-reproduction')
     p.add_argument('--output', required=True)
+    p.add_argument('--score-ablation', action='store_true',
+                   help='Also compare symmetric, projection-loss, and random merge scores')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
     if Path(args.output).exists():
@@ -62,6 +68,12 @@ def main():
     path = Path(args.checkpoint_dir) / f'{args.dataset}_gcn.pt'
     ckpt = torch.load(path, map_location=args.device, weights_only=False)
     c = ckpt['config']
+    if 'seed' in c and c['seed'] != args.seed:
+        raise ValueError('Checkpoint training seed differs from requested split seed')
+    if 'edge_splits' in ckpt:
+        for name, edges in ckpt['edge_splits'].items():
+            setattr(data, name, edges.cpu())
+        data.edge_index = data.train_pos_edge_index
     encoder = GCN(c['in_channels'], c['hidden_channels'], c['out_channels'], c['num_layers'])
     encoder.load_state_dict(ckpt['model_state_dict'])
     predictor = MLPLinkPredictor(c['out_channels'], c['hidden_channels'])
@@ -80,9 +92,20 @@ def main():
 
     sync()
     start = time.perf_counter()
-    ours._ensure_fitted(data)
+    coarsener = ours._ensure_fitted(data)
     sync()
     offline = time.perf_counter() - start
+    variants = {'Pathway': coarsener.scores.clone()}
+    if args.score_ablation:
+        reverse = compute_perturbation_scores(data.edge_index.flip(0), coarsener.eigenvalues,
+                                             coarsener.left_vecs, coarsener.right_vecs)
+        variants['Pathway-symmetric'] = (coarsener.scores + reverse) / 2
+        variants['Pathway-projection'] = pair_projection_scores(data.edge_index, coarsener.right_vecs)
+        keys = data.edge_index.min(dim=0).values * n + data.edge_index.max(dim=0).values
+        unique, inverse = torch.unique(keys, return_inverse=True)
+        random_scores = torch.rand(len(unique), generator=torch.Generator().manual_seed(args.seed + 123))
+        variants['Pathway-random'] = random_scores.to(data.edge_index.device)[inverse]
+    methods = [('Saliency', saliency)] + [(name, ours) for name in variants] + [('Random', None)]
     rng = np.random.default_rng(args.seed)
     rows = []
     for label, pool in [(1, data.test_pos_edge_index), (0, data.test_neg_edge_index)]:
@@ -95,7 +118,9 @@ def main():
             candidates = torch.unique(es.min(dim=0).values * n + es.max(dim=0).values).cpu()
             random_exp = Data(edge_index=torch.stack((candidates // n, candidates % n)),
                               edge_weight=torch.from_numpy(rng.random(len(candidates))))
-            for name, explainer in [('Saliency', saliency), ('Pathway', ours), ('Random', None)]:
+            for name, explainer in methods:
+                if name in variants:
+                    coarsener.scores = variants[name]
                 sync()
                 start = time.perf_counter()
                 exp = random_exp if explainer is None else explainer.explain_link(data, a, b)
@@ -120,7 +145,7 @@ def main():
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output, 'x') as f:
         json.dump(report, f, indent=2)
-    for method in ['Saliency', 'Pathway', 'Random']:
+    for method, _ in methods:
         for budget in args.budgets:
             group = [r for r in rows if r['method'] == method and r['budget'] == budget]
             print(method, budget, {k: float(np.mean([r[k] for r in group])) for k in

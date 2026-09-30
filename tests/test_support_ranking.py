@@ -20,7 +20,7 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(kept.edge_index.tolist(), [[0], [1]])
 
     def test_empty_candidates(self):
-        exp = Data(edge_index=torch.empty((2, 0), dtype=torch.long), edge_weight=torch.empty(0))
+        exp = Data(edge_index=torch.empty((2, 0), dtype=torch.long))
         kept = rank_support(exp, torch.empty(0, dtype=torch.long), 3, 0)
         self.assertEqual(tuple(kept.edge_index.shape), (2, 0))
 

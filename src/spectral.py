@@ -211,6 +211,18 @@ def compute_perturbation_scores(
     return scores
 
 
+def pair_projection_scores(edge_index: torch.Tensor, signals: torch.Tensor) -> torch.Tensor:
+    """Exact squared signal loss from averaging one pair of singleton nodes.
+
+    For the orthonormal partition map P merging only a,b,
+    ||(I-PP^T) signals||_F^2 = ||signals[a]-signals[b]||_2^2 / 2.
+    Symmetric in endpoints, sign/rotation invariant for a fixed signal subspace.
+    This is not an eigenvalue-shift bound or a guarantee for many stale merges.
+    """
+    signals = signals.to(edge_index.device)
+    return 0.5 * (signals[edge_index[0]] - signals[edge_index[1]]).square().sum(dim=1)
+
+
 def _sparse_tensor_to_scipy(sparse_tensor: torch.Tensor) -> sp.csr_matrix:
     """Convert a PyTorch sparse COO tensor to a scipy sparse CSR matrix.
 

@@ -286,12 +286,19 @@ def main():
         "model_state_dict": model.state_dict(),
         "predictor_state_dict": predictor.state_dict(),
         "config": {
+            "seed": cfg.seed,
+            "epochs": cfg.model.epochs,
+            "learning_rate": cfg.model.lr,
+            "dropout": cfg.model.dropout,
             "in_channels": in_channels,
             "hidden_channels": cfg.model.hidden_channels,
             "out_channels": out_channels,
             "num_layers": cfg.model.num_layers,
             "dataset": args.dataset,
         },
+        "edge_splits": {name: getattr(data, name).cpu() for name in
+                        ["train_pos_edge_index", "val_pos_edge_index", "val_neg_edge_index",
+                         "test_pos_edge_index", "test_neg_edge_index"]},
     }, checkpoint_path)
     print(f"Checkpoint saved to {checkpoint_path}")
 
