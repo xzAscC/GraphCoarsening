@@ -169,7 +169,7 @@ class CoarsenExplainer(BaseExplainer):
                 pathway_cf[key] = 1.0
                 continue
 
-            mask = torch.ones(data.edge_index.size(1), dtype=torch.bool)
+            mask = torch.ones(data.edge_index.size(1), dtype=torch.bool, device=self.device)
             for j in edge_indices:
                 src, dst = sub_ei[0, j], sub_ei[1, j]
                 matches = (
@@ -177,12 +177,15 @@ class CoarsenExplainer(BaseExplainer):
                 ) | (
                     (data.edge_index[0] == dst) & (data.edge_index[1] == src)
                 )
-                idx = matches.nonzero(as_tuple=True)[0]
-                if idx.numel() > 0:
-                    mask[idx[0]] = False
+                # A pathway intervention removes both orientations and duplicates.
+                mask[matches] = False
             modified_ei = data.edge_index[:, mask]
+            original_weight = getattr(data, "edge_weight", None)
             with torch.no_grad():
-                modified = self.model(data.x, modified_ei, target).squeeze().item()
+                modified = self.model(
+                    data.x, modified_ei, target,
+                    edge_weight=None if original_weight is None else original_weight[mask],
+                ).squeeze().item()
             group_effect = abs(baseline - modified)
             sum_gradient = sum(abs(gradient_scores[j]) for j in edge_indices)
 

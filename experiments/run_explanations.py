@@ -15,6 +15,7 @@ from config import ExperimentConfig
 from experiments.train_gcn import load_dataset, MLPLinkPredictor
 from src.models.gcn import GCN
 from src.models.link_predictor import LinkPredictionModel
+from src.evaluation.interventions import PROTOCOL, evaluate_support
 
 try:
     from src.explainers.baselines import OcclusionExplainer, SaliencyExplainer
@@ -91,28 +92,40 @@ def sample_test_edges(data, num_edges: int, seed: int = 42):
     return pos[:, indices]
 
 
-def run_explanation_method(method, explainer, model, data, test_edges, device):
+def run_explanation_method(method, explainer, model, data, test_edges, device, protocol="support-v1"):
     fid_p_list = []
     fid_m_list = []
     times = []
+    records = []
 
     for i in range(test_edges.size(1)):
         node_a = int(test_edges[0, i].item())
         node_b = int(test_edges[1, i].item())
 
-        t0 = time.time()
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+        t0 = time.perf_counter()
         try:
             explanation = explainer.explain_link(data, node_a, node_b)
         except (RuntimeError, TypeError, ValueError) as e:
             print(f"  Warning: explain_link failed for edge ({node_a}, {node_b}): {e}")
             explanation = None
-        elapsed = time.time() - t0
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+        elapsed = time.perf_counter() - t0
         times.append(elapsed)
 
         if explanation is None:
+            records.append({"query": [node_a, node_b], "status": "explanation_failed"})
             continue
 
-        if fidelity_plus is not None:
+        if protocol == "support-v1":
+            metrics = evaluate_support(model, data, explanation, node_a, node_b, str(device))
+            fp = metrics["necessity_flip"]
+            # Keep the old API field as an error rate; export agreement explicitly.
+            fm = 1.0 - metrics["sufficiency_agreement"]
+            records.append({"query": [node_a, node_b], "status": "ok", **metrics})
+        elif fidelity_plus is not None:
             fp = fidelity_plus(model, data, explanation, node_a, node_b, device)
             fm = fidelity_minus(model, data, explanation, node_a, node_b, device)
         else:
@@ -126,6 +139,12 @@ def run_explanation_method(method, explainer, model, data, test_edges, device):
         return {"status": "no_results"}
 
     return {
+        "protocol": PROTOCOL if protocol == "support-v1" else "legacy-unvalidated",
+        "fidelity_minus_semantics": "insufficiency_error_lower_is_better",
+        "mean_sufficiency_agreement": 1.0 - float(np.mean(fid_m_list)),
+        "successful_queries": len(fid_p_list),
+        "requested_queries": test_edges.size(1),
+        "per_query": records,
         "fidelity_plus": fid_p_list,
         "fidelity_minus": fid_m_list,
         "mean_fidelity_plus": float(np.mean(fid_p_list)),
@@ -146,6 +165,8 @@ def main():
     parser.add_argument("--checkpoint-dir", default="checkpoints")
     parser.add_argument("--results-dir", default="results")
     parser.add_argument("--no-plot", action="store_true")
+    parser.add_argument("--protocol", choices=["support-v1", "legacy"], default="support-v1",
+                        help="legacy reproduces known metric defects; never use for scientific claims")
     args = parser.parse_args()
 
     cfg = ExperimentConfig()
@@ -201,7 +222,7 @@ def main():
             continue
 
         method_result = run_explanation_method(
-            method, explainer, model, data, test_edges, device,
+            method, explainer, model, data, test_edges, device, args.protocol,
         )
         results[method] = method_result
         if "mean_fidelity_plus" in method_result:
