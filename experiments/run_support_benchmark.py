@@ -58,6 +58,10 @@ def main():
     p.add_argument('--protection-ablation', action='store_true')
     p.add_argument('--global-refine', action='store_true')
     p.add_argument('--endpoint-isolation', action='store_true')
+    p.add_argument('--signed-ablation', action='store_true',
+                   help='Add class-supportive saliency and bounded-refinement calibration')
+    p.add_argument('--intervention-batch-size', type=int, default=1,
+                   help='Independent deletion graphs per GPU forward (GCN only)')
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
     p.add_argument('--query-split', choices=['val', 'test'], default='test')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
@@ -95,7 +99,8 @@ def main():
     data = data.to(args.device)
     saliency = SaliencyExplainer(model, k_frac=1., device=args.device)
     ours = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'], device=args.device,
-                           score_method=args.merge_score)
+                           score_method=args.merge_score,
+                           intervention_batch_size=args.intervention_batch_size)
 
     def sync():
         if str(args.device).startswith('cuda'):
@@ -132,6 +137,18 @@ def main():
                                             device=args.device, partition_mode='global-endpoints')
         endpoint_isolation._coarsener, endpoint_isolation._cached_data_id = coarsener, id(data)
         methods.insert(-1, ('Endpoint-isolation', endpoint_isolation))
+    if args.signed_ablation:
+        signed_saliency = SaliencyExplainer(model, k_frac=1., device=args.device,
+                                           evidence_mode='supportive')
+        signed_pathway = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
+                                         device=args.device, partition_mode='global-endpoints',
+                                         evidence_mode='supportive', score_method=args.merge_score)
+        signed_pathway._coarsener, signed_pathway._cached_data_id = coarsener, id(data)
+        methods.insert(-1, ('Saliency-supportive', signed_saliency))
+        methods.insert(-1, ('Endpoint-supportive', signed_pathway))
+    for _, explainer in methods:
+        if isinstance(explainer, CoarsenExplainer):
+            explainer.intervention_batch_size = args.intervention_batch_size
     rng = np.random.default_rng(args.seed)
     rows = []
     for label, pool in [(1, getattr(data, args.query_split + '_pos_edge_index')),

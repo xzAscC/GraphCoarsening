@@ -134,9 +134,13 @@ class SaliencyExplainer(BaseExplainer):
         model: torch.nn.Module,
         k_frac: float = 0.5,
         device: str = "cpu",
+        evidence_mode: str = "absolute",
     ):
         super().__init__(model, device)
         self.k_frac = k_frac
+        if evidence_mode not in {'absolute', 'supportive'}:
+            raise ValueError('Unknown evidence_mode')
+        self.evidence_mode = evidence_mode
 
     def explain_link(self, data: Data, node_a: int, node_b: int) -> Data:
         data = self._to_device(data)
@@ -152,12 +156,15 @@ class SaliencyExplainer(BaseExplainer):
 
         target = torch.tensor([[node_a], [node_b]], device=self.device)
 
-        self.model.zero_grad()
         out = self.model(data.x, weighted_edges, target, edge_weight=weights)
         score = out.squeeze()
-        score.backward()
-
-        saliency = edge_mask.grad.abs().detach()
+        gradient, = torch.autograd.grad(score, edge_mask)
+        if self.evidence_mode == 'supportive':
+            from src.explainers.group_interventions import supportive_edge_scores
+            sign = 1.0 if score.detach().item() > 0 else -1.0
+            saliency = supportive_edge_scores(weighted_edges, gradient.detach(), data.x.size(0), sign)
+        else:
+            saliency = gradient.abs().detach()
 
         keep_count = max(1, int(saliency.size(0) * self.k_frac))
         _, top_idx = saliency.topk(keep_count)

@@ -1,17 +1,9 @@
-"""Laplacian-guided graph coarsening explainer.
+"""Partition-guided group-deletion calibration of original-edge gradients.
 
-Uses GraphCoarsener's spectral perturbation scores, node partition,
-and coarse graph structure to produce edge-level explanations via
-the Protect-and-Project method:
-
-1. Per-link coarsening with protected nodes (1-hop neighbors of target).
-2. Project-back: edges ranked by normalized coarse weight × spectral score,
-   with gradient saliency as prediction-aware booster.
-3. Returns top-k edges as standard edge-level explanation.
-
-Supports two modes:
-- ``mode="edge"`` (default): Protect-and-Project.
-- ``mode="coarse"``: Returns the coarse graph directly (legacy mode).
+The edge mode groups candidate edges by partition endpoints, measures group
+deletion effects, and rescales gradients heuristically. Absolute sensitivity
+and predicted-class-supportive evidence are separate experimental variants.
+The coarse mode instead returns a quotient graph and is a distinct object.
 """
 
 from typing import List, Optional
@@ -29,10 +21,9 @@ class CoarsenExplainer(BaseExplainer):
 
     The coarsener's spectral decomposition is computed once and cached.
     For each target link:
-    1. Protected partition: 1-hop neighbors remain as singletons.
-    2. Coarse graph structure provides inter-supernode importance.
-    3. Gradient saliency provides prediction sensitivity.
-    4. Combined scoring: coarse_importance × (1 + spectral) × (1 + gradient).
+    Partitions may be query-dependent or cached with endpoint refinement.
+    Group deletion measures a finite effect on the frozen model; smoothed,
+    clipped ratios calibrate edge gradients, without a fidelity guarantee.
 
     Args:
         model: Trained link-prediction model.
@@ -45,7 +36,11 @@ class CoarsenExplainer(BaseExplainer):
         device: ``'cpu'`` or ``'cuda'``.
         protect_hops: Protected radius for prediction-guided partitions.
         partition_mode: Query-dependent partition, or a cached global partition
-            with the endpoint clusters split into singletons (global-refine).
+            with full endpoint-cluster splitting (global-refine) or only
+            endpoint isolation (global-endpoints).
+        evidence_mode: Absolute influence or class-supportive tied-edge scoring.
+        intervention_batch_size: Graph copies per deletion forward. Values
+            above one require graph-separable inference, as in the tested GCN.
     """
 
     def __init__(
@@ -62,6 +57,8 @@ class CoarsenExplainer(BaseExplainer):
         protect_hops: int = 1,
         partition_mode: str = "prediction",
         score_method: str = "legacy",
+        evidence_mode: str = "absolute",
+        intervention_batch_size: int = 1,
     ):
         super().__init__(model, device)
         self.k = k
@@ -78,6 +75,12 @@ class CoarsenExplainer(BaseExplainer):
             raise ValueError("Unknown partition_mode")
         self.partition_mode = partition_mode
         self.score_method = score_method
+        if evidence_mode not in {"absolute", "supportive"}:
+            raise ValueError('Unknown evidence_mode')
+        if intervention_batch_size < 1:
+            raise ValueError('intervention_batch_size must be positive')
+        self.evidence_mode = evidence_mode
+        self.intervention_batch_size = intervention_batch_size
         self.last_diagnostics = {}
         self._coarsener: Optional[GraphCoarsener] = None
         self._cached_data_id: Optional[int] = None
@@ -138,7 +141,7 @@ class CoarsenExplainer(BaseExplainer):
             partition = prediction_guided_partition(
                 edge_index=data.edge_index,
                 spectral_scores=coarsener.scores,
-                gradient_scores=gradient_all,
+                gradient_scores=gradient_all.abs(),
                 num_nodes=data.x.size(0),
                 alpha=self.alpha,
                 protected_nodes=protected,
@@ -202,25 +205,29 @@ class CoarsenExplainer(BaseExplainer):
             ).squeeze().item()
 
         pathway_cf = {}
-        full_keys = (data.edge_index.min(dim=0).values * data.x.size(0)
-                     + data.edge_index.max(dim=0).values)
+        from src.explainers.group_interventions import group_deletion_logits
+        tested_keys, groups = [], []
         for key, edge_indices in pathway_edges.items():
             if len(edge_indices) < 2:
                 pathway_cf[key] = 1.0
                 continue
-
             group = sub_ei[:, edge_indices]
             group_keys = group.min(dim=0).values * data.x.size(0) + group.max(dim=0).values
-            mask = ~torch.isin(full_keys, group_keys)
-            modified_ei = data.edge_index[:, mask]
-            original_weight = getattr(data, "edge_weight", None)
-            with torch.no_grad():
-                modified = self.model(
-                    data.x, modified_ei, target,
-                    edge_weight=None if original_weight is None else original_weight[mask],
-                ).squeeze().item()
-            group_effect = abs(baseline - modified)
-            sum_gradient = sum(abs(gradient_scores[j]) for j in edge_indices)
+            tested_keys.append(key)
+            groups.append(group_keys)
+        modified_logits = group_deletion_logits(
+            self.model, data, node_a, node_b, groups, self.intervention_batch_size)
+        sign = 1.0 if baseline > 0 else -1.0
+        if self.evidence_mode == 'supportive':
+            from src.explainers.group_interventions import supportive_edge_scores
+            importance_scores = supportive_edge_scores(sub_ei, gradient_scores, data.x.size(0), sign)
+        else:
+            importance_scores = gradient_scores.abs()
+        for key, modified in zip(tested_keys, modified_logits.tolist()):
+            edge_indices = pathway_edges[key]
+            group_effect = (abs(baseline - modified) if self.evidence_mode == 'absolute'
+                            else max(0.0, sign * (baseline - modified)))
+            sum_gradient = importance_scores[edge_indices].sum()
 
             if sum_gradient > 1e-10:
                 raw_cf = group_effect / sum_gradient.item()
@@ -234,7 +241,7 @@ class CoarsenExplainer(BaseExplainer):
 
         calibrated = torch.zeros(num_sub, device=self.device)
         for j in range(num_sub):
-            calibrated[j] = abs(gradient_scores[j]) * pathway_cf.get(edge_pathway[j], 1.0)
+            calibrated[j] = importance_scores[j] * pathway_cf.get(edge_pathway[j], 1.0)
 
         keep_count = max(1, int(num_sub * self.k_frac))
         _, top_idx = calibrated.topk(keep_count)
@@ -262,10 +269,9 @@ class CoarsenExplainer(BaseExplainer):
         if hasattr(data, "edge_weight") and data.edge_weight is not None:
             weights = edge_mask * data.edge_weight
         target = torch.tensor([[node_a], [node_b]], device=self.device)
-        self.model.zero_grad()
         out = self.model(data.x, edge_index, target, edge_weight=weights)
-        out.squeeze().backward()
-        return edge_mask.grad.abs().detach()
+        gradient, = torch.autograd.grad(out.squeeze(), edge_mask)
+        return gradient.detach()
 
     def _get_protected_nodes(self, data, node_a, node_b):
         subset, _, _, _ = k_hop_subgraph(
