@@ -1,0 +1,31 @@
+{
+  "study": "Boundary-preserving compact GCN forward replay",
+  "status": "Validated utility; not yet integrated into default adaptive search",
+  "datasets": ["Cora", "Citeseer"],
+  "seeds": [42, 43],
+  "queries_per_run": 100,
+  "supports_per_run": 300,
+  "support_method": "Swap-gradient",
+  "device": "cuda",
+  "failed_comparisons": 0,
+  "maximum_full_vs_local_absolute_logit_difference": 0.000011444091796875,
+  "binary_decisions_identical": true,
+  "algorithm_source_hashes_verified": true,
+  "unit_tests_passed": 80,
+  "mean_local_node_fractions": {
+    "Cora42": 0.07475258493353029,
+    "Cora43": 0.07729689807976368,
+    "Citeseer42": 0.027333934475503478,
+    "Citeseer43": 0.023994589720468883
+  },
+  "scope": "Replay of full, retained and deleted predictions for saved validation supports. Small CPU/CUDA fixtures also compare gradients, weighted duplicate entries and isolated endpoints.",
+  "limitations": [
+    "Applicable only under the documented local normalized-GCN assumptions; no arbitrary-model certificate is provided.",
+    "Node-count reduction is not a measured speedup; no controlled timing or peak-memory benchmark has been performed.",
+    "Float32 discrepancies can exceed the support search's gain threshold. Prediction agreement on saved supports does not establish identical proposal rankings, acceptance decisions or final search trajectories.",
+    "This computational optimization does not establish an independent benefit from spectral coarsening.",
+    "Original graph identities and sizes must remain authoritative for explanation metrics; compact graph sizes are not evidence sparsity denominators."
+  ],
+  "next_gate": "Benchmark actual end-to-end cost, then validate an opt-in local search path with full-graph acceptance checks before considering default integration.",
+  "manuscript_numerical_results_changed": false
+}
