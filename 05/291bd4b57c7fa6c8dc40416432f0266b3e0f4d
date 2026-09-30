@@ -1,0 +1,32 @@
+experiments/benchmark_coverage_union.py
+  s_6574c9512bb1f0::t_c895804f64b4c4 39-53,179,181-183
+tests/test_coverage_union.py
+  s_6574c9512bb1f0::t_c895804f64b4c4 7,18-29
+  s_6574c9512bb1f0::t_dceadb8c845956 47-58
+results/tnnls-reproduction/coverage_union_context.json
+  s_6574c9512bb1f0::t_6128c18da8cb78 1-36
+results/tnnls-reproduction/coverage_union_PubMed42_val20.json
+  s_6574c9512bb1f0::t_16bc8c55598feb 1-66973
+results/tnnls-reproduction/coverage_union_PubMed42_val20_audit.json
+  s_6574c9512bb1f0::t_fb031b47adce2f 1-476
+results/tnnls-reproduction/coverage_union_PubMed43_additional_val100.json
+  s_6574c9512bb1f0::t_99b5308d4a690f 1-340748
+results/tnnls-reproduction/coverage_union_two_runs_audit.json
+  s_6574c9512bb1f0::t_5bd5b65dc1c074 1-946
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "05291bd4b57c7fa6c8dc40416432f0266b3e0f4d",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
