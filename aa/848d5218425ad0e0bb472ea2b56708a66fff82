@@ -1,0 +1,21 @@
+results/tnnls-reproduction/cf2_Cora42_val4_pilot.json
+  s_6574c9512bb1f0::t_f2433c9018000e 1-9995
+results/tnnls-reproduction/cf2_pilot_audit.json
+  s_6574c9512bb1f0::t_d03d0e203eef6b 1-427
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aa848d5218425ad0e0bb472ea2b56708a66fff82",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
