@@ -1,0 +1,25 @@
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_ee75236ec2568b 82-83,166-169
+src/explainers/pyg_baselines.py
+  s_6574c9512bb1f0::t_ee75236ec2568b 9,19-31,62-64,166-172
+tests/test_pyg_frozen.py
+  s_6574c9512bb1f0::t_ee75236ec2568b 1-48
+experiments/audit_support_refinement.py
+  s_6574c9512bb1f0::t_32b52ec18f02f7 83,85-86,89-90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b4af9ac12d1b3458642e8b367e344aff5c04e4e8",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
