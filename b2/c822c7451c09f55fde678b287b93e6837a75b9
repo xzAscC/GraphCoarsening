@@ -1,0 +1,35 @@
+tests/test_projection_score.py
+  s_6574c9512bb1f0::t_375c045e2837aa 1-38
+src/spectral.py
+  s_6574c9512bb1f0::t_375c045e2837aa 214-225
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_4523f98211f78c 34-37
+  s_6574c9512bb1f0::t_12a37489a9de70 71-76
+  s_6574c9512bb1f0::t_a99017286017fa 24,56-57,95,98-108,121-123,148
+experiments/train_gcn.py
+  s_6574c9512bb1f0::t_12a37489a9de70 289-292,299-301
+tests/test_theory_bounds.py
+  s_6574c9512bb1f0::t_b71d6d9de34d4c 1-47
+tests/test_support_ranking.py
+  s_6574c9512bb1f0::t_4523f98211f78c 23
+results/tnnls-reproduction/score_ablation_Citeseer_seed42.json
+  s_6574c9512bb1f0::t_1edfddcea81c0f 1-7950
+results/tnnls-reproduction/score_ablation_Cora_seed42.json
+  s_6574c9512bb1f0::t_1ee5006c2bbeb1 1-7950
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b2c822c7451c09f55fde678b287b93e6837a75b9",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
