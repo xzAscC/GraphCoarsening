@@ -1,0 +1,15 @@
+{
+  "status": "fixed-before-ward-control-runs",
+  "question": "Can dynamic aggregate-cluster costs improve projected inference beyond the fixed singleton-feature rankings?",
+  "algorithm": "Graph-connected Ward cost n_C*n_D/(n_C+n_D) times squared centroid distance. Each round selects a stable sorted disjoint matching, then recomputes centroids and costs. This is not sequential Ward or a global optimum.",
+  "variants": ["diffusion", "random", "normalized-edge", "raw-feature", "first-linear-feature", "ward-raw-feature", "ward-first-linear-feature"],
+  "alpha": 0.75,
+  "loss_cap_in_runs": null,
+  "loss_cap_note": "Optional numerical relative squared-loss cap is unit-tested but disabled in these runs to keep the global merge budget matched.",
+  "inputs": ["diffusion_Cora42_val20_steps8.json", "coverage_union_PubMed43_additional_val100.json"],
+  "methods": ["Swap-gradient", "Swap-global12"],
+  "selection": "Same first ten validation queries per class as prior projected studies; inspected development data, not independent confirmation.",
+  "timing_repeats": 4,
+  "metrics": ["direct versus accumulated global projection loss", "raw and first-linear query-local feature residuals", "query-local node counts", "prediction decision disagreements", "absolute logit errors", "forward timing"],
+  "limits": "Global merge budget matched, not query-local compression. No test-set tuning, no paper numerical updates, and no use of approximate logits for authoritative explanation fidelity. Preserve all outcomes."
+}

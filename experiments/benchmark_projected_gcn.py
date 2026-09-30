@@ -26,6 +26,7 @@ from src.explainers.local_gcn import compact_gcn_query
 from src.explainers.projected_gcn import ProjectedGCN
 from src.explainers.group_interventions import group_deletion_logits
 from src.grouping_controls import GroupingControls
+from src.ward_partition import connected_ward_partition
 
 
 def sha(path):
@@ -53,6 +54,8 @@ def main():
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--feature-controls', action='store_true',
                         help='Add fixed raw-feature and frozen first-linear feature rankings; no label/outcome tuning')
+    parser.add_argument('--ward-controls', action='store_true',
+                        help='Add dynamic disjoint-round Ward controls on raw and first-linear features')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Preserve prior measurements')
@@ -96,14 +99,19 @@ def main():
     policies = ['diffusion', 'random', 'normalized-edge']
     if args.feature_controls:
         policies.extend(['raw-feature', 'first-linear-feature'])
+    if args.ward_controls:
+        policies.extend(['ward-raw-feature', 'ward-first-linear-feature'])
     for policy in policies:
         signals = None
-        if policy == 'raw-feature':
+        if policy in ('raw-feature', 'ward-raw-feature'):
             signals = data.x
-        elif policy == 'first-linear-feature':
+        elif policy in ('first-linear-feature', 'ward-first-linear-feature'):
             signals = encoder.convs[0].lin(data.x)
-        partition, details = builder.partition('signal' if signals is not None else policy,
-                                               seed=0, alpha=.75, width=100, steps=4, signals=signals)
+        if policy.startswith('ward-'):
+            partition, details = connected_ward_partition(builder.edges, signals, alpha=.75)
+        else:
+            partition, details = builder.partition('signal' if signals is not None else policy,
+                                                   seed=0, alpha=.75, width=100, steps=4, signals=signals)
         details['signal_source'] = policy
         memberships[policy] = membership_vector(partition, data.num_nodes, args.device)
         global_metadata[policy] = details | {'partition_sha256': hashlib.sha256(json.dumps(partition).encode()).hexdigest()}
@@ -217,6 +225,7 @@ def main():
               'selection': 'First requested count per class in input order, without outcome selection.',
               'method': args.method, 'timing_repeats': args.timing_repeats, 'torch': torch.__version__,
               'feature_controls': args.feature_controls,
+              'ward_controls': args.ward_controls,
               'compression_scope': 'Same global merge budget, not matched query-local cluster counts after restriction and endpoint isolation.',
               'offline_seconds_all_partitions': offline_seconds, 'global_partitions': global_metadata,
               'timing_labels': {'full': 'exact local singleton/operator-reuse baseline', 'local': 'named comparison variant'},

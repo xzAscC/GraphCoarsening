@@ -1,0 +1,22 @@
+{
+  "status": "promising-development-error-reduction-not-method-promotion",
+  "plan": "projected_ward_plan.json",
+  "runs": ["projected_ward_Cora42_val20.json", "projected_ward_PubMed43_val20.json"],
+  "implementation": "Float64 GPU centroid and connected-edge Ward cost calculations, chunked distances, CPU stable disjoint matching. Costs recomputed each round. An optional relative squared-signal-loss cap is tested but disabled in these equal-global-budget studies.",
+  "theory": "The exact arithmetic Ward increments telescope to final signal projection SSE, including additive disjoint merges within a round. Every run checks this against a direct final residual. This controls the chosen signal reconstruction only, not propagation error or predictions; the algorithm is not sequential Ward or globally optimal clustering.",
+  "binary_disagreements_out_of_140_per_run": {
+    "Cora42": {"diffusion": 9, "normalized-edge": 14, "raw-feature": 11, "first-linear-feature": 20, "ward-raw-feature": 10, "ward-first-linear-feature": 7},
+    "PubMed43": {"diffusion": 30, "normalized-edge": 15, "raw-feature": 29, "first-linear-feature": 28, "ward-raw-feature": 19, "ward-first-linear-feature": 19}
+  },
+  "mean_absolute_logit_error": {
+    "Cora42": {"raw-feature": 3.700758, "first-linear-feature": 4.816582, "ward-raw-feature": 3.010051, "ward-first-linear-feature": 2.737715},
+    "PubMed43": {"raw-feature": 1.776876, "first-linear-feature": 1.783709, "ward-raw-feature": 1.322394, "ward-first-linear-feature": 1.318650}
+  },
+  "finding": "Both dynamic controls reduce average absolute logit error and decision disagreement count relative to their respective fixed feature-ranking controls in both runs. They still disagree with exact predictions, and neither dominates every structural control: normalized-edge has fewer PubMed decision disagreements.",
+  "compression_confound": "All seven policies reach identical global cluster counts, but the dynamic policies retain substantially more query-local clusters than fixed feature rankings. Mean local coarse/exact node fractions for raw, first-linear, Ward-raw, Ward-first-linear are respectively [0.22996, 0.17757, 0.42541, 0.40363] on Cora and [0.10996, 0.11398, 0.40500, 0.35321] on PubMed. Do not attribute all fidelity changes to better merging at equal local compression.",
+  "timing": "All approximate variants have baseline/variant median forward-time ratios below one and thus are slower than the exact singleton/operator-reuse baseline. The combined offline preparation for all seven partitions is recorded, not individually attributed to each partition. These shared-GPU serial-forward timings do not cover gradients or complete support search.",
+  "verification": "Source hashes, equal global cluster counts, direct loss versus summed increments, logit-error arithmetic, binary comparisons, positive timing and alternating order independently checked. All exact controls pass saved/full/local replay checks. Full suite: 123 passed.",
+  "data_scope": "Same previously inspected validation queries as prior projected studies, not fresh confirmation or test data. No approximate output replaces authoritative explanation fidelity. Random and all other control outcomes remain in the full run files.",
+  "next_gate": "Evaluate accuracy versus achieved local compression before inferring method superiority, and require independent validation and full pipeline cost evidence before any promotion. Coarse-guided support-search value remains a distinct unresolved question.",
+  "manuscript": "Appendix adds the telescoping/disjoint-merge identity and XZ-S10 limitations. No empirical values, tables or figures changed."
+}
