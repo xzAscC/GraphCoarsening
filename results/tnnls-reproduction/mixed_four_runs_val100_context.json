@@ -1,0 +1,43 @@
+{
+  "study": "Fixed-configuration expanded validation of support proposal policies",
+  "status": "Development validation; not final held-out evaluation",
+  "audit": "mixed_four_runs_val100_audit.json",
+  "datasets": ["Cora", "Citeseer"],
+  "seeds": [42, 43],
+  "queries_per_run": 100,
+  "budgets": [5, 10, 20],
+  "methods_per_run": 13,
+  "total_rows": 15600,
+  "audited_swap_rows": 7200,
+  "device": "cuda",
+  "search_steps": 8,
+  "shared_per_step_proposal_cap": 18,
+  "all_recorded_algorithm_source_hashes_verified": true,
+  "all_runs_completed_successfully": true,
+  "pilot_overlap": [
+    {"dataset": "Cora", "seed": 42, "shared_queries": 2},
+    {"dataset": "Cora", "seed": 43, "shared_queries": 4},
+    {"dataset": "Citeseer", "seed": 42, "shared_queries": 6},
+    {"dataset": "Citeseer", "seed": 43, "shared_queries": 2}
+  ],
+  "pilot_comparison_scope": "The 100-query lists are resampled at the same seeds, not prefixes or strict extensions of the 20-query lists. Corresponding checkpoints and split hashes match. Overlapping queries are not independent evidence.",
+  "descriptive_binary_pareto_outcomes": [
+    {"treatment": "Swap-coarse", "control": "Swap-gradient", "query_budget_pairs": 1200, "wins": 5, "losses": 2, "ties": 1193, "tradeoffs": 0},
+    {"treatment": "Swap-mixed-coarse", "control": "Swap-mixed-gradient", "query_budget_pairs": 1200, "wins": 4, "losses": 1, "ties": 1195, "tradeoffs": 0},
+    {"treatment": "Swap-pair-coarse", "control": "Swap-pair-gradient", "query_budget_pairs": 1200, "wins": 5, "losses": 4, "ties": 1191, "tradeoffs": 0},
+    {"treatment": "Swap-mixed-gradient", "control": "Swap-gradient", "query_budget_pairs": 1200, "wins": 8, "losses": 1, "ties": 1191, "tradeoffs": 0},
+    {"treatment": "Swap-pair-gradient", "control": "Swap-gradient", "query_budget_pairs": 1200, "wins": 11, "losses": 13, "ties": 1176, "tradeoffs": 0}
+  ],
+  "outcome_definition": "A win improves at least one binary necessity/sufficiency metric without worsening the other; loss is the converse. Ties do not imply equal supports or continuous scores.",
+  "limitations": [
+    "Query-budget pairs share queries, graphs and checkpoints; these counts are not independent trials or a significance test.",
+    "Only two graphs and two training seeds per graph were evaluated.",
+    "The per-step cap is matched, but adaptive stopping changes total proposal counts; gradients and serial checks are additional work.",
+    "GPU timings were collected alongside concurrent experiments and other shared-device workloads; they are not controlled speed benchmarks.",
+    "The runs use corrected training checkpoints and validation queries; no new held-out test evaluation was performed.",
+    "These comparisons omit strong-baseline retuning and do not establish state-of-the-art performance.",
+    "Audit checks saved records rather than independently replaying every intervention."
+  ],
+  "decision": "Preserve the single-edge default and all experimental variants. Small, mixed grouping benefits do not yet justify a strong independent-coarsening claim. Do not add more exchange variants solely to optimize these validation lists. Investigate exact local evaluation as a separate computational improvement, with full-graph equivalence checks before integration.",
+  "manuscript_numerical_results_changed": false
+}
