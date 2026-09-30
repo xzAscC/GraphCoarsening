@@ -1,0 +1,24 @@
+experiments/train_gcn.py
+  s_6574c9512bb1f0::t_8c23d2530dbc06 227-228,282
+experiments/run_explanations.py
+  s_6574c9512bb1f0::t_5fec6262f28f98 146-148,167,216-217,219-221,224-225
+  s_6574c9512bb1f0::t_d72b56deb9e5cc 226
+results/tnnls-reproduction/legacy/explanation_Cora.json
+  s_6574c9512bb1f0::t_c450262d78c936 1-112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "116109908ffba83028d7a59fd393fd94c0f23cf1",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
