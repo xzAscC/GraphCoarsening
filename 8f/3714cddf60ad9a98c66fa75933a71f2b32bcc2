@@ -1,0 +1,31 @@
+experiments/benchmark_acceptance_policy.py
+  s_6574c9512bb1f0::t_c431e946ee870e 1-118
+results/tnnls-reproduction/acceptance_PubMed43_val100_plan.json
+  s_6574c9512bb1f0::t_c431e946ee870e 1-11
+tests/test_acceptance_policy.py
+  s_6574c9512bb1f0::t_06d0a1e55e5693 1-32
+results/tnnls-reproduction/acceptance_PubMed43_val100_context.json
+  s_6574c9512bb1f0::t_92310fcab7d613 1-22
+src/explainers/support_refinement.py
+  s_6574c9512bb1f0::t_06d0a1e55e5693 144-159,162-163,179-181,188-189,243,286,296
+results/tnnls-reproduction/acceptance_PubMed43_val100.json
+  s_6574c9512bb1f0::t_0d3a7346dad8bb 1-118673
+results/tnnls-reproduction/acceptance_PubMed43_val100_audit.json
+  s_6574c9512bb1f0::t_25f867aca5dd1f 1-1393
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8f3714cddf60ad9a98c66fa75933a71f2b32bcc2",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
