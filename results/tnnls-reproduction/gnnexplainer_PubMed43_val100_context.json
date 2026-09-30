@@ -1,0 +1,21 @@
+{
+  "status": "fixed-baseline-development-comparison-not-final-results",
+  "plan": "gnnexplainer_PubMed43_val100_plan.json",
+  "run": "gnnexplainer_PubMed43_val100.json",
+  "queries": 100,
+  "baseline_rows": 300,
+  "independently_replayed_reference_rows": 900,
+  "tests_passed": 127,
+  "verification": "All reference logit replays pass atol 2e-5 / rtol 1e-5 and exactly reproduce binary necessity/sufficiency outcomes. Independently checked source hashes, finite logits, unique support counts, effective budgets and binary metric arithmetic in all 1200 rows.",
+  "necessity_and_sufficiency_by_budget": {
+    "GNNExplainer": {"5": [0.15, 0.73], "10": [0.29, 0.84], "20": [0.32, 0.91]},
+    "Saliency-supportive": {"5": [0.27, 0.82], "10": [0.33, 0.89], "20": [0.37, 0.92]},
+    "Swap-global12": {"5": [0.32, 0.86], "10": [0.43, 0.94], "20": [0.53, 0.96]},
+    "Swap-union-diffusion": {"5": [0.32, 0.86], "10": [0.43, 0.94], "20": [0.53, 0.96]}
+  },
+  "finding": "The two support-search variants have higher mean binary necessity and sufficiency than this fixed-config GNNExplainer baseline at all three budgets. Ungrouped and coarse-union searches still have identical binary outcomes, so this does not establish an independent coarsening contribution. Favorable aggregate means do not imply per-query dominance.",
+  "baseline_scope": "Existing PyG GNNExplainer, 100 epochs and lr 0.01 with package defaults, fixed node features, frozen predictor and native directed message gates. Gates multiply GCN messages after normalization; they are not tied undirected renormalized adjacency gates. All methods' discrete supports use the same original-graph intervention protocol. This training/evaluation distinction is disclosed, not silently changed to our objective.",
+  "limitations": "One dataset/checkpoint, one hashed initialization per query, previously inspected validation queries, default rather than tuned baseline settings, no test-set or statistical-significance claim. Equal support sizes do not mean equal optimization cost. Historical search times are not paired runtime measurements against this new baseline run.",
+  "next_work": "Broaden joint-objective baseline comparison and validate configurations separately before final method selection. Do not treat the original-edge search improvement over one baseline as evidence for the paper's global coarsening claim.",
+  "manuscript": "Only the baseline masking/normalization distinction is clarified. Empirical LaTeX numbers, tables and figures remain unchanged."
+}

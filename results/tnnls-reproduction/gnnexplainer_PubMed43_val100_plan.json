@@ -1,0 +1,10 @@
+{
+  "status": "fixed-before-run",
+  "input": "coverage_union_PubMed43_additional_val100.json",
+  "query_selection": "All 100 saved validation queries, 50 per class. Already used for support-search development, not independent confirmation or test data.",
+  "baseline": "Existing PyG GNNExplainer wrapper, 100 epochs, lr 0.01, default PyG regularizers, no feature mask, no tuning. Per-query initialization seed hashed from 20260930 and canonical endpoints.",
+  "comparison_methods": ["Saliency-supportive", "Swap-global12", "Swap-union-diffusion"],
+  "budgets": [5, 10, 20],
+  "evaluation": "Same clean trained checkpoint, original graph, normalization-boundary candidates and achieved undirected support budget. Independently replay every saved comparator support. GNNExplainer retains native message-mask optimization; final supports are evaluated by original-weight retained/deleted interventions.",
+  "interpretation": "Evaluate necessity and sufficiency jointly. Do not infer baseline superiority from one metric, call default settings tuned, use historical ranking times as controlled runtime comparisons, or update paper numbers. Preserve all outcomes."
+}
