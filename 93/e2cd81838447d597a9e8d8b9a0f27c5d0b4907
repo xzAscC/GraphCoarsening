@@ -1,0 +1,31 @@
+experiments/audit_support_refinement.py
+  s_6574c9512bb1f0::t_2abc5161babcc3 73-111,115-117
+tests/test_refinement_audit.py
+  s_6574c9512bb1f0::t_51f2642eff4423 1-62
+results/tnnls-reproduction/boundary_Citeseer42_val100_batch8.json
+  s_6574c9512bb1f0::t_3cc9745989ecc1 1-198418
+results/tnnls-reproduction/boundary_Citeseer43_val100_batch8.json
+  s_6574c9512bb1f0::t_e8cd2fd73218ae 1-204058
+results/tnnls-reproduction/boundary_Cora42_val100_batch8.json
+  s_6574c9512bb1f0::t_37c0042d790aa4 1-218278
+results/tnnls-reproduction/boundary_Cora43_val100_batch8.json
+  s_6574c9512bb1f0::t_2dbccee3beb6f5 1-216037
+results/tnnls-reproduction/boundary_validation_audit.json
+  s_6574c9512bb1f0::t_93de94951b8924 1-16078
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "93e2cd81838447d597a9e8d8b9a0f27c5d0b4907",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
