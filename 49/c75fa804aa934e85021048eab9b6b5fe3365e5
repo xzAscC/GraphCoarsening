@@ -1,0 +1,38 @@
+results/tnnls-reproduction/diffusion_development_context.json
+  s_6574c9512bb1f0::t_0afa2c3913f821 1-41
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_6f08d3c7b21af9 102-105,111-114,166-167,301-308,319
+src/coarsen.py
+  s_6574c9512bb1f0::t_6f08d3c7b21af9 226-228,232-239,291-309,313
+  s_6574c9512bb1f0::t_effa5e3ea813b0 58
+tests/test_diffusion_signals.py
+  s_6574c9512bb1f0::t_bf0b322bbbcc3d 1-113
+src/explainers/coarsen_explainer.py
+  s_6574c9512bb1f0::t_6f08d3c7b21af9 63-66,83-84,104-105
+src/diffusion_signals.py
+  s_6574c9512bb1f0::t_6f08d3c7b21af9 1-73
+results/tnnls-reproduction/diffusion_Cora42_val20_audit.json
+  s_6574c9512bb1f0::t_35f066d14dd78a 1-1473
+results/tnnls-reproduction/diffusion_Cora42_val20_steps8.json
+  s_6574c9512bb1f0::t_88cc16aeb8b221 1-83407
+results/tnnls-reproduction/diffusion_PubMed42_val20_steps8.json
+  s_6574c9512bb1f0::t_c076fc995844c8 1-79273
+results/tnnls-reproduction/diffusion_two_graphs_val20_audit.json
+  s_6574c9512bb1f0::t_1fbf4193166934 1-2940
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "49c75fa804aa934e85021048eab9b6b5fe3365e5",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
