@@ -1,0 +1,17 @@
+{
+  "runs": [
+    "pairs_Cora42_val20_steps8.json",
+    "pairs_Citeseer43_val20_steps8.json"
+  ],
+  "audit": "pairs_validation20_audit.json",
+  "code_commit": "aa121ca",
+  "scope": "Development validation of two-edge exchanges on corrected, frozen static split-disjoint checkpoints. No test queries or manuscript numerical updates.",
+  "method": "Pair additions and removals are ranked by sums of the current relaxed objective derivatives. The ungrouped control uses the global additive ranking. The coarse variant prioritizes the best two-edge addition within each partition-induced edge group, then fills with global pairs. The additive proposal score does not model interaction strength.",
+  "fairness": "All variants start from the same signed-saliency support for each query and use the same achieved undirected-edge budget, step limit, addition/removal proposal caps and componentwise acceptance rule. Actual numbers of candidates and accepted steps can differ; matched caps do not imply identical total runtime or intervention counts. If fewer than two selected or unselected edges exist, pair mode falls back to a single exchange.",
+  "verification": "All 1320 rows have finite intervention logits, correct support sizes and matching source hashes. The separate audit verifies saved swap-search non-regression relative to the shared initial support. CPU and CUDA tests include a constructed one-exchange trap escaped by a two-edge move, and weighted GCN intervention checks.",
+  "case_outcome": "For Cora query (1324,2265), both pair variants restore sufficiency at the tested budgets without losing necessity, whereas both single-edge variants stop without an accepted move. This is the same validation query whose five-edge support previously had no admissible one-edge neighbor under exhaustive serial checking.",
+  "overall_outcome": "Pair-only search has mixed effects relative to single-edge search, including worse necessity at some budgets. Coarse versus ungrouped pair proposals also have both favorable and unfavorable differences. These small validation samples do not establish stable independent value from coarse grouping.",
+  "timing_context": "Runs shared an RTX 4090 with each other and desktop processes. Ranking times are diagnostic, not controlled publication timings.",
+  "default_changed": false,
+  "next_question": "Compare mixed single-edge and two-edge proposals under explicit total proposal budgets; retain single-edge moves instead of assuming pair-only search dominates."
+}
