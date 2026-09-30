@@ -1,0 +1,23 @@
+tests/test_search_cost.py
+  s_6574c9512bb1f0::t_5348ab90f737af 1-50
+experiments/audit_search_cost.py
+  s_6574c9512bb1f0::t_5348ab90f737af 1-72
+results/tnnls-reproduction/search_cost_decomposition.json
+  s_6574c9512bb1f0::t_0d9a022f22f63c 1-240
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4e5a8731a31aef7553f2633c63efc683446fbb0d",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
