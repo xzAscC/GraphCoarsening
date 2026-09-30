@@ -1,0 +1,15 @@
+{
+  "status": "fixed-before-direct-replay; motivated by retrospective validation-prefix analysis",
+  "question": "Can binary-monotone four-step search retain a quality advantage over componentwise eight-step search with lower realized cost?",
+  "cohorts": ["PubMed43", "Cora42", "Cora43", "Citeseer42", "Citeseer43"],
+  "queries": "All saved 100 validation queries per cohort, budgets 5/10/20 and identical saved saliency initial supports. Already inspected development data, not held-out confirmation.",
+  "variants": [
+    {"acceptance_policy": "componentwise", "steps": 8},
+    {"acceptance_policy": "binary-monotone", "steps": 4}
+  ],
+  "fixed_settings": {"additions": 12, "removals": 3, "batch_size": 8, "exchange_size": 1, "groups": null, "local_gcn": false},
+  "execution": "Use GPU, alternate variant order by query-budget condition, synchronize scoped timings, retain complete traces and support keys. Independently evaluate final supports on the original graph. Save all outcomes in new JSON; do not overwrite existing measurements.",
+  "report": "Per-cohort and per-budget necessity, sufficiency, joint success, continuous metrics, paired wins/losses/tradeoffs, actual forward calls, graph evaluations, gradient steps and search runtime. Cost differences are measured, not forced to be equal. Record overlap agreement with historical trajectories without assuming bitwise replay.",
+  "selection_caveat": "Four steps were selected after inspecting development trajectories. A favorable replay is not independent validation and does not establish spectral coarsening benefit. No per-query best-prefix selection is allowed.",
+  "manuscript": "No empirical LaTeX updates or default-method promotion based on this study alone."
+}
