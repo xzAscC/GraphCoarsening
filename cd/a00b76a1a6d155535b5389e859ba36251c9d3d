@@ -1,0 +1,31 @@
+tests/test_local_timing.py
+  s_6574c9512bb1f0::t_4a926ee48d7a88 1-37
+results/tnnls-reproduction/local_timing_context.json
+  s_6574c9512bb1f0::t_8cc9d63a9d0fe3 1-30
+experiments/audit_local_gcn.py
+  s_6574c9512bb1f0::t_4a926ee48d7a88 3-5,12,28-61,70-71,75-76,110-111,113-114,117-118,120-121,146-154,156-158,167-168,170-171
+results/tnnls-reproduction/local_timing_Citeseer42_val100.json
+  s_6574c9512bb1f0::t_601c9088f6dabd 1-10756
+results/tnnls-reproduction/local_timing_Citeseer43_val100.json
+  s_6574c9512bb1f0::t_8c12f962857202 1-10756
+results/tnnls-reproduction/local_timing_Cora42_val100.json
+  s_6574c9512bb1f0::t_13d7d9992a4229 1-10756
+results/tnnls-reproduction/local_timing_Cora43_val100.json
+  s_6574c9512bb1f0::t_8b17ac5fe1e6aa 1-10756
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cda00b76a1a6d155535b5389e859ba36251c9d3d",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
