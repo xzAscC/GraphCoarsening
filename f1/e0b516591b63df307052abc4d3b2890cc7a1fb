@@ -1,0 +1,35 @@
+tests/test_spectral_operator.py
+  s_6574c9512bb1f0::t_673314e032f8f7 1-45
+src/coarsen.py
+  s_6574c9512bb1f0::t_673314e032f8f7 278
+src/spectral.py
+  s_6574c9512bb1f0::t_673314e032f8f7 9,20,30-32,40-48,54,61,118-119,126-127
+results/tnnls-reproduction/controlled_Citeseer42_val_projection.json
+  s_f05a9579ded952::t_8583cb8c94d773 1-96807
+results/tnnls-reproduction/controlled_Citeseer43_val_projection.json
+  s_f05a9579ded952::t_b3f992f30364b3 1-99147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f1e0b516591b63df307052abc4d3b2890cc7a1fb",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    },
+    "s_f05a9579ded952": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a13c72ca-c958-4851-b054-d3f7e81c3f25",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
