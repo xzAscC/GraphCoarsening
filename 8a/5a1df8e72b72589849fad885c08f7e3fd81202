@@ -1,0 +1,26 @@
+tests/test_step_frontier.py
+  s_6574c9512bb1f0::t_1396739bde559e 4,9
+  s_6574c9512bb1f0::t_bbce0b77a1500c 1-3,5-8,10-24
+results/tnnls-reproduction/acceptance_short_search_plan.json
+  s_6574c9512bb1f0::t_600ed298e3fd52 1-15
+experiments/audit_step_frontier.py
+  s_6574c9512bb1f0::t_bbce0b77a1500c 1-86
+results/tnnls-reproduction/acceptance_step_frontier.json
+  s_6574c9512bb1f0::t_b1a2c7212ba431 1-1271
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8a5a1df8e72b72589849fad885c08f7e3fd81202",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
