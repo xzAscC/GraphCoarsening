@@ -1,0 +1,50 @@
+src/coarsen.py
+  s_6574c9512bb1f0::t_e5aba739ee48a0 21,225-228,286-287
+  s_6574c9512bb1f0::t_ed43e8670ca376 288-291
+src/partition.py
+  s_6574c9512bb1f0::t_1286a3a6bdcefd 21-41
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_e5aba739ee48a0 61-62,97-98,137-138
+  s_6574c9512bb1f0::t_619a820eec1e42 65-68,93-94,171-172
+  s_6574c9512bb1f0::t_1286a3a6bdcefd 60,130-134
+tests/test_endpoint_isolation.py
+  s_6574c9512bb1f0::t_1286a3a6bdcefd 1-2,4-26,40-43
+  s_6574c9512bb1f0::t_ec8ece01aecf6b 3,27-39
+experiments/train_gcn.py
+  s_6574c9512bb1f0::t_461d00f23cd116 6-7,231-234,253-259,263-264,291-292,297-301,307-313,317,323,336-337
+tests/test_projection_score.py
+  s_6574c9512bb1f0::t_58a6dadc8ca75e 4-5,9-14
+src/explainers/coarsen_explainer.py
+  s_6574c9512bb1f0::t_e5aba739ee48a0 64,80,91
+  s_6574c9512bb1f0::t_1286a3a6bdcefd 77,130,135-136
+results/tnnls-reproduction/controlled_Cora42_val_projection.json
+  s_6574c9512bb1f0::t_abbd89809f005d 1-108535
+results/tnnls-reproduction/controlled_Cora43_val_projection.json
+  s_6574c9512bb1f0::t_45b3e7ce71104d 1-108736
+results/tnnls-reproduction/endpoint_isolation_Cora_seed43.json
+  s_6574c9512bb1f0::t_152ac7e3ae38db 1-21804
+results/tnnls-reproduction/training_controlled_Citeseer42.json
+  s_6574c9512bb1f0::t_85c4944e98e4f1 1-127
+results/tnnls-reproduction/training_controlled_Citeseer43.json
+  s_6574c9512bb1f0::t_50295e86ed03bb 1-127
+results/tnnls-reproduction/training_controlled_Cora42.json
+  s_6574c9512bb1f0::t_9376899c2e8c85 1-127
+results/tnnls-reproduction/training_controlled_Cora43.json
+  s_6574c9512bb1f0::t_77aeccc4cd6472 1-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "39a39191865944d7f3f04c871ecd3318185c1ffd",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
