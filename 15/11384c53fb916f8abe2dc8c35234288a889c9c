@@ -1,0 +1,35 @@
+results/tnnls-reproduction/mixed_four_runs_val100_context.json
+  s_6574c9512bb1f0::t_cc85ea5f298896 1-43
+results/tnnls-reproduction/mixed_Citeseer42_val100_audit.json
+  s_6574c9512bb1f0::t_c4158135c85a2d 1-993
+results/tnnls-reproduction/mixed_Citeseer42_val100_steps8.json
+  s_6574c9512bb1f0::t_564aabbd1a71b3 1-335796
+results/tnnls-reproduction/mixed_Citeseer43_val100_audit.json
+  s_6574c9512bb1f0::t_788496838e4be4 1-993
+results/tnnls-reproduction/mixed_Citeseer43_val100_steps8.json
+  s_6574c9512bb1f0::t_4eeb59e7d484ca 1-350270
+results/tnnls-reproduction/mixed_Cora42_val100_audit.json
+  s_6574c9512bb1f0::t_c93d019bed447f 1-993
+results/tnnls-reproduction/mixed_Cora42_val100_steps8.json
+  s_6574c9512bb1f0::t_4f99d117271c28 1-388308
+results/tnnls-reproduction/mixed_Cora43_val100_steps8.json
+  s_6574c9512bb1f0::t_9913cbecbbac29 1-388416
+results/tnnls-reproduction/mixed_four_runs_val100_audit.json
+  s_6574c9512bb1f0::t_a8a2c37bdac65d 1-3954
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1511384c53fb916f8abe2dc8c35234288a889c9c",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
