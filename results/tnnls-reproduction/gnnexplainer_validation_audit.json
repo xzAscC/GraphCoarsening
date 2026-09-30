@@ -1,0 +1,1520 @@
+{
+  "audit": "saved-support-swap-invariants-v1",
+  "scope": "Recorded paired validation checks; not independent model re-execution or significance testing.",
+  "runs": [
+    {
+      "input": "results/tnnls-reproduction/gnnexplainer_Cora42_val100_batch8.json",
+      "sha256": "2820f2d8ac495a0222e815fc09985bc5b7be1ff4f15f7926b9afe288c84474c4",
+      "dataset": "Cora",
+      "seed": 42,
+      "query_split": "val",
+      "device": "cuda",
+      "candidate_region": "gcn-boundary",
+      "audited_swap_rows": 600,
+      "summaries": [
+        {
+          "method": "Endpoint-isolation",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.84,
+            "necessity_confidence_drop": 0.142836846919178,
+            "sufficiency_confidence_drop": 0.07975353934103321
+          },
+          "median_ranking_seconds": 0.0406953900019289
+        },
+        {
+          "method": "Endpoint-isolation",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.29,
+            "sufficiency_agreement": 0.85,
+            "necessity_confidence_drop": 0.16474957425011147,
+            "sufficiency_confidence_drop": 0.06361783977030598
+          },
+          "median_ranking_seconds": 0.0406953900019289
+        },
+        {
+          "method": "Endpoint-isolation",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.26,
+            "sufficiency_agreement": 0.89,
+            "necessity_confidence_drop": 0.1638510296308161,
+            "sufficiency_confidence_drop": 0.044450427457544454
+          },
+          "median_ranking_seconds": 0.0406953900019289
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.33,
+            "sufficiency_agreement": 0.93,
+            "necessity_confidence_drop": 0.19996057816143475,
+            "sufficiency_confidence_drop": -0.010269733001926637
+          },
+          "median_ranking_seconds": 0.03590148199873511
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.34,
+            "sufficiency_agreement": 0.93,
+            "necessity_confidence_drop": 0.23558593452125787,
+            "sufficiency_confidence_drop": -0.01881771435221224
+          },
+          "median_ranking_seconds": 0.03590148199873511
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.37,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.2518531594470834,
+            "sufficiency_confidence_drop": -0.033606409383512253
+          },
+          "median_ranking_seconds": 0.03590148199873511
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.7,
+            "necessity_confidence_drop": 0.07365074138367042,
+            "sufficiency_confidence_drop": 0.18391705592529486
+          },
+          "median_ranking_seconds": 0.40382595950359246
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.79,
+            "necessity_confidence_drop": 0.11140926673022729,
+            "sufficiency_confidence_drop": 0.11673463536831578
+          },
+          "median_ranking_seconds": 0.40382595950359246
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.23,
+            "sufficiency_agreement": 0.84,
+            "necessity_confidence_drop": 0.12496264315442722,
+            "sufficiency_confidence_drop": 0.07635717669655627
+          },
+          "median_ranking_seconds": 0.40382595950359246
+        },
+        {
+          "method": "Global-refine",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.86,
+            "necessity_confidence_drop": 0.1460324398398315,
+            "sufficiency_confidence_drop": 0.054140077675305834
+          },
+          "median_ranking_seconds": 0.134354401496239
+        },
+        {
+          "method": "Global-refine",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.85,
+            "necessity_confidence_drop": 0.15173460130153427,
+            "sufficiency_confidence_drop": 0.06535082015942474
+          },
+          "median_ranking_seconds": 0.134354401496239
+        },
+        {
+          "method": "Global-refine",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.25,
+            "sufficiency_agreement": 0.88,
+            "necessity_confidence_drop": 0.14412640456469955,
+            "sufficiency_confidence_drop": 0.04244243144025035
+          },
+          "median_ranking_seconds": 0.134354401496239
+        },
+        {
+          "method": "Pathway",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.86,
+            "necessity_confidence_drop": 0.14603243661232485,
+            "sufficiency_confidence_drop": 0.05414007485356336
+          },
+          "median_ranking_seconds": 0.3376583365024999
+        },
+        {
+          "method": "Pathway",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.85,
+            "necessity_confidence_drop": 0.15182035415765238,
+            "sufficiency_confidence_drop": 0.06634108967544748
+          },
+          "median_ranking_seconds": 0.3376583365024999
+        },
+        {
+          "method": "Pathway",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.25,
+            "sufficiency_agreement": 0.88,
+            "necessity_confidence_drop": 0.14407301983531398,
+            "sufficiency_confidence_drop": 0.040472305698860414
+          },
+          "median_ranking_seconds": 0.3376583365024999
+        },
+        {
+          "method": "Random",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.01,
+            "sufficiency_agreement": 0.74,
+            "necessity_confidence_drop": 0.00033216534230744713,
+            "sufficiency_confidence_drop": 0.15498355698131816
+          },
+          "median_ranking_seconds": 1.6350990335922688e-05
+        },
+        {
+          "method": "Random",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.02,
+            "sufficiency_agreement": 0.75,
+            "necessity_confidence_drop": 0.00700766223952122,
+            "sufficiency_confidence_drop": 0.14880528173755192
+          },
+          "median_ranking_seconds": 1.6350990335922688e-05
+        },
+        {
+          "method": "Random",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.06,
+            "sufficiency_agreement": 0.74,
+            "necessity_confidence_drop": 0.02137509806163765,
+            "sufficiency_confidence_drop": 0.1496342878842641
+          },
+          "median_ranking_seconds": 1.6350990335922688e-05
+        },
+        {
+          "method": "Saliency",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.27,
+            "sufficiency_agreement": 0.86,
+            "necessity_confidence_drop": 0.1381522334237137,
+            "sufficiency_confidence_drop": 0.060532330202083186
+          },
+          "median_ranking_seconds": 0.004355694996775128
+        },
+        {
+          "method": "Saliency",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.23,
+            "sufficiency_agreement": 0.84,
+            "necessity_confidence_drop": 0.12942057457596576,
+            "sufficiency_confidence_drop": 0.07245674544775971
+          },
+          "median_ranking_seconds": 0.004355694996775128
+        },
+        {
+          "method": "Saliency",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.25,
+            "sufficiency_agreement": 0.88,
+            "necessity_confidence_drop": 0.141236830953886,
+            "sufficiency_confidence_drop": 0.04186479227381279
+          },
+          "median_ranking_seconds": 0.004355694996775128
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.36,
+            "sufficiency_agreement": 0.88,
+            "necessity_confidence_drop": 0.2101917475010874,
+            "sufficiency_confidence_drop": 0.022695399389106873
+          },
+          "median_ranking_seconds": 0.004712277004728094
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.93,
+            "necessity_confidence_drop": 0.23015394469970032,
+            "sufficiency_confidence_drop": -0.01661103453123198
+          },
+          "median_ranking_seconds": 0.004712277004728094
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.37,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.24624900364357774,
+            "sufficiency_confidence_drop": -0.02974579546045057
+          },
+          "median_ranking_seconds": 0.004712277004728094
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.43,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.28453799789665707,
+            "sufficiency_confidence_drop": -0.019145963436712155
+          },
+          "median_ranking_seconds": 0.057738797993806656,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.07,
+            "sufficiency_agreement": 0.06,
+            "necessity_confidence_drop": 0.07434625039556964,
+            "sufficiency_confidence_drop": -0.041841362825819024
+          },
+          "mean_accepted_steps": 1.11,
+          "mean_evaluated_proposals": 30.6
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.46,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.3337114684996634,
+            "sufficiency_confidence_drop": -0.033921052852592795
+          },
+          "median_ranking_seconds": 0.05674413099040976,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.11,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.10355752379996305,
+            "sufficiency_confidence_drop": -0.017310018321360816
+          },
+          "mean_accepted_steps": 1.6,
+          "mean_evaluated_proposals": 33.12
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.52,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.3816888239551376,
+            "sufficiency_confidence_drop": -0.04351476533699671
+          },
+          "median_ranking_seconds": 0.06247061599424342,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.02,
+            "necessity_confidence_drop": 0.13543982031155985,
+            "sufficiency_confidence_drop": -0.013768969876546147
+          },
+          "mean_accepted_steps": 1.65,
+          "mean_evaluated_proposals": 32.7
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.43,
+            "sufficiency_agreement": 0.94,
+            "necessity_confidence_drop": 0.2841491904477233,
+            "sufficiency_confidence_drop": -0.018811067814259196
+          },
+          "median_ranking_seconds": 0.051939409495389555,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.07,
+            "sufficiency_agreement": 0.06,
+            "necessity_confidence_drop": 0.07395744294663589,
+            "sufficiency_confidence_drop": -0.041506467203366065
+          },
+          "mean_accepted_steps": 1.1,
+          "mean_evaluated_proposals": 30.42
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.46,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.3315995016591465,
+            "sufficiency_confidence_drop": -0.034424152872693556
+          },
+          "median_ranking_seconds": 0.06209059049433563,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.11,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.10144555695944617,
+            "sufficiency_confidence_drop": -0.017813118341461577
+          },
+          "mean_accepted_steps": 1.55,
+          "mean_evaluated_proposals": 32.76
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.52,
+            "sufficiency_agreement": 0.97,
+            "necessity_confidence_drop": 0.3810632523811592,
+            "sufficiency_confidence_drop": -0.04661085445648297
+          },
+          "median_ranking_seconds": 0.06092003349476727,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.13481424873758144,
+            "sufficiency_confidence_drop": -0.016865058996032405
+          },
+          "mean_accepted_steps": 1.63,
+          "mean_evaluated_proposals": 32.52
+        }
+      ],
+      "reference_comparison": {
+        "reference": "results/tnnls-reproduction/boundary_Cora42_val100_batch8.json",
+        "reference_candidate_region": "gcn-boundary",
+        "max_original_logit_difference": 1.1444091796875e-05,
+        "original_logit_tolerance": {
+          "relative": 1e-06,
+          "absolute": 1e-05,
+          "require_identical_binary_decision": true
+        },
+        "scope": "Descriptive differences conditional on equal actual edge counts; unequal counts are listed, not pooled.",
+        "comparisons": [
+          {
+            "method": "Endpoint-isolation",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 1.1009237333465912e-09,
+              "sufficiency_confidence_drop": 1.872289003396644e-09
+            }
+          },
+          {
+            "method": "Endpoint-isolation",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.112125849064682e-09,
+              "sufficiency_confidence_drop": -8.459661691047903e-10
+            }
+          },
+          {
+            "method": "Endpoint-isolation",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.7047484050735146e-09,
+              "sufficiency_confidence_drop": -3.403290026363148e-09
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 4.623804819667304e-10,
+              "sufficiency_confidence_drop": -4.8863483985279165e-11
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -4.008388925710748e-09,
+              "sufficiency_confidence_drop": -1.6427318536620261e-09
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 1.3477906431791925e-09,
+              "sufficiency_confidence_drop": 4.653854053461008e-09
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 3.4348045427845105e-09,
+              "sufficiency_confidence_drop": 3.3210012405049228e-09
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 4.597827471810243e-09,
+              "sufficiency_confidence_drop": 2.7145020432585172e-09
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 3.913001479609934e-09,
+              "sufficiency_confidence_drop": 6.595684978804323e-09
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.3205838497919128e-09,
+              "sufficiency_confidence_drop": -7.25521495891945e-10
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 2.26867677605904e-09,
+              "sufficiency_confidence_drop": 3.028562123553657e-09
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -2.1699075423651776e-09,
+              "sufficiency_confidence_drop": -9.611168612094315e-10
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -3.390063555151762e-09,
+              "sufficiency_confidence_drop": -1.315180843447639e-09
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 6.922891026691534e-10,
+              "sufficiency_confidence_drop": -1.6134484640979808e-09
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -4.889567650156279e-10,
+              "sufficiency_confidence_drop": -3.137791219416221e-09
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 8.034215722348544e-09,
+              "sufficiency_confidence_drop": 5.38202282292135e-09
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -3.895727010035292e-09,
+              "sufficiency_confidence_drop": -2.2734168280920913e-09
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 1.0530117705785383e-09,
+              "sufficiency_confidence_drop": 4.675281526183025e-09
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.7159943071103599e-09,
+              "sufficiency_confidence_drop": -2.9276098068055713e-09
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 7.979407086113111e-10,
+              "sufficiency_confidence_drop": 5.728939605293494e-10
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 4.177802933122416e-12,
+              "sufficiency_confidence_drop": -1.537209511242649e-09
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 6.935119991633978e-10,
+              "sufficiency_confidence_drop": -3.3475513242989873e-09
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -6.220074032710036e-06,
+              "sufficiency_confidence_drop": 0.0017692583946497407
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -4.591087432841698e-09,
+              "sufficiency_confidence_drop": -0.0002788419796962057
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.6812990204839045e-09,
+              "sufficiency_confidence_drop": -3.23110523838251e-09
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 7.072255501366496e-06,
+              "sufficiency_confidence_drop": 0.00015232534873127368
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 9.059951937225015e-10,
+              "sufficiency_confidence_drop": 0.0001336478889264773
+            }
+          }
+        ]
+      }
+    },
+    {
+      "input": "results/tnnls-reproduction/gnnexplainer_Citeseer43_val100_batch8.json",
+      "sha256": "8da0fd252ce2732d5204a12a05d006790f98da9b0f759283dcb114a5010bbc6e",
+      "dataset": "Citeseer",
+      "seed": 43,
+      "query_split": "val",
+      "device": "cuda",
+      "candidate_region": "gcn-boundary",
+      "audited_swap_rows": 600,
+      "summaries": [
+        {
+          "method": "Endpoint-isolation",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.13,
+            "sufficiency_agreement": 0.92,
+            "necessity_confidence_drop": 0.08853834510755831,
+            "sufficiency_confidence_drop": 0.035112425104541975
+          },
+          "median_ranking_seconds": 0.021779650000098627
+        },
+        {
+          "method": "Endpoint-isolation",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.13,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.0912516929041475,
+            "sufficiency_confidence_drop": 0.023687126503305594
+          },
+          "median_ranking_seconds": 0.021779650000098627
+        },
+        {
+          "method": "Endpoint-isolation",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.12175013810791539,
+            "sufficiency_confidence_drop": 0.008962043064315186
+          },
+          "median_ranking_seconds": 0.021779650000098627
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.22,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.16481443879043856,
+            "sufficiency_confidence_drop": -0.0007020251150988013
+          },
+          "median_ranking_seconds": 0.023257450004166458
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.23,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.17810703580695014,
+            "sufficiency_confidence_drop": -0.006557933034798578
+          },
+          "median_ranking_seconds": 0.023257450004166458
+        },
+        {
+          "method": "Endpoint-supportive",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.19,
+            "sufficiency_agreement": 0.98,
+            "necessity_confidence_drop": 0.15534942504951604,
+            "sufficiency_confidence_drop": -0.011712111797159712
+          },
+          "median_ranking_seconds": 0.023257450004166458
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.07,
+            "sufficiency_agreement": 0.87,
+            "necessity_confidence_drop": 0.035747952915245275,
+            "sufficiency_confidence_drop": 0.09161115906299767
+          },
+          "median_ranking_seconds": 0.5238203910048469
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.12,
+            "sufficiency_agreement": 0.92,
+            "necessity_confidence_drop": 0.07471225853986675,
+            "sufficiency_confidence_drop": 0.04697091920749329
+          },
+          "median_ranking_seconds": 0.5238203910048469
+        },
+        {
+          "method": "GNNExplainer",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.14,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.1068216200674385,
+            "sufficiency_confidence_drop": 0.007416271326906651
+          },
+          "median_ranking_seconds": 0.5238203910048469
+        },
+        {
+          "method": "Global-refine",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.17,
+            "sufficiency_agreement": 0.92,
+            "necessity_confidence_drop": 0.12492550428756077,
+            "sufficiency_confidence_drop": 0.033760642994721715
+          },
+          "median_ranking_seconds": 0.06358279400592437
+        },
+        {
+          "method": "Global-refine",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.14783731626794283,
+            "sufficiency_confidence_drop": 0.009434514216055017
+          },
+          "median_ranking_seconds": 0.06358279400592437
+        },
+        {
+          "method": "Global-refine",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.16,
+            "sufficiency_agreement": 0.97,
+            "necessity_confidence_drop": 0.11886330925073697,
+            "sufficiency_confidence_drop": 0.002200031176116994
+          },
+          "median_ranking_seconds": 0.06358279400592437
+        },
+        {
+          "method": "Pathway",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.16,
+            "sufficiency_agreement": 0.91,
+            "necessity_confidence_drop": 0.12155565915431003,
+            "sufficiency_confidence_drop": 0.038036846487930945
+          },
+          "median_ranking_seconds": 0.44719166249706177
+        },
+        {
+          "method": "Pathway",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.21,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.148853725792498,
+            "sufficiency_confidence_drop": 0.009473584240462444
+          },
+          "median_ranking_seconds": 0.44719166249706177
+        },
+        {
+          "method": "Pathway",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.11683341106185528,
+            "sufficiency_confidence_drop": 0.0054167233756714705
+          },
+          "median_ranking_seconds": 0.44719166249706177
+        },
+        {
+          "method": "Random",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.04,
+            "sufficiency_agreement": 0.89,
+            "necessity_confidence_drop": 0.01963823260048297,
+            "sufficiency_confidence_drop": 0.07617608402191624
+          },
+          "median_ranking_seconds": 2.674399729585275e-05
+        },
+        {
+          "method": "Random",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.03,
+            "sufficiency_agreement": 0.88,
+            "necessity_confidence_drop": 0.02535694923758776,
+            "sufficiency_confidence_drop": 0.09142356047999413
+          },
+          "median_ranking_seconds": 2.674399729585275e-05
+        },
+        {
+          "method": "Random",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.05,
+            "sufficiency_agreement": 0.91,
+            "necessity_confidence_drop": 0.03795960753019004,
+            "sufficiency_confidence_drop": 0.06970029355448132
+          },
+          "median_ranking_seconds": 2.674399729585275e-05
+        },
+        {
+          "method": "Saliency",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.18,
+            "sufficiency_agreement": 0.92,
+            "necessity_confidence_drop": 0.12492981940207841,
+            "sufficiency_confidence_drop": 0.02965771656192717
+          },
+          "median_ranking_seconds": 0.005633950000628829
+        },
+        {
+          "method": "Saliency",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.17,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.12894894413191996,
+            "sufficiency_confidence_drop": 0.013772679672527004
+          },
+          "median_ranking_seconds": 0.005633950000628829
+        },
+        {
+          "method": "Saliency",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.96,
+            "necessity_confidence_drop": 0.11290436390553776,
+            "sufficiency_confidence_drop": 0.004651586563367915
+          },
+          "median_ranking_seconds": 0.005633950000628829
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.24,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.1631601439053281,
+            "sufficiency_confidence_drop": -0.0016126580273898277
+          },
+          "median_ranking_seconds": 0.005612632005068008
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.23,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.16993797823035947,
+            "sufficiency_confidence_drop": -0.009006041281990751
+          },
+          "median_ranking_seconds": 0.005612632005068008
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.97,
+            "necessity_confidence_drop": 0.15265042961597125,
+            "sufficiency_confidence_drop": -0.007115037082457725
+          },
+          "median_ranking_seconds": 0.005612632005068008
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.32,
+            "sufficiency_agreement": 0.98,
+            "necessity_confidence_drop": 0.23952991561444384,
+            "sufficiency_confidence_drop": -0.026257774061266347
+          },
+          "median_ranking_seconds": 0.07227988800877938,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.08,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.07636977170911574,
+            "sufficiency_confidence_drop": -0.024645116033876518
+          },
+          "mean_accepted_steps": 0.79,
+          "mean_evaluated_proposals": 26.16
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.37,
+            "sufficiency_agreement": 0.98,
+            "necessity_confidence_drop": 0.2873135183947986,
+            "sufficiency_confidence_drop": -0.03463479842857041
+          },
+          "median_ranking_seconds": 0.07062917800067225,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.14,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.11737554016443909,
+            "sufficiency_confidence_drop": -0.025628757146579657
+          },
+          "mean_accepted_steps": 0.98,
+          "mean_evaluated_proposals": 24.45
+        },
+        {
+          "method": "Swap-coarse",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.41,
+            "sufficiency_agreement": 1.0,
+            "necessity_confidence_drop": 0.3318990937061132,
+            "sufficiency_confidence_drop": -0.03928560553660437
+          },
+          "median_ranking_seconds": 0.07126416800747393,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.21,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.17924866409014195,
+            "sufficiency_confidence_drop": -0.03217056845414665
+          },
+          "mean_accepted_steps": 1.07,
+          "mean_evaluated_proposals": 23.34
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 5,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.32,
+            "sufficiency_agreement": 0.98,
+            "necessity_confidence_drop": 0.23819285148219105,
+            "sufficiency_confidence_drop": -0.026470322702836863
+          },
+          "median_ranking_seconds": 0.0643655825042515,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.08,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.07503270757686295,
+            "sufficiency_confidence_drop": -0.024857664675447033
+          },
+          "mean_accepted_steps": 0.75,
+          "mean_evaluated_proposals": 25.62
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 10,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.37,
+            "sufficiency_agreement": 0.98,
+            "necessity_confidence_drop": 0.2873104309863524,
+            "sufficiency_confidence_drop": -0.03425763245912952
+          },
+          "median_ranking_seconds": 0.06773750400316203,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.14,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.11737245275599295,
+            "sufficiency_confidence_drop": -0.025251591177138773
+          },
+          "mean_accepted_steps": 0.99,
+          "mean_evaluated_proposals": 24.45
+        },
+        {
+          "method": "Swap-gradient",
+          "budget": 20,
+          "queries": 100,
+          "mean": {
+            "necessity_flip": 0.41,
+            "sufficiency_agreement": 1.0,
+            "necessity_confidence_drop": 0.3318961419299704,
+            "sufficiency_confidence_drop": -0.03921118866773319
+          },
+          "median_ranking_seconds": 0.07239654150907882,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.21,
+            "sufficiency_agreement": 0.03,
+            "necessity_confidence_drop": 0.1792457123139992,
+            "sufficiency_confidence_drop": -0.03209615158527546
+          },
+          "mean_accepted_steps": 1.07,
+          "mean_evaluated_proposals": 23.34
+        }
+      ],
+      "reference_comparison": {
+        "reference": "results/tnnls-reproduction/boundary_Citeseer43_val100_batch8.json",
+        "reference_candidate_region": "gcn-boundary",
+        "max_original_logit_difference": 3.814697265625e-06,
+        "original_logit_tolerance": {
+          "relative": 1e-06,
+          "absolute": 1e-05,
+          "require_identical_binary_decision": true
+        },
+        "scope": "Descriptive differences conditional on equal actual edge counts; unequal counts are listed, not pooled.",
+        "comparisons": [
+          {
+            "method": "Endpoint-isolation",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.6959190719379485e-11,
+              "sufficiency_confidence_drop": 3.6426528189338265e-10
+            }
+          },
+          {
+            "method": "Endpoint-isolation",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -4.916931497403492e-10,
+              "sufficiency_confidence_drop": -9.188722318338404e-10
+            }
+          },
+          {
+            "method": "Endpoint-isolation",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -5.128504999936487e-10,
+              "sufficiency_confidence_drop": -4.045095484223665e-10
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.2900376244635442e-10,
+              "sufficiency_confidence_drop": -1.7958032597828838e-10
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -3.980296290033019e-09,
+              "sufficiency_confidence_drop": -1.9229618707124184e-09
+            }
+          },
+          {
+            "method": "Endpoint-supportive",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.469685448114047e-09,
+              "sufficiency_confidence_drop": -8.692100183525581e-10
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -3.5962130897345034e-09,
+              "sufficiency_confidence_drop": -1.0344911278710595e-09
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.7650565523024146e-10,
+              "sufficiency_confidence_drop": 9.203700498046256e-11
+            }
+          },
+          {
+            "method": "Global-refine",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 4.5603588684376473e-10,
+              "sufficiency_confidence_drop": -1.2015390330353657e-10
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -6.801220634761882e-10,
+              "sufficiency_confidence_drop": -5.85473663193312e-10
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.721061722447141e-09,
+              "sufficiency_confidence_drop": -1.215856915199094e-09
+            }
+          },
+          {
+            "method": "Pathway",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 1.8597985823854104e-09,
+              "sufficiency_confidence_drop": -3.0471693313211725e-10
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -7.731237549433627e-10,
+              "sufficiency_confidence_drop": -3.0296547706209746e-10
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -3.1006610883548137e-10,
+              "sufficiency_confidence_drop": 1.0139450177422607e-09
+            }
+          },
+          {
+            "method": "Random",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -9.873416168749545e-10,
+              "sufficiency_confidence_drop": -2.5126935812087513e-10
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 2.8177696097503408e-09,
+              "sufficiency_confidence_drop": 2.9564390651328204e-09
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 7.072375307996373e-10,
+              "sufficiency_confidence_drop": 2.052502887431622e-09
+            }
+          },
+          {
+            "method": "Saliency",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -8.008629490934595e-10,
+              "sufficiency_confidence_drop": -5.379927117833629e-10
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.914755403972395e-09,
+              "sufficiency_confidence_drop": -1.137315694242729e-09
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": 1.0614613717127392e-09,
+              "sufficiency_confidence_drop": 6.242129858181949e-10
+            }
+          },
+          {
+            "method": "Saliency-supportive",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -2.9605412692478925e-09,
+              "sufficiency_confidence_drop": -3.015383244948483e-09
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.299329784133047e-10,
+              "sufficiency_confidence_drop": 4.852232485856314e-07
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -2.5396014891474506e-09,
+              "sufficiency_confidence_drop": -1.4670480931794433e-05
+            }
+          },
+          {
+            "method": "Swap-coarse",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -2.9419173570684e-05,
+              "sufficiency_confidence_drop": -4.83084698321697e-05
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 5,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -1.4221772877817227e-09,
+              "sufficiency_confidence_drop": 4.851324110912743e-07
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 10,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -2.7354938707960043e-05,
+              "sufficiency_confidence_drop": 7.356045879035728e-10
+            }
+          },
+          {
+            "method": "Swap-gradient",
+            "budget": 20,
+            "matched_actual_budget_queries": 100,
+            "different_actual_budget_queries": [],
+            "paired_mean_difference_on_matched_actual_budgets": {
+              "necessity_flip": 0.0,
+              "sufficiency_agreement": 0.0,
+              "necessity_confidence_drop": -5.995887267032955e-09,
+              "sufficiency_confidence_drop": -1.0470827599503865e-09
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

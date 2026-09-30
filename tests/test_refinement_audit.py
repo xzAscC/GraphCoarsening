@@ -57,6 +57,24 @@ class RefinementAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, 'objective regressed'):
                 audit(path)
 
+    def test_close_logits_must_preserve_class(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = self.report(2)
+            for row in original['rows']:
+                row['full_logit'] = -1e-8
+            reference = root / 'reference.json'
+            reference.write_text(json.dumps(original))
+            current = copy.deepcopy(original)
+            for row in current['rows']:
+                row['full_logit'] = 1e-8
+            current['args']['query_reference'] = str(reference)
+            current['query_reference_sha256'] = hashlib.sha256(reference.read_bytes()).hexdigest()
+            path = root / 'current.json'
+            path.write_text(json.dumps(current))
+            with self.assertRaisesRegex(AssertionError, 'Original predictions differ'):
+                audit(path)
+
 
 if __name__ == '__main__':
     unittest.main()

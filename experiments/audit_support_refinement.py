@@ -7,6 +7,7 @@ training runs, so this utility does not report significance or confidence bands.
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import statistics
 
@@ -85,6 +86,7 @@ def audit(path):
         if {(k[0], k[2]) for k in reference_rows} != {(k[0], k[2]) for k in keys}:
             raise AssertionError('Reference query/budget coverage differs')
         comparisons = []
+        max_logit_difference = 0.0
         for method in sorted({r['method'] for r in rows}):
             if not any(key[1] == method for key in reference_rows):
                 continue
@@ -94,7 +96,12 @@ def audit(path):
                     if row['method'] != method or row['budget'] != budget:
                         continue
                     prior = reference_rows[(tuple(row['query']), method, budget)]
-                    if abs(row['full_logit'] - prior['full_logit']) > 1e-5:
+                    current_logit, prior_logit = row['full_logit'], prior['full_logit']
+                    max_logit_difference = max(max_logit_difference, abs(current_logit - prior_logit))
+                    # Float32 GPU reductions can differ by a few ULPs at large
+                    # logit magnitudes. Still reject every changed binary decision.
+                    if ((current_logit > 0) != (prior_logit > 0)
+                            or not math.isclose(current_logit, prior_logit, rel_tol=1e-6, abs_tol=1e-5)):
                         raise AssertionError('Original predictions differ')
                     if row['effective_budget'] == prior['effective_budget']:
                         matched.append({m: row[m] - prior[m] for m in METRICS})
@@ -111,6 +118,9 @@ def audit(path):
         candidate_comparison = {
             'reference': reference_path,
             'reference_candidate_region': reference['args'].get('candidate_region', 'induced'),
+            'max_original_logit_difference': max_logit_difference,
+            'original_logit_tolerance': {'relative': 1e-6, 'absolute': 1e-5,
+                                         'require_identical_binary_decision': True},
             'scope': 'Descriptive differences conditional on equal actual edge counts; unequal counts are listed, not pooled.',
             'comparisons': comparisons}
     return {'input': str(path), 'sha256': hashlib.sha256(raw).hexdigest(),
