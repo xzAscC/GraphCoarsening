@@ -1,0 +1,13 @@
+{
+  "runs": [
+    "cf2_Cora42_val20_batch8.json",
+    "cf2_Citeseer43_val20_batch8.json"
+  ],
+  "audit": "cf2_validation20_audit.json",
+  "purpose": "Development validation of the explicitly adapted CF2 baseline against the current support-search variants, not final held-out evaluation.",
+  "query_comparison": "Methods within each run share queries, frozen checkpoint, candidate region and achieved undirected-edge budgets. These query samples were drawn anew; their aggregate results are not paired comparisons with earlier 100-query runs.",
+  "baseline_scope": "CF2 uses the paper probability-margin objective with binary links, fixed features, tied undirected masks, normalization-aware candidates and external top-B discretization. Original node-explainer optimization defaults are starting settings, not a tuned link-task baseline.",
+  "timing_context": "The two runs executed concurrently on the same RTX 4090, also shared with desktop processes. Recorded ranking times are diagnostic and must not be treated as controlled comparative runtime evidence.",
+  "verification": "All 1200 saved rows have finite intervention logits and support sizes matching their recorded effective budgets. Source hashes were checked against the current files. The separate audit checks recorded swap-search non-regression, not statistical significance or independent model re-execution.",
+  "interpretation": "The necessity/sufficiency trade-off varies across data sets and budgets. Coarse grouping has not demonstrated a stable independent advantage over ungrouped swaps. Both favorable and unfavorable results are retained. No manuscript numerical results were replaced."
+}
