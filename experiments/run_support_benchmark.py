@@ -57,8 +57,15 @@ def main():
                    help='Also compare symmetric, projection-loss, and random merge scores')
     p.add_argument('--protection-ablation', action='store_true')
     p.add_argument('--global-refine', action='store_true')
+    p.add_argument('--endpoint-isolation', action='store_true')
+    p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
+    p.add_argument('--query-split', choices=['val', 'test'], default='test')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
+    if args.score_ablation and args.merge_score != 'legacy':
+        p.error('--score-ablation uses legacy as its reference; do not combine with --merge-score projection')
+    source_files = [Path(__file__), Path('experiments/train_gcn.py'), *Path('src').rglob('*.py')]
+    source_hashes = {str(f): hashlib.sha256(f.read_bytes()).hexdigest() for f in source_files}
     if Path(args.output).exists():
         raise FileExistsError('Use a new output path to preserve prior evidence')
     if args.queries_per_class < 1 or min(args.budgets) < 1:
@@ -83,10 +90,12 @@ def main():
     model = LinkPredictionModel(encoder, predictor).to(args.device).eval()
     n = data.x.size(0)
     hashes = {name: hashlib.sha256(getattr(data, name).numpy().tobytes()).hexdigest()
-              for name in ['train_pos_edge_index', 'test_pos_edge_index', 'test_neg_edge_index']}
+              for name in ['train_pos_edge_index', 'val_pos_edge_index', 'val_neg_edge_index',
+                           'test_pos_edge_index', 'test_neg_edge_index']}
     data = data.to(args.device)
     saliency = SaliencyExplainer(model, k_frac=1., device=args.device)
-    ours = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'], device=args.device)
+    ours = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'], device=args.device,
+                           score_method=args.merge_score)
 
     def sync():
         if str(args.device).startswith('cuda'):
@@ -118,9 +127,15 @@ def main():
                                         device=args.device, partition_mode='global-refine')
         global_refine._coarsener, global_refine._cached_data_id = coarsener, id(data)
         methods.insert(-1, ('Global-refine', global_refine))
+    if args.endpoint_isolation:
+        endpoint_isolation = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
+                                            device=args.device, partition_mode='global-endpoints')
+        endpoint_isolation._coarsener, endpoint_isolation._cached_data_id = coarsener, id(data)
+        methods.insert(-1, ('Endpoint-isolation', endpoint_isolation))
     rng = np.random.default_rng(args.seed)
     rows = []
-    for label, pool in [(1, data.test_pos_edge_index), (0, data.test_neg_edge_index)]:
+    for label, pool in [(1, getattr(data, args.query_split + '_pos_edge_index')),
+                        (0, getattr(data, args.query_split + '_neg_edge_index'))]:
         ids = rng.choice(pool.size(1), min(args.queries_per_class, pool.size(1)), replace=False)
         for idx in ids:
             a, b = map(int, pool[:, int(idx)].tolist())
@@ -153,6 +168,8 @@ def main():
                                  **metrics})
             print(f'Completed label={label} query=({a},{b})', flush=True)
     report = {'protocol': PROTOCOL, 'args': vars(args), 'split_sha256': hashes,
+              'source_sha256_at_start': source_hashes,
+              'training_summary': ckpt.get('training_summary'),
               'checkpoint_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
               'code_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'working_tree_status': subprocess.check_output(['git', 'status', '--short'], text=True),

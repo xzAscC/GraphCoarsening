@@ -18,6 +18,27 @@ from typing import List
 import torch
 
 
+def isolate_query_endpoints(partition: List[List[int]], a: int, b: int) -> List[List[int]]:
+    """Split only query endpoints, keeping each nonempty residual cluster intact.
+
+    For a valid hard partition with m clusters this produces at most m+2
+    clusters (m+1 for a=b), without mutating the reusable global partition.
+    """
+    endpoints = {a, b}
+    found = set()
+    result = []
+    for cluster in partition:
+        touched = endpoints.intersection(cluster)
+        found.update(touched)
+        remainder = [v for v in cluster if v not in touched]
+        if remainder:
+            result.append(remainder)
+        result.extend([[v] for v in sorted(touched)])
+    if found != endpoints:
+        raise ValueError("Query endpoint is absent from the partition")
+    return result
+
+
 class UnionFind:
     """Union-Find (Disjoint Set Union) with path compression and union by rank.
 

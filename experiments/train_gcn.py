@@ -3,6 +3,8 @@
 import argparse
 import os
 import sys
+import random
+import json
 
 import torch
 import torch.nn.functional as F
@@ -226,6 +228,10 @@ def main():
     parser.add_argument("--seed", type=int, default=None, help="Random seed")
     parser.add_argument("--checkpoint-dir", default="checkpoints",
                         help="Output directory; use a separate directory for reproduction runs")
+    parser.add_argument("--dropout", type=float, default=None)
+    parser.add_argument("--weight-decay", type=float, default=None)
+    parser.add_argument("--select-best", action="store_true", help="Select epoch using validation AUC only")
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
 
     cfg = ExperimentConfig()
@@ -244,9 +250,18 @@ def main():
         cfg.model.num_layers = args.layers
     if args.seed is not None:
         cfg.seed = args.seed
+    if args.dropout is not None:
+        cfg.model.dropout = args.dropout
+    if args.weight_decay is not None:
+        cfg.model.weight_decay = args.weight_decay
+    checkpoint_path = os.path.join(args.checkpoint_dir, f"{args.dataset}_gcn.pt")
+    if os.path.exists(checkpoint_path) and not args.overwrite:
+        raise FileExistsError(f"Refusing to overwrite {checkpoint_path}; choose a new directory")
 
     device = torch.device(cfg.device)
     torch.manual_seed(cfg.seed)
+    random.seed(cfg.seed)
+    np.random.seed(cfg.seed)
     if device.type == "cuda":
         torch.cuda.manual_seed(cfg.seed)
 
@@ -273,23 +288,39 @@ def main():
     )
 
     print(f"Training on {device} for {cfg.model.epochs} epochs...")
+    history, best_state = [], None
+    best_val, selected_epoch = -float("inf"), cfg.model.epochs
     for epoch in range(1, cfg.model.epochs + 1):
         loss = train_epoch(model, predictor, data, optimizer, device, cfg.model.neg_ratio)
         if epoch % 10 == 0 or epoch == 1:
             val_auc = evaluate(model, predictor, data, device, "val")
+            history.append({"epoch": epoch, "loss": loss, "validation_auc": val_auc})
+            if args.select_best and val_auc > best_val:
+                best_val, selected_epoch = val_auc, epoch
+                best_state = [{k: v.detach().cpu().clone() for k, v in module.state_dict().items()}
+                              for module in (model, predictor)]
             print(f"  Epoch {epoch:03d} | Loss: {loss:.4f} | Val AUC: {val_auc:.4f}")
 
     checkpoint_dir = args.checkpoint_dir
     os.makedirs(checkpoint_dir, exist_ok=True)
     checkpoint_path = os.path.join(checkpoint_dir, f"{args.dataset}_gcn.pt")
+    if best_state is not None:
+        model.load_state_dict(best_state[0])
+        predictor.load_state_dict(best_state[1])
+    test_auc = evaluate(model, predictor, data, device, "test")
+    summary = {"args": vars(args), "selected_epoch": selected_epoch,
+               "history": history, "test_auc": test_auc, "torch": torch.__version__,
+               "pyg": torch_geometric.__version__}
     torch.save({
         "model_state_dict": model.state_dict(),
         "predictor_state_dict": predictor.state_dict(),
+        "training_summary": summary,
         "config": {
             "seed": cfg.seed,
             "epochs": cfg.model.epochs,
             "learning_rate": cfg.model.lr,
             "dropout": cfg.model.dropout,
+            "weight_decay": cfg.model.weight_decay,
             "in_channels": in_channels,
             "hidden_channels": cfg.model.hidden_channels,
             "out_channels": out_channels,
@@ -302,7 +333,8 @@ def main():
     }, checkpoint_path)
     print(f"Checkpoint saved to {checkpoint_path}")
 
-    test_auc = evaluate(model, predictor, data, device, "test")
+    with open(checkpoint_path + ".json", "w") as f:
+        json.dump(summary, f, indent=2)
     print(f"Test AUC: {test_auc:.4f}")
 
 

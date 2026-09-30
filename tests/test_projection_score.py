@@ -1,9 +1,17 @@
 import unittest
 import torch
 from src.spectral import pair_projection_scores
+from src.coarsen import GraphCoarsener
+from unittest.mock import patch
 
 
 class ProjectionTests(unittest.TestCase):
+    def test_projection_pipeline_does_not_evaluate_legacy_surrogate(self):
+        edges = torch.tensor([[0,1,1,2,2,3],[1,0,2,1,3,2]])
+        with patch('src.coarsen.compute_perturbation_scores', side_effect=AssertionError('legacy called')):
+            c = GraphCoarsener(k=2, alpha=0.5, score_method='projection').fit(edges, 4)
+        torch.testing.assert_close(c.scores, pair_projection_scores(edges, c.right_vecs))
+
     def test_exact_single_merge_identity(self):
         g = torch.Generator().manual_seed(7)
         for n in range(3, 12):

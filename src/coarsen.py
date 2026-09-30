@@ -18,6 +18,7 @@ from src.spectral import (
     compute_normalized_adjacency,
     compute_perturbation_scores,
     compute_top_k_eigenpairs,
+    pair_projection_scores,
 )
 
 
@@ -221,7 +222,10 @@ class GraphCoarsener:
         alpha: Coarsening ratio controlling merge budget. Default 0.75.
     """
 
-    def __init__(self, k: int = 100, alpha: float = 0.75) -> None:
+    def __init__(self, k: int = 100, alpha: float = 0.75, score_method: str = "legacy") -> None:
+        if score_method not in {"legacy", "projection"}:
+            raise ValueError("Unknown score_method")
+        self.score_method = score_method
         self.k = k
         self.alpha = alpha
 
@@ -279,9 +283,12 @@ class GraphCoarsener:
         )
 
         # Step 3: Perturbation scores
-        self.scores = compute_perturbation_scores(
-            edge_index, self.eigenvalues, self.left_vecs, self.right_vecs
-        )
+        if self.score_method == "projection":
+            self.scores = pair_projection_scores(edge_index, self.right_vecs)
+        else:
+            self.scores = compute_perturbation_scores(
+                edge_index, self.eigenvalues, self.left_vecs, self.right_vecs
+            )
 
         # Step 4: Node partition (default, no protection)
         self.partition = node_partition(

@@ -61,6 +61,7 @@ class CoarsenExplainer(BaseExplainer):
         fidelity_threshold: float = 0.8,
         protect_hops: int = 1,
         partition_mode: str = "prediction",
+        score_method: str = "legacy",
     ):
         super().__init__(model, device)
         self.k = k
@@ -73,9 +74,10 @@ class CoarsenExplainer(BaseExplainer):
         if protect_hops < 0:
             raise ValueError("protect_hops must be nonnegative")
         self.protect_hops = protect_hops
-        if partition_mode not in {"prediction", "global-refine"}:
+        if partition_mode not in {"prediction", "global-refine", "global-endpoints"}:
             raise ValueError("Unknown partition_mode")
         self.partition_mode = partition_mode
+        self.score_method = score_method
         self.last_diagnostics = {}
         self._coarsener: Optional[GraphCoarsener] = None
         self._cached_data_id: Optional[int] = None
@@ -86,7 +88,7 @@ class CoarsenExplainer(BaseExplainer):
             return self._coarsener
 
         device_data = self._to_device(data)
-        coarsener = GraphCoarsener(k=self.k, alpha=self.alpha)
+        coarsener = GraphCoarsener(k=self.k, alpha=self.alpha, score_method=self.score_method)
         coarsener.fit(
             edge_index=device_data.edge_index,
             num_nodes=device_data.x.size(0),
@@ -125,11 +127,13 @@ class CoarsenExplainer(BaseExplainer):
 
         gradient_all = self._gradient_scores(data, node_a, node_b, data.edge_index)
 
-        from src.partition import prediction_guided_partition
+        from src.partition import prediction_guided_partition, isolate_query_endpoints
         if self.partition_mode == "global-refine":
             partition = [part for cluster in coarsener.partition
                          for part in ([[v] for v in cluster]
                                       if node_a in cluster or node_b in cluster else [cluster])]
+        elif self.partition_mode == "global-endpoints":
+            partition = isolate_query_endpoints(coarsener.partition, node_a, node_b)
         else:
             partition = prediction_guided_partition(
                 edge_index=data.edge_index,
