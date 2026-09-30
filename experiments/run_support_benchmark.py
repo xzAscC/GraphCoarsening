@@ -94,6 +94,8 @@ def main():
     p.add_argument('--swap-steps', type=int, default=2)
     p.add_argument('--pair-swaps', action='store_true',
                    help='Also compare two-edge exchanges with matched proposal counts')
+    p.add_argument('--mixed-swaps', action='store_true',
+                   help='Mix single and pair exchanges under one shared proposal cap')
     p.add_argument('--swap-additions', type=int, default=6)
     p.add_argument('--swap-removals', type=int, default=3)
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
@@ -106,6 +108,8 @@ def main():
         p.error('--support-swaps requires --signed-ablation for a shared initial support')
     if args.pair_swaps and not args.support_swaps:
         p.error('--pair-swaps requires --support-swaps')
+    if args.mixed_swaps and not args.support_swaps:
+        p.error('--mixed-swaps requires --support-swaps')
     if args.score_ablation and args.merge_score != 'legacy':
         p.error('--score-ablation uses legacy as its reference; do not combine with --merge-score projection')
     source_files = [Path(__file__), Path('experiments/train_gcn.py'), *Path('src').rglob('*.py')]
@@ -259,6 +263,8 @@ def main():
                         swap_variants = [('Swap-gradient', None, 1), ('Swap-coarse', group_ids, 1)]
                         if args.pair_swaps:
                             swap_variants += [('Swap-pair-gradient', None, 2), ('Swap-pair-coarse', group_ids, 2)]
+                        if args.mixed_swaps:
+                            swap_variants += [('Swap-mixed-gradient', None, 0), ('Swap-mixed-coarse', group_ids, 0)]
                         for variant, grouping, exchange_size in swap_variants:
                             sync()
                             swap_start = time.perf_counter()

@@ -4,7 +4,8 @@ import torch
 from torch_geometric.data import Data
 
 from src.evaluation.interventions import evaluate_support
-from src.explainers.support_refinement import candidate_groups, diversify, refine_support, ranked_bundles
+from src.explainers.support_refinement import (candidate_groups, diversify, refine_support,
+                                              ranked_bundles, exchange_proposals)
 from src.models.gcn import GCN
 from src.models.link_predictor import LinkPredictionModel, LinkPredictor
 
@@ -26,7 +27,7 @@ class PairSynergy(torch.nn.Module):
 
 
 class RefinementTests(unittest.TestCase):
-    def check_pair_escape(self, device):
+    def check_pair_escape(self, device, exchange_size=2):
         x = torch.zeros(6, 4, device=device)
         x[1:5] = torch.eye(4, device=device)
         forward = torch.tensor([[0,0,0,0], [1,2,3,4]], device=device)
@@ -38,7 +39,7 @@ class RefinementTests(unittest.TestCase):
         self.assertEqual(single.edge_index.tolist(), initial.edge_index.tolist())
         for groups in (None, torch.tensor([0,0,1,1], device=device)):
             pair, trace = refine_support(model, data, 0, 5, candidates, initial,
-                                         groups=groups, exchange_size=2, batch_size=2)
+                                         groups=groups, exchange_size=exchange_size, batch_size=2)
             self.assertEqual(pair.edge_index.tolist(), [[0,0], [3,4]])
             self.assertTrue(trace[1]['accepted'])
             self.assertEqual(trace[1]['exchange_size'], 2)
@@ -50,6 +51,31 @@ class RefinementTests(unittest.TestCase):
     @unittest.skipUnless(torch.cuda.is_available(), 'CUDA unavailable')
     def test_pair_escape_cuda(self):
         self.check_pair_escape('cuda')
+
+    def test_mixed_escape_cpu(self):
+        self.check_pair_escape('cpu', exchange_size=0)
+
+    @unittest.skipUnless(torch.cuda.is_available(), 'CUDA unavailable')
+    def test_mixed_escape_cuda(self):
+        self.check_pair_escape('cuda', exchange_size=0)
+
+    def test_mixed_shared_cap_and_fallback(self):
+        candidates = torch.arange(10)
+        gradient = torch.arange(10, dtype=torch.float)
+        selected = candidates[:4]
+        proposals, sizes = exchange_proposals(candidates, selected, torch.arange(4),
+                                              torch.arange(9,3,-1), gradient, 3, 2, 0)
+        self.assertEqual(len(proposals), 6)
+        self.assertEqual(sizes.count(1), 3)
+        self.assertEqual(sizes.count(2), 3)
+        self.assertEqual(len({tuple(p.tolist()) for p in proposals}), 6)
+        for proposal, size in zip(proposals, sizes):
+            self.assertEqual(len(proposal), len(selected))
+            self.assertEqual((~torch.isin(selected, proposal)).sum().item(), size)
+        fallback, sizes = exchange_proposals(candidates, candidates[:1], torch.tensor([0]),
+                                              torch.arange(9,0,-1), gradient, 3, 2, 0)
+        self.assertEqual(len(fallback), 3)
+        self.assertEqual(sizes, [1,1,1])
 
     def test_pair_ranking_and_group_priority(self):
         gradient = torch.tensor([4.,3.,2.,1.])
@@ -109,6 +135,13 @@ class RefinementTests(unittest.TestCase):
     @unittest.skipUnless(torch.cuda.is_available(), 'CUDA unavailable')
     def test_pair_gcn_cuda(self):
         self.check_gcn('cuda', exchange_size=2)
+
+    def test_mixed_gcn_cpu(self):
+        self.check_gcn('cpu', exchange_size=0)
+
+    @unittest.skipUnless(torch.cuda.is_available(), 'CUDA unavailable')
+    def test_mixed_gcn_cuda(self):
+        self.check_gcn('cuda', exchange_size=0)
 
     def test_group_diversity_and_fill(self):
         order = torch.tensor([0, 1, 2, 3])

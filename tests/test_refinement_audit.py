@@ -5,10 +5,22 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from experiments.audit_support_refinement import audit
+from experiments.audit_support_refinement import audit, validate_proposal_trace
 
 
 class RefinementAuditTests(unittest.TestCase):
+    def test_mixed_proposal_accounting(self):
+        args = {'swap_steps': 2, 'swap_additions': 3, 'swap_removals': 2}
+        trace = [{'step': 0, 'proposals': 0, 'accepted': False,
+                  'exchange_size': 0, 'proposals_by_exchange_size': {}},
+                 {'step': 1, 'proposals': 6, 'accepted': True,
+                  'exchange_size': 2, 'proposals_by_exchange_size': {'1': 3, '2': 3}}]
+        validate_proposal_trace(trace, args)
+        trace[1]['proposals'] = 12
+        trace[1]['proposals_by_exchange_size'] = {'1': 6, '2': 6}
+        with self.assertRaisesRegex(AssertionError, 'cap exceeded'):
+            validate_proposal_trace(trace, args)
+
     def report(self, count):
         rows = []
         for method in ('Saliency-supportive', 'Swap-gradient'):

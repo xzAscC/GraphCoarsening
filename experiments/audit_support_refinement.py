@@ -16,6 +16,25 @@ METRICS = ('necessity_flip', 'sufficiency_agreement', 'necessity_confidence_drop
            'sufficiency_confidence_drop')
 
 
+def validate_proposal_trace(trace, args):
+    """Check new mixed-proposal accounting, retaining legacy trace compatibility."""
+    for index, step in enumerate(trace):
+        histogram = step.get('proposals_by_exchange_size')
+        if histogram is None:
+            continue
+        if step['step'] != index or index > args['swap_steps']:
+            raise AssertionError('Invalid search step count')
+        if any(key not in ('1', '2') or not isinstance(value, int) or value < 1
+               for key, value in histogram.items()):
+            raise AssertionError('Invalid proposal-size histogram')
+        if sum(histogram.values()) != step['proposals']:
+            raise AssertionError('Proposal histogram does not match total')
+        if step['proposals'] > args['swap_additions'] * args['swap_removals']:
+            raise AssertionError('Shared proposal cap exceeded')
+        if step['accepted'] and str(step['exchange_size']) not in histogram:
+            raise AssertionError('Accepted exchange size was not proposed')
+
+
 def audit(path):
     raw = path.read_bytes()
     report = json.loads(raw)
@@ -44,6 +63,7 @@ def audit(path):
         if max(0, row['sufficiency_confidence_drop']) > max(0, original['sufficiency_confidence_drop']) + 1e-6:
             raise AssertionError('Retention deficit regressed')
         trace = row['search_trace']
+        validate_proposal_trace(trace, report['args'])
         for previous, current in zip(trace, trace[1:]):
             if current['objective'] < previous['objective'] - 1e-12:
                 raise AssertionError('Search objective regressed')

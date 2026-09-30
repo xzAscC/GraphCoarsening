@@ -79,6 +79,38 @@ def ranked_bundles(order, gradient, count, size, *, groups=None, largest=True):
     return torch.tensor(selected, dtype=torch.long, device=order.device).reshape(-1, 2)
 
 
+def exchange_proposals(candidates, selected, in_order, out_order, gradient,
+                       additions, removals, exchange_size, groups=None):
+    """Build at most additions*removals supports, including mixed-size mode 0.
+
+    Pure modes preserve the existing Cartesian order. Mixed mode ranks each
+    size's pool by additive predicted gain, then alternates single and pair
+    proposals under one shared cap. It does not double the model-query budget.
+    """
+    if exchange_size not in (0, 1, 2) or min(additions, removals) < 1:
+        raise ValueError('Invalid proposal settings')
+    available = min(len(in_order), len(out_order))
+    if available == 0:
+        return [], []
+    sizes = ([1, 2] if available >= 2 else [1]) if exchange_size == 0 else [min(exchange_size, available)]
+    pools = []
+    for size in sizes:
+        add = ranked_bundles(out_order, gradient, additions, size, groups=groups)
+        drop = ranked_bundles(in_order, gradient, removals, size, largest=False)
+        pool = []
+        for d in drop:
+            for i in add:
+                support = torch.cat((selected[~torch.isin(selected, candidates[d])], candidates[i])).sort().values
+                gain = (gradient[i].sum() - gradient[d].sum()).item() if exchange_size == 0 else 0.
+                pool.append((support, size, gain))
+        if exchange_size == 0:
+            pool.sort(key=lambda proposal: -proposal[2])
+        pools.append(pool)
+    interleaved = itertools.chain.from_iterable(itertools.zip_longest(*pools))
+    chosen = list(itertools.islice((p for p in interleaved if p is not None), additions * removals))
+    return [p[0] for p in chosen], [p[1] for p in chosen]
+
+
 def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                    steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7,
                    exchange_size=1):
@@ -90,9 +122,10 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     Every accepted candidate is checked again with a single graph per forward.
     This is a finite-search invariant, not a fidelity or global-optimum theorem.
     Batched forwards require graph-separable inference; tested with GCN.
+    exchange_size=0 mixes single and pair moves under the same proposal cap.
     """
     if (steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0
-            or exchange_size not in (1, 2)):
+            or exchange_size not in (0, 1, 2)):
         raise ValueError('Invalid refinement budget')
     if model.training:
         raise ValueError('Frozen evaluation-mode model required')
@@ -131,9 +164,10 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     current = tuple(x[0] for x in assess([selected], 1))
     trace = []
 
-    def record(step, proposals, accepted, actual_exchange_size=0):
+    def record(step, proposals, accepted, actual_exchange_size=0, proposal_sizes=()):
         trace.append({'step': step, 'proposals': proposals, 'accepted': accepted,
                       'exchange_size': actual_exchange_size,
+                      'proposals_by_exchange_size': {str(s): proposal_sizes.count(s) for s in sorted(set(proposal_sizes))},
                       'objective': current[0].item(), 'capped_retained_probability': current[1].item(),
                       'removed_probability': current[2].item(),
                       'retained_logit': current[5].item(), 'removed_logit': current[6].item()})
@@ -163,17 +197,16 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         inside, outside = active.nonzero().flatten(), (~active).nonzero().flatten()
         out_order = outside[torch.argsort(gradient[outside], descending=True, stable=True)]
         in_order = inside[torch.argsort(gradient[inside], stable=True)]
+        proposals, proposal_sizes = exchange_proposals(
+            candidates, selected, in_order, out_order, gradient,
+            additions, removals, exchange_size, groups)
         size = min(exchange_size, inside.numel(), outside.numel())
-        add = ranked_bundles(out_order, gradient, additions, size, groups=groups)
-        drop = ranked_bundles(in_order, gradient, removals, size, largest=False)
-        proposals = [torch.cat((selected[~torch.isin(selected, candidates[d])], candidates[i])).sort().values
-                     for d in drop for i in add]
         values = assess(proposals, batch_size)
         eligible = ((values[1] >= current[1]) & (values[2] <= current[2])
                     & (values[3] >= current[3]) & (values[4] >= current[4])
                     & (values[0] > current[0] + min_gain))
         if not eligible.any():
-            record(step, len(proposals), False, size)
+            record(step, len(proposals), False, size, proposal_sizes)
             break
         ranking = torch.argsort(values[0].masked_fill(~eligible, -torch.inf), descending=True)
         accepted = False
@@ -183,8 +216,9 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                     and checked[3] >= current[3] and checked[4] >= current[4]
                     and checked[0] > current[0] + min_gain):
                 selected, current, accepted = proposals[index], checked, True
+                size = proposal_sizes[index]
                 break
-        record(step, len(proposals), accepted, size)
+        record(step, len(proposals), accepted, size, proposal_sizes)
         if not accepted:
             break
     return Data(edge_index=torch.stack((selected // n, selected % n))), trace
