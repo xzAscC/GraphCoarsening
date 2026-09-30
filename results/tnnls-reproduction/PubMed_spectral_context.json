@@ -1,0 +1,32 @@
+{
+  "study": "Clean PubMed explanation pilot and stationary-eigenspace audit",
+  "training_audit": "clean_training_PubMed_audit.json",
+  "explanation_audit": "mixed_PubMed_val20_audit.json",
+  "component_audit": "stationary_cutoff_clean_graphs.json",
+  "unit_tests_passed": 89,
+  "source_hashes_verified_for_explanation_runs": true,
+  "queries_per_run": 20,
+  "seeds": [42, 43],
+  "budgets": [5, 10, 20],
+  "test_evaluation_performed": false,
+  "training": [
+    {"seed": 42, "selected_epoch": 200, "validation_auc": 0.9242602210376781, "verified_negative_sampling_epochs": 200},
+    {"seed": 43, "selected_epoch": 200, "validation_auc": 0.9359566216815024, "verified_negative_sampling_epochs": 200}
+  ],
+  "explanation_observation": "On 120 paired query-budget cases, single-edge coarse grouping has zero binary Pareto wins and three losses against ungrouped search. Mixed coarse grouping has one win and one loss against mixed ungrouped search. This pilot does not support a stable independent grouping benefit.",
+  "spectral_issue": "Every audited clean Cora, Citeseer and PubMed training graph has more connected components than the requested k=100. For normalized A+I, each component contributes a unit eigenvalue. An exact largest-100 selection therefore cuts a repeated stationary eigenspace and does not uniquely specify a retained subspace.",
+  "actual_PubMed_solver_outputs": [
+    {"seed": 42, "components": 1475, "returned_eigenpairs": 100, "values_within_1e_minus_5_of_one": 59, "minimum_returned_value": 0.9766732454299927, "maximum_eigenpair_residual_norm": 0.000022861224351800047},
+    {"seed": 43, "components": 1527, "returned_eigenpairs": 100, "values_within_1e_minus_5_of_one": 66, "minimum_returned_value": 0.9837575554847717, "maximum_eigenpair_residual_norm": 0.0000204010029847268}
+  ],
+  "interpretation": "Small residuals of returned eigenpairs do not certify recovery of the algebraically largest k eigenvalues. Here, the sparse solver returns nonstationary modes despite the higher exact multiplicity at one. The dense and sparse branches must not be treated as producing an equivalent, uniquely defined top-k signal selection in this setting.",
+  "counterexample_test": "Two disconnected weighted-degree path components have two valid top-1 stationary eigenvectors inducing opposite merge-score orderings. Keeping the complete stationary subspace restores rotation invariance of the projection score. This tests cutoff ambiguity, not empirical explanation quality.",
+  "limits": [
+    "The diagnostic does not establish that stationary modes caused every observed explanation failure.",
+    "The projection-loss identity remains valid for a fixed selected signal matrix; the issue is how that signal subspace is selected.",
+    "Only two PubMed seeds and twenty validation queries each were evaluated; no tuned strong-baseline comparison or final test is claimed.",
+    "Runs were concurrent on a shared GPU and are not controlled timing benchmarks. Sparse eigendecomposition used the existing CPU ARPACK branch."
+  ],
+  "decision": "Resolve stationary modes and cutoff multiplicity explicitly before promoting the spectral merge rule. Preserve all current outputs as exploratory evidence. A nonstationary-signal alternative must be checked against known small-graph spectra, solver residuals and matched grouping controls before claiming improvement.",
+  "manuscript_numerical_results_changed": false
+}

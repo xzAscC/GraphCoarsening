@@ -1,0 +1,100 @@
+{
+  "audit": "stationary-multiplicity-v1",
+  "source_sha256": {
+    "/home/xzascc/Documents/code/GraphCoarsening/experiments/audit_stationary_modes.py": "f549cee2cb5f60cc41f8fe457e20caf26b1f088ca4cba26817c33ef5f3830f85",
+    "src/spectral.py": "b15febdfc04695b4f36523f97ffc3d40be49003866596c02e44fa3776905582a"
+  },
+  "scope": "Exact component-count obstruction for normalized A+I on unit-weight saved training graphs. A small eigenpair residual alone does not certify that a partial solver recovered the algebraically largest k modes.",
+  "runs": [
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/cora42-2layer/Cora_gcn.pt",
+      "checkpoint_sha256": "73357cc88f39af91b58d098159bb1f88e81291d4be39d24aa197ea1fbeff08f1",
+      "dataset": "Cora",
+      "seed": 42,
+      "nodes": 2708,
+      "training_split_sha256": "55ebde3c06d2508c9982098f3a88f44f68288bffa98bfe7bbd00806de882dad2",
+      "connected_components": 185,
+      "isolates": 95,
+      "largest_component_nodes": 2357,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 185,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 2.6645352591003757e-14
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/cora43-2layer/Cora_gcn.pt",
+      "checkpoint_sha256": "2205ca7e0545d56a8b7b7a8c4be0ce354fbc11f47745321649d11a9d68679d71",
+      "dataset": "Cora",
+      "seed": 43,
+      "nodes": 2708,
+      "training_split_sha256": "dbcdb3c013be583c818d9b90592daee71ca564432a0d7aa793f9471de6ac5a7b",
+      "connected_components": 186,
+      "isolates": 103,
+      "largest_component_nodes": 2373,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 186,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 3.552713678800501e-14
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/citeseer42-2layer/Citeseer_gcn.pt",
+      "checkpoint_sha256": "74dc44084f8014bb5fe3f2e9abb23c9293a5105378c9350f3cba508967117af9",
+      "dataset": "Citeseer",
+      "seed": 42,
+      "nodes": 3327,
+      "training_split_sha256": "c63ec6c90883436dd34f5d0c2e6c9d7e8a5f84860e348b76eb8fb318d419f035",
+      "connected_components": 660,
+      "isolates": 260,
+      "largest_component_nodes": 1892,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 660,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 1.4210854715202004e-14
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/citeseer43-2layer/Citeseer_gcn.pt",
+      "checkpoint_sha256": "3a90bdfa9a49516f256fa5ff38db92a5289990a9fe7822f764c92a96484074ac",
+      "dataset": "Citeseer",
+      "seed": 43,
+      "nodes": 3327,
+      "training_split_sha256": "288a878efb564d6b227657dcb452c173325f1dd45aff7ac6f900892ff2833572",
+      "connected_components": 672,
+      "isolates": 266,
+      "largest_component_nodes": 1890,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 672,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 3.552713678800501e-15
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/pubmed42-2layer/PubMed_gcn.pt",
+      "checkpoint_sha256": "41aaf0a8fca0f1409d33960984ce19ea44f7930e01d088e958e9ac5dcc2af3f5",
+      "dataset": "PubMed",
+      "seed": 42,
+      "nodes": 19717,
+      "training_split_sha256": "505655c12d4f9bd67c7ce2876c323f90cd3f161041ce9e5dc10fb03b371f59ed",
+      "connected_components": 1475,
+      "isolates": 1429,
+      "largest_component_nodes": 18145,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 1475,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 1.9539925233402755e-14
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/pubmed43-2layer/PubMed_gcn.pt",
+      "checkpoint_sha256": "32fc2d16d49bcf63450ad5290818257a2635cfff054ac754e7358912a173af14",
+      "dataset": "PubMed",
+      "seed": 43,
+      "nodes": 19717,
+      "training_split_sha256": "0d3c9246283e984a48413b92616175582e94b24b0695c5a05a3b52fb8219b6fb",
+      "connected_components": 1527,
+      "isolates": 1489,
+      "largest_component_nodes": 18088,
+      "requested_k": 100,
+      "exact_unit_eigenvalue_multiplicity": 1527,
+      "cutoff_inside_stationary_eigenspace": true,
+      "global_stationary_vector_residual_linf": 2.1316282072803006e-14
+    }
+  ]
+}
