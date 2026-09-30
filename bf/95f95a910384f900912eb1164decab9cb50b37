@@ -1,0 +1,25 @@
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_b212d49b75302d 300-307
+results/tnnls-reproduction/clean_training_PubMed_audit.json
+  s_6574c9512bb1f0::t_12433e40fa3c70 1-46
+results/tnnls-reproduction/training_clean_PubMed42.json
+  s_6574c9512bb1f0::t_86ff0b61e9fcb4 1-1148
+results/tnnls-reproduction/training_clean_PubMed43.json
+  s_6574c9512bb1f0::t_4da4eb599a394d 1-1148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bf95f95a910384f900912eb1164decab9cb50b37",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
