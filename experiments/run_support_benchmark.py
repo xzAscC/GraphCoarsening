@@ -81,6 +81,12 @@ def main():
                    help='Add class-supportive saliency and bounded-refinement calibration')
     p.add_argument('--gnnexplainer', action='store_true')
     p.add_argument('--gnnexplainer-epochs', type=int, default=100)
+    p.add_argument('--cf2', action='store_true', help='Edge-only binary-link CF2 adaptation')
+    p.add_argument('--cf2-epochs', type=int, default=2000)
+    p.add_argument('--cf2-lr', type=float, default=.01)
+    p.add_argument('--cf2-lambda', type=float, default=500.)
+    p.add_argument('--cf2-alpha', type=float, default=.6)
+    p.add_argument('--cf2-gamma', type=float, default=.5)
     p.add_argument('--intervention-batch-size', type=int, default=1,
                    help='Independent deletion graphs per GPU forward (GCN only)')
     p.add_argument('--support-swaps', action='store_true',
@@ -167,6 +173,12 @@ def main():
         from src.explainers.pyg_baselines import GNNExplainerWrapper
         methods.insert(-1, ('GNNExplainer', GNNExplainerWrapper(
             model, epochs=args.gnnexplainer_epochs, k_frac=1., device=args.device)))
+    if args.cf2:
+        from src.explainers.cf2_link import CF2LinkExplainer
+        methods.insert(-1, ('CF2-link-adapted', CF2LinkExplainer(
+            model, epochs=args.cf2_epochs, lr=args.cf2_lr, lam=args.cf2_lambda,
+            alpha=args.cf2_alpha, gamma=args.cf2_gamma, hops=c['num_layers'],
+            candidate_region=args.candidate_region, device=args.device)))
     if args.protection_ablation:
         endpoints = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
                                     device=args.device, protect_hops=0)
