@@ -1,0 +1,3480 @@
+{
+  "audit": "grouping-control-record-audit-v1",
+  "scope": "Audit saved grouping controls and make descriptive matched comparisons.\n\nChecks saved records, not independent predictor re-execution or significance.\nRandom grouping seeds are not independent model-training repetitions.\n",
+  "runs": [
+    {
+      "input": "results/tnnls-reproduction/grouping_controls_Cora42_val20.json",
+      "sha256": "0532d6409254ddb14852743c21b58abf4716c452f07fcc0e41713e750d947645",
+      "dataset": "Cora",
+      "training_seed": 42,
+      "audited_results": 540,
+      "comparisons": [
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.105806959565827e-07,
+            "sufficiency_confidence_drop": -1.4428426229801506e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 6.112784314521985e-05,
+            "sufficiency_confidence_drop": 4.150573093488831e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.198100728394798e-05,
+            "sufficiency_confidence_drop": 0.00016422613315628007
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -3.760881905074854e-05,
+            "sufficiency_confidence_drop": -1.791271076841633e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.149014592813627e-06,
+            "sufficiency_confidence_drop": 4.150372756096548e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -1.6071550891935513e-05,
+            "sufficiency_confidence_drop": 4.153633288193967e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.397394988670538e-05,
+            "sufficiency_confidence_drop": 4.7780968273542644e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.150876414330383e-06,
+            "sufficiency_confidence_drop": 4.150805077538734e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.0470449279635243e-05,
+            "sufficiency_confidence_drop": 0.00016422872375822665
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.3972825815023506e-05,
+            "sufficiency_confidence_drop": 4.778693802932714e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.484499023912035e-05,
+            "sufficiency_confidence_drop": 0.00010158291056009747
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0006573116999130097,
+            "sufficiency_confidence_drop": -0.00016229655397281674
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 2.813055531781161e-09,
+            "sufficiency_confidence_drop": -1.793506317591953e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -3.3039149333058404e-09,
+            "sufficiency_confidence_drop": -2.504288400485908e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 2.001837492993097e-08,
+            "sufficiency_confidence_drop": -0.0005299607567222505
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 74.7,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.3976966791769864e-05,
+            "sufficiency_confidence_drop": 4.777906988338351e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00010677134559799766,
+            "sufficiency_confidence_drop": 0.00010573153824362152
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 61.2,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.000586413009845368,
+            "sufficiency_confidence_drop": -0.0005254963710726127
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.3974036399638135e-05,
+            "sufficiency_confidence_drop": 4.7782629829245735e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00011058582781969555,
+            "sufficiency_confidence_drop": 6.789819058200349e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 61.2,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0002962669308485703,
+            "sufficiency_confidence_drop": 0.00016838117972480193
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 74.7,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.103323714425108e-07,
+            "sufficiency_confidence_drop": -3.089891830185447e-10
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00010622546353066782,
+            "sufficiency_confidence_drop": 2.583499567618648e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 63,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.241868242905083e-05,
+            "sufficiency_confidence_drop": -0.0006966768446400389
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 77.4,
+            "control": 72
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.133937514883638e-07,
+            "sufficiency_confidence_drop": 3.5066369461180236e-10
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 6.113114706015315e-05,
+            "sufficiency_confidence_drop": 4.153077381889316e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.200102565887791e-05,
+            "sufficiency_confidence_drop": 0.0006941868898785305
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.326638609581328e-05,
+            "sufficiency_confidence_drop": -4.778051272600649e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.564350245277781e-05,
+            "sufficiency_confidence_drop": -0.00010158096515013268
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0005644320025614201,
+            "sufficiency_confidence_drop": 0.0006897225042288927
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 76.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.326345570368155e-05,
+            "sufficiency_confidence_drop": -4.7784072671868715e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.94579846744757e-05,
+            "sufficiency_confidence_drop": -6.374761748851465e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00027428592356462233,
+            "sufficiency_confidence_drop": -4.155046568521869e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.483245140718932e-10,
+            "sufficiency_confidence_drop": -1.133853439961606e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 42.3
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00016735330667588767,
+            "sufficiency_confidence_drop": -2.168442258269765e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 59.4,
+            "control": 63
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.376751451028518e-07,
+            "sufficiency_confidence_drop": 0.000860902977796319
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 76.5,
+            "control": 77.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -3.761163210628032e-05,
+            "sufficiency_confidence_drop": -1.7910917262098738e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.145710677880321e-06,
+            "sufficiency_confidence_drop": 4.152877044497034e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -1.6091569266865444e-05,
+            "sufficiency_confidence_drop": 0.0005341143900104444
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 6.368147741021325e-06,
+            "sufficiency_confidence_drop": -6.569178065179984e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00011392036019081128,
+            "sufficiency_confidence_drop": -0.00010158116548752497
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0005703414589534325,
+            "sufficiency_confidence_drop": 0.0005296500043608066
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 76.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 6.3652173488895975e-06,
+            "sufficiency_confidence_drop": -6.569534059766207e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00011773484241250917,
+            "sufficiency_confidence_drop": -6.374781782590693e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0002801953799566348,
+            "sufficiency_confidence_drop": -0.00016422754643660798
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -3.6898486679306025e-05,
+            "sufficiency_confidence_drop": -1.791240177923331e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 42.3,
+            "control": 42.3
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 9.907644893785419e-05,
+            "sufficiency_confidence_drop": -2.168462292008993e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 63
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 6.347131537115319e-06,
+            "sufficiency_confidence_drop": 0.000700830477928233
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 77.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.397676294223716e-05,
+            "sufficiency_confidence_drop": 4.778276177986024e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.1475724993970775e-06,
+            "sufficiency_confidence_drop": 4.15330936593922e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -2.0490467654565174e-05,
+            "sufficiency_confidence_drop": 0.0006941894804804771
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.0169050644893094e-09,
+            "sufficiency_confidence_drop": 1.8983901591404324e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00011392222201232803,
+            "sufficiency_confidence_drop": -0.00010158073316608278
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0005659425605657328,
+            "sufficiency_confidence_drop": 0.0006897250948308393
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 76.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 8.651293276123258e-11,
+            "sufficiency_confidence_drop": -1.6615557030885868e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00011773670423402592,
+            "sufficiency_confidence_drop": -6.374738550446475e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00027579648156893504,
+            "sufficiency_confidence_drop": -4.152455966575277e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.3263617515262864e-05,
+            "sufficiency_confidence_drop": 4.7781277262725666e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 41.4,
+            "control": 42.3
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 9.907458711633743e-05,
+            "sufficiency_confidence_drop": -2.1684190598647743e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 63
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 1.9482331494155875e-06,
+            "sufficiency_confidence_drop": 0.0008609055683982657
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 77.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.3975638870555286e-05,
+            "sufficiency_confidence_drop": 4.7788731535644734e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.4848294154053656e-05,
+            "sufficiency_confidence_drop": 0.00010158541484849797
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 59.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0006573317182879396,
+            "sufficiency_confidence_drop": 0.00036766420274943375
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.140976746360792e-09,
+            "sufficiency_confidence_drop": 7.86814594363333e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -6.192635535887731e-05,
+            "sufficiency_confidence_drop": -4.1486276835240365e-06
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -7.089869006764163e-05,
+            "sufficiency_confidence_drop": 0.00036319981709979595
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 76.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 1.2105846146327152e-09,
+            "sufficiency_confidence_drop": 4.308200081404312e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 40.5
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -6.57408375805752e-05,
+            "sufficiency_confidence_drop": 3.3684719978094e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 61.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00036104476906443934,
+            "sufficiency_confidence_drop": -0.00033067773369761864
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 74.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -4.326249344358099e-05,
+            "sufficiency_confidence_drop": 4.778724701851016e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 40.5,
+            "control": 42.3
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00015107045376978816,
+            "sufficiency_confidence_drop": 7.5747914883911e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 60.3,
+            "control": 63
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 11,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0006348930174839588,
+            "sufficiency_confidence_drop": 0.0005343802906672223
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 72,
+            "control": 77.4
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        }
+      ]
+    },
+    {
+      "input": "results/tnnls-reproduction/grouping_controls_PubMed42_val20.json",
+      "sha256": "ecfa602237df3e80852277b53e6c673fa173e2b87d329baa5b42a0a0b9c018ac",
+      "dataset": "PubMed",
+      "training_seed": 42,
+      "audited_results": 540,
+      "comparisons": [
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.02001688169264187,
+            "sufficiency_confidence_drop": 0.0014336368719795657
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0022918549300657547,
+            "sufficiency_confidence_drop": -0.004066794783898852
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.73272954616727e-05,
+            "sufficiency_confidence_drop": 0.002756042933388674
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 80.1,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.020016884743880265,
+            "sufficiency_confidence_drop": 0.001433634809127802
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 11,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0023312281863535145,
+            "sufficiency_confidence_drop": -0.002980989452264821
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 8,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.732980712876854e-05,
+            "sufficiency_confidence_drop": 0.0021654778004861082
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.020016882000189758,
+            "sufficiency_confidence_drop": 0.001433634916572358
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0017560365583931025,
+            "sufficiency_confidence_drop": -0.005093036868288263
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.733066027612658e-05,
+            "sufficiency_confidence_drop": 0.0010848300817256967
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.020016881738037645,
+            "sufficiency_confidence_drop": 0.0014336349747450434
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.007145655209593853,
+            "sufficiency_confidence_drop": -0.0009325761920131738
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 10,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.5843223363728265e-05,
+            "sufficiency_confidence_drop": 0.0009037071304988095
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 83.7,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 17,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.020116508126540884,
+            "sufficiency_confidence_drop": 0.00039995209750853317
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 28.8,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.006028203307706057,
+            "sufficiency_confidence_drop": -0.005141926513676042
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "normalized-edge-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.994208089125797e-06,
+            "sufficiency_confidence_drop": -0.0007840562910088238
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.0007626845623365351,
+            "sufficiency_confidence_drop": 0.0002764380492113285
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 30.6,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00034873191963523344,
+            "sufficiency_confidence_drop": -0.002958231338607257
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-0",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0004985523496238981,
+            "sufficiency_confidence_drop": 0.001110131626615644
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.0015830019739089156,
+            "sufficiency_confidence_drop": -0.00033726647441131277
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 28.8,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.004650864878324066,
+            "sufficiency_confidence_drop": -0.0012438027142937943
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-1",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0004985560968212819,
+            "sufficiency_confidence_drop": 0.0026717419326201942
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": -0.020016883323150356,
+            "sufficiency_confidence_drop": 0.001433637846736475
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 27.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.002078286903283643,
+            "sufficiency_confidence_drop": -0.004370861673877798
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54.9,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "random-2",
+          "control": "ungrouped",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 10,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.000479828449118354,
+            "sufficiency_confidence_drop": 0.0013033127909913688
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 82.8,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": 9.962643389901291e-05,
+            "sufficiency_confidence_drop": 0.0010336847744710327
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 11,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.008320058237771811,
+            "sufficiency_confidence_drop": 0.0010751317297771886
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 8,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.2333087372546905e-05,
+            "sufficiency_confidence_drop": 0.0035400992243974977
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 80.1,
+            "control": 81.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.019254197130305333,
+            "sufficiency_confidence_drop": 0.0011571988227682373
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 30.6
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0019431230104305212,
+            "sufficiency_confidence_drop": -0.001108563445291596
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 52.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004612250541622254,
+            "sufficiency_confidence_drop": 0.0016459113067730298
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 80.1,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.018433879718732955,
+            "sufficiency_confidence_drop": 0.0017709033463908785
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00694271980838982,
+            "sufficiency_confidence_drop": -0.0028229920696050586
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 54
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004612288013596092,
+            "sufficiency_confidence_drop": 8.430100076847947e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 80.1,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 1.6305084880028666e-09,
+            "sufficiency_confidence_drop": -9.747569091678784e-10
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 29.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00021356802678211152,
+            "sufficiency_confidence_drop": 0.00030406688997894587
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 52.2,
+            "control": 54.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-0",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00044250115365668133,
+            "sufficiency_confidence_drop": 0.001452730142397305
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 80.1,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": 9.962338266061819e-05,
+            "sufficiency_confidence_drop": 0.001033682711619269
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 11,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.008359431494059572,
+            "sufficiency_confidence_drop": 0.0021609370614112207
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.233559903964274e-05,
+            "sufficiency_confidence_drop": 0.002949534091494932
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 81.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.01925420018154373,
+            "sufficiency_confidence_drop": 0.0011571967599164736
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 30.6
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.001982496266718281,
+            "sufficiency_confidence_drop": -2.2758113657564132e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 52.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00046122254249512956,
+            "sufficiency_confidence_drop": 0.0010553461738704644
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.01843388276997135,
+            "sufficiency_confidence_drop": 0.0017709012835391148
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00698209306467758,
+            "sufficiency_confidence_drop": -0.0017371867379710265
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 54
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004612262896925134,
+            "sufficiency_confidence_drop": -0.000506264132134086
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -1.4207299067130023e-09,
+            "sufficiency_confidence_drop": -3.037608672928904e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 29.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.00025294128306987116,
+            "sufficiency_confidence_drop": 0.0013898722216129779
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 54.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-1",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00044249864198958545,
+            "sufficiency_confidence_drop": 0.0008621650094947397
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": 9.962612635112605e-05,
+            "sufficiency_confidence_drop": 0.0010336828190638248
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.0077842398660991595,
+            "sufficiency_confidence_drop": 4.888964538777854e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 10,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 3.2336452187000785e-05,
+            "sufficiency_confidence_drop": 0.0018688863727345205
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 81.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.01925419743785322,
+            "sufficiency_confidence_drop": 0.0011571968673610294
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 30.6
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.001407304638757869,
+            "sufficiency_confidence_drop": -0.002134805529681006
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 52.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004612216893477715,
+            "sufficiency_confidence_drop": -2.5301544889947318e-05
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.018433880026280842,
+            "sufficiency_confidence_drop": 0.0017709013909836706
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 16,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.006406901436717168,
+            "sufficiency_confidence_drop": -0.0038492341539944686
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 54
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00046122543654515533,
+            "sufficiency_confidence_drop": -0.0015869118508944978
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 1.3229606011383454e-09,
+            "sufficiency_confidence_drop": -2.930164116985573e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 29.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 15,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00032225034489054077,
+            "sufficiency_confidence_drop": -0.0007221751944104642
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 54,
+            "control": 54.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "diffusion-2",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004424977888422274,
+            "sufficiency_confidence_drop": -0.00021848270926567209
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 81.9,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 1,
+            "ties": 19,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": -0.05,
+            "necessity_confidence_drop": 9.962638850323689e-05,
+            "sufficiency_confidence_drop": 0.0010336828772365104
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0011174519018877958,
+            "sufficiency_confidence_drop": 0.004209350321662868
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 53.1
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "normalized-edge-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 9,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 4.0849015274602466e-05,
+            "sufficiency_confidence_drop": 0.0016877634215076332
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 83.7,
+            "control": 81.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 19,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.01925419717570111,
+            "sufficiency_confidence_drop": 0.001157196925533715
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 30.6
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 13,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.007494387129229086,
+            "sufficiency_confidence_drop": 0.0020256551465940827
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 52.2
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-0",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00045270912626016983,
+            "sufficiency_confidence_drop": -0.0002064244961168345
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 83.7,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 18,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.01843387976412873,
+            "sufficiency_confidence_drop": 0.0017709014491563563
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 28.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.002494790331269787,
+            "sufficiency_confidence_drop": 0.00031122652228062056
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 54
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-1",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.00045271287345755365,
+            "sufficiency_confidence_drop": -0.0017680348021213849
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 83.7,
+            "control": 81
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 5,
+          "paired_queries": 20,
+          "identical_supports": 20,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 1.5851127119757314e-09,
+            "sufficiency_confidence_drop": -2.871991431431303e-09
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 29.7,
+            "control": 29.7
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 10,
+          "paired_queries": 20,
+          "identical_supports": 14,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.009223942112877496,
+            "sufficiency_confidence_drop": 0.0034382854818646247
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 53.1,
+            "control": 54.9
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        },
+        {
+          "treatment": "eigen-0",
+          "control": "random-2",
+          "budget": 20,
+          "paired_queries": 20,
+          "identical_supports": 12,
+          "binary_pareto_outcomes": {
+            "wins": 0,
+            "losses": 0,
+            "ties": 20,
+            "tradeoffs": 0
+          },
+          "paired_mean_difference": {
+            "necessity_flip": 0.0,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": -0.0004339852257546257,
+            "sufficiency_confidence_drop": -0.0003996056604925592
+          },
+          "mean_evaluated_proposals": {
+            "treatment": 83.7,
+            "control": 82.8
+          },
+          "cost_scope": "Proposal counts exclude gradients and serial acceptance checks; not total compute."
+        }
+      ]
+    }
+  ]
+}

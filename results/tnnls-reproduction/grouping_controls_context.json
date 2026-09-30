@@ -1,0 +1,47 @@
+{
+  "status": "development-controls-not-final-paper-results",
+  "inputs": ["grouping_controls_Cora42_val20.json", "grouping_controls_PubMed42_val20.json"],
+  "audit": "grouping_controls_two_graphs_val20_audit.json",
+  "purpose": "Determine whether the spectral signal contributes more than generic grouping under a fixed single-edge search protocol.",
+  "controls": ["ungrouped", "existing top-k eigenvectors", "normalized-edge weight", "nonstationary diffusion with seeds 0, 1, 2", "random edge ordering with seeds 0, 1, 2"],
+  "fixed_protocol": {
+    "training_seed": 42,
+    "queries_per_graph": 20,
+    "query_split": "validation",
+    "budgets": [5, 10, 20],
+    "steps": 8,
+    "additions": 6,
+    "removals": 3,
+    "batch_size": 8,
+    "backend": "full graph with CUDA predictor inference and gradients",
+    "initial_support": "Saved class-supportive saliency, identical for all policies on each query and budget",
+    "merge_budget_alpha": 0.75,
+    "tie_rule": "Same canonical positive-weight undirected edges and stable score ordering for every partition policy"
+  },
+  "compute_scope": "All policies share candidate regions and maximum per-step proposal counts. Actual evaluated proposal counts and search times are recorded and need not match. CPU union-find follows CPU sorting; diffusion filtering runs on CUDA, while the existing large-graph eigen control still uses CPU ARPACK. Timings are not a controlled end-to-end speedup study.",
+  "audited_results": 1080,
+  "tests_passed": 103,
+  "source_verification": "All recorded source hashes matched current source after both runs completed.",
+  "observations": {
+    "Cora": "Every grouping policy ties ungrouped search on both binary metrics for all sixty query-budget pairs. Supports and continuous scores can differ.",
+    "PubMed": "The structural normalized-edge control ties ungrouped search on all sixty query-budget pairs. The eigen control and every diffusion/random seed each lose on one pair and tie on the other fifty-nine, with no binary wins.",
+    "same_global_cluster_count": {"Cora": 677, "PubMed": 4930},
+    "partition_shapes": "Local candidate-group counts and cluster sizes differ substantially despite equal global cluster counts; these are recorded, not assumed matched."
+  },
+  "shared_PubMed_loss": {
+    "query": [15167, 19061],
+    "budget": 5,
+    "ungrouped_and_structural_binary": {"necessity_flip": 0.0, "sufficiency_agreement": 1.0},
+    "eigen_diffusion_random_binary": {"necessity_flip": 0.0, "sufficiency_agreement": 0.0},
+    "diagnostic_scope": "Saved traces agree through the first accepted state and subsequently diverge for ungrouped versus diffusion-0. This is evidence of a search-trajectory difference, not an independently replayed causal attribution to a particular omitted proposal."
+  },
+  "decision": "Do not select a best-looking grouping seed or claim a spectral contribution from this pilot. Keep the optional signal alternative and all controls available, without changing the default method or manuscript numerical results.",
+  "limits": [
+    "Two graphs and one model-training seed each, with previously used validation queries, do not establish general superiority or universal ineffectiveness.",
+    "Random grouping seeds are not independent training runs; budgets on the same query are dependent observations.",
+    "The eigen control retains the known repeated-eigenspace cutoff ambiguity and is not a unique reference embedding.",
+    "The common canonical tie rule differs from the legacy raw-edge ordering, so this benchmark isolates grouping policies internally rather than claiming bitwise replay of old partitions.",
+    "Binary ties do not imply equal continuous fidelity, explanations, or computation."
+  ],
+  "next_decision_gate": "Assess the actual role of coarse groups in proposal coverage and computational cost before introducing more score variants. A stronger paper claim requires a reproducible benefit beyond ungrouped and nonspectral controls, not just a corrected spectral definition."
+}
