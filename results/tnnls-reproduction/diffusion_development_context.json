@@ -1,0 +1,41 @@
+{
+  "status": "development-alternative-not-default",
+  "reason": "Top-k selection on disconnected training graphs can cut the repeated stationary eigenspace. This alternative changes the signal objective instead of claiming to repair the existing eigensolver.",
+  "policy": "nonstationary-lazy-diffusion-gaussian-v1",
+  "definition": "Y = ((I + A_hat)/2)^t (I-S) Z, where S projects onto all component stationary modes and independent Z_ij have distribution N(0,1/r).",
+  "score": "One half of the squared difference between endpoint signal rows. Its expectation is the corresponding full-kernel squared row distance divided by two. Relative variance is 2/r for a nonzero target score.",
+  "fixed_pilot_configuration": {"width": 100, "steps": 4, "signal_seed": 0},
+  "device": "NVIDIA GeForce RTX 4090",
+  "execution_scope": "Component labels are computed on CPU. Stationary projection, sparse filtering, predictor inference, and gradients run on CUDA. Gaussian probes use a local CPU generator and are copied to CUDA without changing the global RNG.",
+  "runs": [
+    "diffusion_Cora42_val20_steps8.json",
+    "diffusion_PubMed42_val20_steps8.json"
+  ],
+  "audit": "diffusion_two_graphs_val20_audit.json",
+  "protocol": "Same saved clean checkpoints, training graphs, ordered validation queries, edge budgets, and per-step proposal caps as the referenced eigen-signal runs. Each new run also includes ungrouped search controls. No test queries were evaluated.",
+  "completed_rows": 1560,
+  "audited_swap_rows": 720,
+  "source_hashes": "Every source SHA recorded at run start was checked against the unchanged local source after both runs completed.",
+  "tests": {"command": "OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python -m unittest discover -s tests", "passed": 97, "failed": 0},
+  "mathematical_checks": [
+    "CPU and CUDA sparse filtering match a small double-precision dense full-kernel oracle.",
+    "All stationary components are removed even when component count exceeds sketch width.",
+    "Weighted duplicate edges, explicit loops, zero-weight bridges, isolated nodes, and negative nonstationary eigenvalues are covered.",
+    "Fixed-probe permutation equivariance and seeded sketch reproducibility are checked.",
+    "A wide sketch approximates exact full-kernel scores; finite-width sketches are not exact spectral embeddings."
+  ],
+  "binary_comparison_against_ungrouped": {
+    "single": {"wins": 0, "losses": 1, "ties": 119, "tradeoffs": 0},
+    "pair": {"wins": 0, "losses": 1, "ties": 119, "tradeoffs": 0},
+    "mixed": {"wins": 1, "losses": 1, "ties": 118, "tradeoffs": 0}
+  },
+  "interpretation": "No consistent independent explanation benefit from diffusion grouping in this pilot. Neutral and adverse cases are retained. Resolving a signal-definition problem is not evidence of superior fidelity.",
+  "limits": [
+    "Only two graphs, one training seed each, one sketch seed, and twenty previously used validation queries per graph.",
+    "Matching per-step proposal caps does not match actual evaluated proposals or total runtime.",
+    "Recorded offline times are not a controlled speedup comparison and do not measure whole-pipeline scalability.",
+    "Random or structural grouping controls and sketch-seed stability remain to be evaluated.",
+    "The prior eigen branch remains unchanged by default, including its known cutoff ambiguity.",
+    "No numerical manuscript results were changed."
+  ]
+}

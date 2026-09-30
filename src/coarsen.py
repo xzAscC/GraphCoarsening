@@ -55,6 +55,7 @@ def build_coarse_graph(
 
     if edge_weight is None:
         edge_weight = torch.ones(edge_index.size(1), dtype=torch.float32, device=device)
+    P_hat = P_hat.to(dtype=edge_weight.dtype)
 
     A = torch.sparse_coo_tensor(
         edge_index, edge_weight, size=(num_nodes, num_nodes)
@@ -222,10 +223,20 @@ class GraphCoarsener:
         alpha: Coarsening ratio controlling merge budget. Default 0.75.
     """
 
-    def __init__(self, k: int = 100, alpha: float = 0.75, score_method: str = "legacy") -> None:
+    def __init__(self, k: int = 100, alpha: float = 0.75, score_method: str = "legacy",
+                 signal_policy: str = 'eigen', signal_width: int = 100,
+                 diffusion_steps: int = 4, signal_seed: int = 0) -> None:
         if score_method not in {"legacy", "projection"}:
             raise ValueError("Unknown score_method")
         self.score_method = score_method
+        if signal_policy not in {'eigen', 'diffusion'}:
+            raise ValueError('Unknown signal_policy')
+        if signal_policy == 'diffusion' and score_method != 'projection':
+            raise ValueError('Diffusion signals require projection scoring')
+        self.signal_policy = signal_policy
+        self.signal_width, self.diffusion_steps, self.signal_seed = signal_width, diffusion_steps, signal_seed
+        self.signals = None
+        self.signal_diagnostics = {}
         self.k = k
         self.alpha = alpha
 
@@ -277,14 +288,29 @@ class GraphCoarsener:
         # Step 1: Normalized adjacency
         self.A_hat = compute_normalized_adjacency(edge_index, num_nodes, edge_weight)
 
-        # Step 2: Top-k eigenpairs
-        self.eigenvalues, self.left_vecs, self.right_vecs = compute_top_k_eigenpairs(
-            self.A_hat, self.k
-        )
+        # Keep the eigen branch unchanged as a control. Diffusion is an
+        # explicit alternative signal model, not an eigensolver replacement.
+        self.eigenvalues = self.left_vecs = self.right_vecs = None
+        if self.signal_policy == 'diffusion':
+            from src.diffusion_signals import NonstationaryDiffusion
+            diffusion = NonstationaryDiffusion(edge_index, num_nodes, edge_weight)
+            self.signals = diffusion.sketch(self.signal_width, self.diffusion_steps, self.signal_seed)
+            self.signal_diagnostics = {
+                'policy': 'nonstationary-lazy-diffusion-gaussian-v1',
+                'width': self.signal_width, 'steps': self.diffusion_steps, 'seed': self.signal_seed,
+                'components': diffusion.num_components,
+                'stationary_residual_fro': float(torch.linalg.vector_norm(
+                    self.signals - diffusion.remove_stationary(self.signals)).item()),
+                'scope': 'Random sketch of a full nonstationary diffusion kernel; not orthonormal eigenvectors or a fidelity certificate.'}
+        else:
+            self.eigenvalues, self.left_vecs, self.right_vecs = compute_top_k_eigenpairs(
+                self.A_hat, self.k)
+            self.signals = self.right_vecs
+            self.signal_diagnostics = {'policy': 'top-k-eigenvectors'}
 
         # Step 3: Perturbation scores
         if self.score_method == "projection":
-            self.scores = pair_projection_scores(edge_index, self.right_vecs)
+            self.scores = pair_projection_scores(edge_index, self.signals)
         else:
             self.scores = compute_perturbation_scores(
                 edge_index, self.eigenvalues, self.left_vecs, self.right_vecs

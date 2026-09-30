@@ -60,6 +60,10 @@ class CoarsenExplainer(BaseExplainer):
         evidence_mode: str = "absolute",
         intervention_batch_size: int = 1,
         candidate_region: str = 'induced',
+        signal_policy: str = 'eigen',
+        signal_width: int = 100,
+        diffusion_steps: int = 4,
+        signal_seed: int = 0,
     ):
         super().__init__(model, device)
         self.k = k
@@ -76,6 +80,8 @@ class CoarsenExplainer(BaseExplainer):
             raise ValueError("Unknown partition_mode")
         self.partition_mode = partition_mode
         self.score_method = score_method
+        self.signal_options = dict(signal_policy=signal_policy, signal_width=signal_width,
+                                   diffusion_steps=diffusion_steps, signal_seed=signal_seed)
         if evidence_mode not in {"absolute", "supportive"}:
             raise ValueError('Unknown evidence_mode')
         if intervention_batch_size < 1:
@@ -95,7 +101,8 @@ class CoarsenExplainer(BaseExplainer):
             return self._coarsener
 
         device_data = self._to_device(data)
-        coarsener = GraphCoarsener(k=self.k, alpha=self.alpha, score_method=self.score_method)
+        coarsener = GraphCoarsener(k=self.k, alpha=self.alpha, score_method=self.score_method,
+                                  **self.signal_options)
         coarsener.fit(
             edge_index=device_data.edge_index,
             num_nodes=device_data.x.size(0),

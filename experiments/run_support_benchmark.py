@@ -99,11 +99,19 @@ def main():
     p.add_argument('--swap-additions', type=int, default=6)
     p.add_argument('--swap-removals', type=int, default=3)
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
+    p.add_argument('--signal-policy', choices=['eigen', 'diffusion'], default='eigen')
+    p.add_argument('--signal-width', type=int, default=100)
+    p.add_argument('--diffusion-steps', type=int, default=4)
+    p.add_argument('--signal-seed', type=int, default=0)
     p.add_argument('--query-split', choices=['val', 'test'], default='test')
     p.add_argument('--query-reference', help='Reuse queries from an existing benchmark JSON')
     p.add_argument('--candidate-region', choices=['induced', 'gcn-boundary'], default='induced')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
+    if args.signal_policy == 'diffusion' and (args.merge_score != 'projection' or args.score_ablation):
+        p.error('Diffusion requires --merge-score projection without --score-ablation')
+    if args.signal_width < 1 or args.diffusion_steps < 0:
+        p.error('Signal width must be positive and diffusion steps nonnegative')
     if args.support_swaps and not args.signed_ablation:
         p.error('--support-swaps requires --signed-ablation for a shared initial support')
     if args.pair_swaps and not args.support_swaps:
@@ -155,6 +163,8 @@ def main():
     saliency = SaliencyExplainer(model, k_frac=1., device=args.device)
     ours = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'], device=args.device,
                            score_method=args.merge_score,
+                           signal_policy=args.signal_policy, signal_width=args.signal_width,
+                           diffusion_steps=args.diffusion_steps, signal_seed=args.signal_seed,
                            intervention_batch_size=args.intervention_batch_size)
 
     def sync():
@@ -288,6 +298,14 @@ def main():
                                          'grouping': {'clusters': len(partition)} if grouping is not None else {},
                                          **refined_metrics})
             print(f'Completed label={label} query=({a},{b})', flush=True)
+    spectral_diagnostics = dict(coarsener.signal_diagnostics)
+    if coarsener.eigenvalues is not None:
+        spectral_diagnostics.update({
+            'selected_eigenvalues': coarsener.eigenvalues.detach().cpu().tolist(),
+            'eigenpair_residual_norms': torch.linalg.vector_norm(
+                torch.sparse.mm(coarsener.A_hat, coarsener.right_vecs)
+                - coarsener.right_vecs * coarsener.eigenvalues[None, :], dim=0).detach().cpu().tolist(),
+            'scope': 'Selected normalized-adjacency eigenpairs only; not a full-spectrum eigengap or explanation-fidelity certificate.'})
     report = {'protocol': PROTOCOL, 'args': vars(args), 'split_sha256': hashes,
               'query_reference_sha256': reference_hash,
               'query_sampling': 'reference-v1' if reference is not None else 'independent-streams-v1',
@@ -298,12 +316,7 @@ def main():
               'working_tree_status': subprocess.check_output(['git', 'status', '--short'], text=True),
               'torch': torch.__version__, 'pyg': torch_geometric.__version__,
               'offline_seconds': offline,
-              'spectral_diagnostics': {
-                  'selected_eigenvalues': coarsener.eigenvalues.detach().cpu().tolist(),
-                  'eigenpair_residual_norms': torch.linalg.vector_norm(
-                      torch.sparse.mm(coarsener.A_hat, coarsener.right_vecs)
-                      - coarsener.right_vecs * coarsener.eigenvalues[None, :], dim=0).detach().cpu().tolist(),
-                  'scope': 'Selected normalized-adjacency eigenpairs only; not a full-spectrum eigengap or explanation-fidelity certificate.'},
+              'spectral_diagnostics': spectral_diagnostics,
               'rows': rows}
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output, 'x') as f:
