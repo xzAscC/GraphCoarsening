@@ -75,6 +75,51 @@ class CF2LinkTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'uncached'):
             CF2LinkExplainer(model)
 
+    def test_local_objective_and_gradient_equivalence(self):
+        from src.explainers.local_gcn import compact_gcn_query
+        for device in (['cpu', 'cuda'] if torch.cuda.is_available() else ['cpu']):
+            torch.manual_seed(83)
+            model = LinkPredictionModel(GCN(3, 5, 4, 2), LinkPredictor()).to(device).double().eval()
+            chain = torch.stack((torch.arange(9), torch.arange(1, 10))).to(device)
+            edges = torch.cat((chain, chain.flip(0), chain[:, :1], chain[:, :1].flip(0)), 1)
+            data = Data(x=torch.randn(11, 3, device=device, dtype=torch.double), edge_index=edges,
+                        edge_weight=torch.cat((torch.linspace(.3, 1.7, 9).repeat(2), torch.tensor([.2, .2]))).to(device).double())
+            compact = compact_gcn_query(data, [0, 1], 2)
+            region = compact.original_edge_mask
+            keys = edges[:, region].min(0).values * 11 + edges[:, region].max(0).values
+            candidates, inverse = torch.unique(keys, sorted=True, return_inverse=True)
+            for seed in range(4):
+                torch.manual_seed(seed)
+                logits = torch.randn(len(candidates), device=device, dtype=torch.double, requires_grad=True)
+                retained = data.edge_weight.new_zeros(data.edge_weight.shape)
+                retained[region] = data.edge_weight[region] * logits.sigmoid()[inverse]
+                target = torch.tensor([[0], [1]], device=device)
+                full_keep = model(data.x, edges, target, edge_weight=retained).squeeze()
+                full_delete = model(data.x, edges, target, edge_weight=data.edge_weight-retained).squeeze()
+                local_keep = model(compact.data.x, compact.data.edge_index, compact.targets,
+                                   edge_weight=retained[region]).squeeze()
+                local_delete = model(compact.data.x, compact.data.edge_index, compact.targets,
+                                     edge_weight=(data.edge_weight-retained)[region]).squeeze()
+                full_loss = cf2_loss(retained.sum(), full_keep, full_delete, 1)
+                local_loss = cf2_loss(retained[region].sum(), local_keep, local_delete, 1)
+                torch.testing.assert_close(full_loss, local_loss, rtol=1e-10, atol=1e-10)
+                full_grad = torch.autograd.grad(full_loss, logits, retain_graph=True)[0]
+                local_grad = torch.autograd.grad(local_loss, logits)[0]
+                torch.testing.assert_close(full_grad, local_grad, rtol=1e-9, atol=1e-9)
+            outputs = []
+            for local in (False, True):
+                torch.manual_seed(55)
+                explainer = CF2LinkExplainer(model, epochs=20, device=device, local_gcn=local)
+                outputs.append(explainer.explain_link(data, 0, 1))
+                self.assertEqual(explainer.last_diagnostics['initialization_num_nodes'], 11)
+            torch.testing.assert_close(outputs[0].edge_index, outputs[1].edge_index)
+            torch.testing.assert_close(outputs[0].edge_weight, outputs[1].edge_weight, rtol=1e-7, atol=1e-8)
+
+    def test_local_rejects_incompatible_protocol(self):
+        model = LinkPredictionModel(GCN(3, 5, 4, 2), LinkPredictor()).eval()
+        with self.assertRaises(ValueError):
+            CF2LinkExplainer(model, local_gcn=True, candidate_region='induced')
+
 
 if __name__ == '__main__':
     unittest.main()

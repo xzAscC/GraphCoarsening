@@ -38,7 +38,7 @@ def cf2_loss(mask_l1, retained_logit, removed_logit, sign, *, lam=500.,
 
 class CF2LinkExplainer(BaseExplainer):
     def __init__(self, model, *, epochs=2000, lr=.01, lam=500., alpha=.6,
-                 gamma=.5, hops=2, candidate_region='gcn-boundary', device='cpu'):
+                 gamma=.5, hops=2, candidate_region='gcn-boundary', device='cpu', local_gcn=False):
         if (epochs < 1 or hops < 0 or not all(math.isfinite(v) for v in
                 (lr, lam, alpha, gamma)) or lr <= 0 or lam < 0
                 or not 0 <= alpha <= 1 or not 0 <= gamma <= 1):
@@ -49,12 +49,19 @@ class CF2LinkExplainer(BaseExplainer):
         self.epochs, self.lr, self.lam = epochs, lr, lam
         self.alpha, self.gamma, self.hops = alpha, gamma, hops
         self.candidate_region = candidate_region
+        self.local_gcn = local_gcn
+        if local_gcn and candidate_region != 'gcn-boundary':
+            raise ValueError('Local CF2 requires the normalization-boundary candidate region')
         self.last_diagnostics = {}
 
     def explain_link(self, data, node_a, node_b):
         if any(module.training for module in self.model.modules()):
             raise ValueError('Frozen evaluation-mode predictor required')
         data = self._to_device(data)
+        if self.local_gcn:
+            from src.explainers.local_gcn import validate_local_gcn_model
+            if validate_local_gcn_model(self.model) != self.hops:
+                raise ValueError('Local CF2 requires the actual GCN layer count')
         n, edges = data.x.size(0), data.edge_index
         if (edges[0] == edges[1]).any():
             raise ValueError('Explicit self-loops are unsupported; GCN adds fixed loops')
@@ -73,6 +80,8 @@ class CF2LinkExplainer(BaseExplainer):
             'alpha': self.alpha, 'gamma': self.gamma,
             'candidate_region': self.candidate_region,
             'candidate_edges': candidates.numel(), 'discretization': 'external-top-B',
+            'evaluation_mode': 'exact-boundary-local' if self.local_gcn else 'full',
+            'initialization_num_nodes': n,
         }
         if not candidates.numel():
             self.last_diagnostics['optimization_steps'] = 0
@@ -83,18 +92,31 @@ class CF2LinkExplainer(BaseExplainer):
             if not torch.isfinite(full):
                 raise ValueError('Nonfinite original prediction')
             sign = 1 if full > 0 else -1
+        evaluation_data, evaluation_target = data, target
+        evaluation_region, evaluation_weight = region, weight
+        if self.local_gcn:
+            from src.explainers.local_gcn import compact_gcn_query
+            compact = compact_gcn_query(data, [node_a, node_b], self.hops)
+            if not torch.equal(compact.original_edge_mask, region):
+                raise RuntimeError('Local region must preserve candidate entry order')
+            evaluation_data, evaluation_target = compact.data, compact.targets
+            evaluation_weight = weight[region]
+            evaluation_region = torch.ones_like(evaluation_weight, dtype=torch.bool)
+            self.last_diagnostics['local_nodes'] = compact.data.num_nodes
+        # Keep original n, parameter order and RNG draws in both backends.
+        # Exact-arithmetic objectives agree; FP optimization paths may differ.
         mask_logits = torch.nn.Parameter(data.x.new_empty(candidates.numel()))
         torch.nn.init.normal_(mask_logits, mean=1., std=math.sqrt(2. / n))
         optimizer = torch.optim.Adam([mask_logits], lr=self.lr)
         with _frozen_parameters(self.model), torch.enable_grad():
             def objective():
-                stored_mask = weight.new_zeros(weight.shape)
-                stored_mask[region] = mask_logits.sigmoid()[inverse]
-                retained_weight = weight * stored_mask
-                retained = self.model(data.x, edges, target,
+                stored_mask = evaluation_weight.new_zeros(evaluation_weight.shape)
+                stored_mask[evaluation_region] = mask_logits.sigmoid()[inverse]
+                retained_weight = evaluation_weight * stored_mask
+                retained = self.model(evaluation_data.x, evaluation_data.edge_index, evaluation_target,
                                       edge_weight=retained_weight).squeeze()
-                removed = self.model(data.x, edges, target,
-                                     edge_weight=weight - retained_weight).squeeze()
+                removed = self.model(evaluation_data.x, evaluation_data.edge_index, evaluation_target,
+                                     edge_weight=evaluation_weight - retained_weight).squeeze()
                 return cf2_loss(retained_weight.sum(), retained, removed, sign,
                                 lam=self.lam, alpha=self.alpha, gamma=self.gamma)
 

@@ -1,0 +1,10 @@
+{
+  "status": "fixed-before-paired-pilot",
+  "input": "coverage_union_PubMed43_additional_val100.json",
+  "selection": "First two validation queries per class in saved order, no outcome selection.",
+  "purpose": "Check complete 2000-step full versus exact-boundary-local CF2 optimization before scaling the joint-objective baseline. Not a quality comparison powered for inference.",
+  "settings": {"epochs": 2000, "lr": 0.01, "lambda": 500, "alpha": 0.6, "gamma": 0.5, "seed": 20260930},
+  "equivalence_requirements": "Same original-n initialization variance, same per-query RNG seed, same candidate/parameter order, same loss and optimizer. Preserve original full logit for class sign. Recompute physical original-graph metrics for every returned hard support.",
+  "limits": "Exact-arithmetic objective and gradient locality does not guarantee identical floating-point optimizer trajectories or top-B rankings. Record soft-mask differences, support identity, decisions and loss diagnostics rather than assuming equivalence. Timings are single paired runs in alternating order, not repeated controlled speed measurements.",
+  "manuscript": "No empirical LaTeX updates. Preserve both outcomes even if masks or supports disagree."
+}

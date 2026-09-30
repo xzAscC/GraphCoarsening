@@ -1,0 +1,20 @@
+{
+  "status": "paired-local-backend-pilot-not-general-equivalence-guarantee",
+  "plan": "cf2_local_PubMed43_val4_plan.json",
+  "run": "cf2_local_PubMed43_val4.json",
+  "implementation": "Optional exact-boundary-local CF2 objective evaluation, default full backend unchanged. Same original-node-count initialization scale, original candidate order, per-query RNG seed, 2000 Adam updates, loss coefficients and full-graph class sign. Returned supports and final fidelity remain original-graph quantities.",
+  "theory": "Nonnegative tied edge gates do not add paths and preserve the same boundary dependency argument. Full and compact endpoint functions agree in exact arithmetic, including complementary masks and derivatives at differentiable interior points. Floating-point optimization trajectories are not guaranteed identical.",
+  "verification": "CPU and GPU weighted-duplicate-edge tests compare soft-mask losses and gradients in float64 and short optimizer trajectories; invalid region settings rejected. Four real PubMed validation queries run with both backends for 2000 steps. All source hashes and 60 output rows checked; saved reference replay passes. Full suite: 129 passed.",
+  "pilot": {
+    "queries": 4,
+    "matched_support_pairs": 12,
+    "identical_supports": 12,
+    "identical_binary_metric_pairs": 12,
+    "max_absolute_soft_mask_difference": 5.960464477539062e-7,
+    "full_seconds_per_query": [10.074269923003158, 10.134141517002718, 10.111281752004288, 10.06173979700543],
+    "local_seconds_per_query": [6.430098329001339, 6.339952141002868, 5.943120694006211, 6.0084689740033355]
+  },
+  "timing_limits": "Single full/local pair per query, alternating order on a shared GPU, no repeated timing distribution. Times include objective optimization and local-region setup, not final full-graph support evaluation. This is an exact locality optimization for the baseline, not graph-coarsening speed evidence.",
+  "next_gate": "Scale the fixed 2000-step CF2 comparison on the existing validation query list. Retain full-original-graph evaluation and distinguish local-backend measurements from prior full-backend runs. More full/local replay coverage is required before claiming optimizer equivalence beyond this pilot.",
+  "manuscript": "Appendix adds the continuous-gate locality argument and floating-point limitation. Empirical values, tables and figures remain unchanged."
+}
