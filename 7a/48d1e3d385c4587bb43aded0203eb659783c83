@@ -1,0 +1,31 @@
+results/tnnls-reproduction/projected_local_matched_context.json
+  s_6574c9512bb1f0::t_374c05ab682358 1-24
+results/tnnls-reproduction/projected_local_matched_plan.json
+  s_6574c9512bb1f0::t_8c7d9438b3e98b 1-15
+experiments/benchmark_projected_gcn.py
+  s_6574c9512bb1f0::t_8c7d9438b3e98b 3-6
+  s_6574c9512bb1f0::t_753542f680b5f6 50-94,108-109,152-158,177-192,235,253,271,279-282
+  s_6574c9512bb1f0::t_09601f5a112cdf 49
+tests/test_matched_partitions.py
+  s_6574c9512bb1f0::t_753542f680b5f6 1-40
+results/tnnls-reproduction/projected_local_matched_Cora42_val20.json
+  s_6574c9512bb1f0::t_ffefdb87519b87 1-26240
+results/tnnls-reproduction/projected_local_matched_PubMed43_val20.json
+  s_6574c9512bb1f0::t_a508682081f194 1-26594
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7a48d1e3d385c4587bb43aded0203eb659783c83",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
