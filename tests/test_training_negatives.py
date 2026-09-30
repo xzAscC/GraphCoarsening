@@ -1,4 +1,5 @@
 import random
+import hashlib
 import unittest
 
 import torch
@@ -83,6 +84,22 @@ class TrainingNegativeTests(unittest.TestCase):
         self.assertEqual(audit[0]['excluded_pair_collisions'], 0)
         self.assertEqual(audit[0]['stored_negative_entries'], 4)
         self.assertEqual(len(audit[0]['sha256']), 64)
+
+    def test_logged_replay_and_tamper_detection(self):
+        from experiments.audit_clean_training import verify_samples
+        data = fixture()
+        exclusion = training_negative_exclusion(data)
+        random.seed(33)
+        samples = sample_training_negatives(exclusion, data.num_nodes, 4)
+        records = [{'sha256': hashlib.sha256(samples.numpy().tobytes()).hexdigest(),
+                    'stored_negative_entries': 4, 'excluded_pair_collisions': 0}]
+        state = random.getstate()
+        verify_samples(data, records, 33, 1.)
+        self.assertEqual(state, random.getstate())
+        records[0]['sha256'] = '0' * 64
+        with self.assertRaisesRegex(AssertionError, 'epoch 1'):
+            verify_samples(data, records, 33, 1.)
+        self.assertEqual(state, random.getstate())
 
 
 if __name__ == '__main__':

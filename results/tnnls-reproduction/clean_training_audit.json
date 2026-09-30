@@ -1,0 +1,86 @@
+{
+  "audit": "logged-negative-sample-replay-v1",
+  "scope": "Matches replayed samples to hashes recorded at training time; checks disjoint pairs, source and split hashes, and validation-only checkpoint selection. Does not rerun model optimization.",
+  "runs": [
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/cora42-2layer/Cora_gcn.pt",
+      "checkpoint_sha256": "73357cc88f39af91b58d098159bb1f88e81291d4be39d24aa197ea1fbeff08f1",
+      "dataset": "Cora",
+      "seed": 42,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 180,
+      "selected_validation_auc": 0.8038861339617459,
+      "split_sha256": {
+        "train_pos_edge_index": "55ebde3c06d2508c9982098f3a88f44f68288bffa98bfe7bbd00806de882dad2",
+        "val_pos_edge_index": "e5b3e3b9cc54940bca55112ce21355a68644fd52bf32c114d98bf3028904532d",
+        "val_neg_edge_index": "04149c99ffb6ef8691d25f4a722d8d2d833d2d9667d8922812768319fb62d001",
+        "test_pos_edge_index": "62808f2fe22ce5e35f8258d4e24057c790de9322bddc58e9b4dcbb94d18b4ef9",
+        "test_neg_edge_index": "b2ae15c5f827b50156399903c6a9d2c27a5290e3883d4d79751ad4dc892e25e1"
+      },
+      "source_hashes_match": true
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/cora43-2layer/Cora_gcn.pt",
+      "checkpoint_sha256": "2205ca7e0545d56a8b7b7a8c4be0ce354fbc11f47745321649d11a9d68679d71",
+      "dataset": "Cora",
+      "seed": 43,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 200,
+      "selected_validation_auc": 0.8398993768884905,
+      "split_sha256": {
+        "train_pos_edge_index": "dbcdb3c013be583c818d9b90592daee71ca564432a0d7aa793f9471de6ac5a7b",
+        "val_pos_edge_index": "ab59f6fefbf02eb21601acfc09b42a9517c6a4e32e7f4f1f0ae3827f670a71c1",
+        "val_neg_edge_index": "1147411c709c72bb0c8a100334d3b8501378c28a8d21dfca54c437efb4dbecbc",
+        "test_pos_edge_index": "f39cb1d8ca8f4abd92d3aa8e69b2891d2846de430d5fe7684959c8146d97709e",
+        "test_neg_edge_index": "05eb54860f8ee99c94a948e32844aa1b785ca39c9af929004c467e625f9daa88"
+      },
+      "source_hashes_match": true
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/citeseer42-2layer/Citeseer_gcn.pt",
+      "checkpoint_sha256": "74dc44084f8014bb5fe3f2e9abb23c9293a5105378c9350f3cba508967117af9",
+      "dataset": "Citeseer",
+      "seed": 42,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 200,
+      "selected_validation_auc": 0.822808515593161,
+      "split_sha256": {
+        "train_pos_edge_index": "c63ec6c90883436dd34f5d0c2e6c9d7e8a5f84860e348b76eb8fb318d419f035",
+        "val_pos_edge_index": "452be4fb954d615ed3a02f99492ec6a0b2fb8f2efda18c299b5847f65419d749",
+        "val_neg_edge_index": "3c385c81d9d89deb4a3f9e7b4762d89c9c94506b8fbe7beacb883eea1e15dcb2",
+        "test_pos_edge_index": "38d537df89a7b697ef405ecb66a8baca4054ef965773f7c5dc64d3267c28cf23",
+        "test_neg_edge_index": "9aa8ab9b1c757138d3f565ff4556dae4a0dd2eb91e33cc904c506e81d9e6bdea"
+      },
+      "source_hashes_match": true
+    },
+    {
+      "checkpoint": "checkpoints/tnnls-clean-splits/citeseer43-2layer/Citeseer_gcn.pt",
+      "checkpoint_sha256": "3a90bdfa9a49516f256fa5ff38db92a5289990a9fe7822f764c92a96484074ac",
+      "dataset": "Citeseer",
+      "seed": 43,
+      "verified_negative_sample_epochs": 200,
+      "excluded_pair_collisions": 0,
+      "negative_sampling_protocol": "static-undirected-split-disjoint-negatives-v1",
+      "test_evaluated": false,
+      "selected_epoch": 190,
+      "selected_validation_auc": 0.8048671621805198,
+      "split_sha256": {
+        "train_pos_edge_index": "288a878efb564d6b227657dcb452c173325f1dd45aff7ac6f900892ff2833572",
+        "val_pos_edge_index": "fc62ae96355b36b8ba95db0535c87a7095615de0606577282e8f374f6ad41553",
+        "val_neg_edge_index": "18e7daa97656fac777e8e34b9052ae62967e66711d29fd097a3f90ba0818312a",
+        "test_pos_edge_index": "9ba61723c7c723b784c157a6fcaef97fcb76ec1521a54a6e6278728c36df1210",
+        "test_neg_edge_index": "606ef30d85844c788bd08fd6ab41c20b129f460edf1dc8ec5a19b6329bc2c74c"
+      },
+      "source_hashes_match": true
+    }
+  ]
+}
