@@ -1,0 +1,36 @@
+{
+  "status": "implemented-and-validated-but-not-promoted",
+  "plan": "coverage_union_plan.json",
+  "runs": ["coverage_union_PubMed42_val20.json", "coverage_union_PubMed43_additional_val100.json"],
+  "audit": "coverage_union_two_runs_audit.json",
+  "executed_source_commit": "9829512e822851dab3a3b031b3a5d7efc7bf2029",
+  "source_verification": "Every recorded execution-source hash in both runs matches the corresponding committed file at 9829512. Subsequent edits only add a counterexample/metadata test and clarify future output metadata; the numerical records are preserved.",
+  "configuration": "Single-edge exchanges only. Union uses global six plus group-diverse six, deduplicates and fills to twelve. The equal-cap control is global twelve, not global six. All use three removals and an eight-step limit.",
+  "query_checks": {
+    "pilot": "Twenty reused validation queries from PubMed training seed 42, including the diagnosed failure.",
+    "additional": "One hundred validation queries from training seed 43, fifty per class, with zero overlap with the twenty query keys excluded from the reference run.",
+    "test_queries": 0,
+    "total_saved_rows": 2880,
+    "audited_swap_rows": 2520,
+    "per_variant_caps": "Each trace was checked against its actual addition count, not only the largest study-wide cap. All nonempty exchange-size histograms contain only single exchanges."
+  },
+  "pilot": {
+    "diagnosed_case": "Union restores sufficiency for query [15167,19061] at budget five. Simply doubling the old diverse-only pool does not restore it. Global six and global twelve also restore it.",
+    "union_vs_global12_binary": {"wins": 0, "losses": 0, "ties": 60, "tradeoffs": 0}
+  },
+  "additional_validation": {
+    "union_vs_global12_binary": {"wins": 0, "losses": 0, "ties": 300, "tradeoffs": 0},
+    "union_vs_random_union_binary": {"wins": 0, "losses": 0, "ties": 300, "tradeoffs": 0},
+    "union_vs_structural_union_binary": {"wins": 0, "losses": 0, "ties": 300, "tradeoffs": 0},
+    "union_vs_smaller_diverse6_binary": {"wins": 2, "losses": 1, "ties": 297, "tradeoffs": 0},
+    "same_support_as_global12": 261,
+    "continuous_metrics": "Differences are small and mixed across budgets. Binary ties do not imply identical supports or continuous fidelity; complete paired differences are in each run."
+  },
+  "cost": "Union generally uses roughly twice as many evaluated proposals as the smaller six-addition pool. Its maximum per-step count matches global twelve, but actual totals and runtime vary with trajectories. Search timing excludes shared partition construction, query grouping, saliency initialization, and final metric reporting; no end-to-end speed claim is made.",
+  "metadata_caveat": "The archived v1 args dictionary inherited unused pair_swaps/mixed_swaps flags from the reference benchmark. The executed source, variant_configuration, and recorded exchange-size histograms establish that these runs used single-edge search only. The v2 writer separates reference_args from explicit executed-study arguments; no measurements were rewritten.",
+  "tests_passed": 112,
+  "interpretation": "Coverage union repairs an identifiable shortlist failure but shows no independent binary-fidelity advantage over the equal-cap global or nonspectral controls on the additional validation queries. It is not selected as a final method or a new coarsening contribution.",
+  "decision": "Retain the optional implementation and negative/neutral records. Do not continue choosing score or grouping seeds to improve these queries. Further method work should investigate whether coarse computation itself can offer a useful, controlled advantage over exact local computation, rather than presenting candidate diversity as established value.",
+  "limitations": "This is one dataset with two trained checkpoints and validation, not final held-out testing. Multiple budgets on a query are dependent. Same-state candidate inclusion is not a guarantee of terminal search dominance.",
+  "manuscript": "Unchanged this turn; empirical LaTeX numbers remain frozen."
+}

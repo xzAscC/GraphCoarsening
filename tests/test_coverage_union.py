@@ -4,6 +4,7 @@ from torch_geometric.data import Data
 
 from src.explainers.support_refinement import coverage_union, diversify, exchange_proposals, refine_support
 from src.evaluation.interventions import evaluate_support
+from experiments.benchmark_coverage_union import study_arguments
 
 
 class WeightedStar(torch.nn.Module):
@@ -14,6 +15,18 @@ class WeightedStar(torch.nn.Module):
 
 
 class CoverageUnionTests(unittest.TestCase):
+    def test_study_metadata_does_not_inherit_unexecuted_variants(self):
+        reference = dict(dataset='PubMed', seed=43, checkpoint_dir='checkpoint', query_split='val',
+                         candidate_region='gcn-boundary', pair_swaps=True, mixed_swaps=True,
+                         cf2=True, signal_policy='eigen')
+        actual = study_arguments(reference, 'cuda', 'output.json', 50, 100)
+        self.assertFalse(actual['pair_swaps'])
+        self.assertFalse(actual['mixed_swaps'])
+        self.assertNotIn('cf2', actual)
+        self.assertNotIn('signal_policy', actual)
+        self.assertEqual(actual['queries_per_class'], 50)
+        self.assertTrue(reference['pair_swaps'])
+
     def test_both_half_shortlists_included_and_total_cap_filled(self):
         generator = torch.Generator().manual_seed(4)
         for size in range(30):
@@ -30,6 +43,18 @@ class CoverageUnionTests(unittest.TestCase):
     def test_no_groups_is_identical_to_global_pool(self):
         order = torch.tensor([7, 3, 5, 1, 0])
         torch.testing.assert_close(coverage_union(order, None, 4), order[:4])
+
+    def test_union_does_not_cover_equal_size_global_pool(self):
+        order = torch.arange(20)
+        groups = torch.cat((torch.zeros(8, dtype=torch.long), torch.arange(1, 13)))
+        result = set(coverage_union(order, groups, 12).tolist())
+        self.assertEqual(len(result), 12)
+        self.assertTrue(set(range(6)) <= result)
+        self.assertNotIn(7, result)
+        self.assertIn(12, result)
+        # The larger global baseline is essential: small-pool containment
+        # does not make this pool a superset of the same-size global one.
+        self.assertFalse(set(range(12)) <= result)
 
     def test_proposal_inclusion_at_same_state(self):
         candidates = torch.arange(20)

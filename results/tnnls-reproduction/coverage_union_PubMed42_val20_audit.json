@@ -1,0 +1,476 @@
+{
+  "audit": "saved-support-swap-invariants-v1",
+  "scope": "Recorded paired validation checks; not independent model re-execution or significance testing.",
+  "runs": [
+    {
+      "input": "results/tnnls-reproduction/coverage_union_PubMed42_val20.json",
+      "sha256": "51d354f6d2e9eeeb6a5328dce8aba5e664726684bc9ea47d4b1d6122ea6918b6",
+      "dataset": "PubMed",
+      "seed": 42,
+      "query_split": "val",
+      "device": "cuda",
+      "candidate_region": "gcn-boundary",
+      "audited_swap_rows": 420,
+      "summaries": [
+        {
+          "method": "Saliency-supportive",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.85,
+            "necessity_confidence_drop": 0.1585753574686766,
+            "sufficiency_confidence_drop": 0.13242233040044626
+          },
+          "median_ranking_seconds": 0.0
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.1865763331143351,
+            "sufficiency_confidence_drop": 0.07365202124855291
+          },
+          "median_ranking_seconds": 0.0
+        },
+        {
+          "method": "Saliency-supportive",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.25,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.228234117826186,
+            "sufficiency_confidence_drop": 0.039958637463627364
+          },
+          "median_ranking_seconds": 0.0
+        },
+        {
+          "method": "Swap-diverse12",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.20442378252162943,
+            "sufficiency_confidence_drop": 0.10102103320904249
+          },
+          "median_ranking_seconds": 0.06255133850208949,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.04584842505295283,
+            "sufficiency_confidence_drop": -0.031401297191403776
+          },
+          "mean_accepted_steps": 0.6,
+          "mean_evaluated_proposals": 55.8
+        },
+        {
+          "method": "Swap-diverse12",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.27843923644720475,
+            "sufficiency_confidence_drop": 0.056366397482474406
+          },
+          "median_ranking_seconds": 0.1575015490016085,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.09186290333286963,
+            "sufficiency_confidence_drop": -0.017285623766078513
+          },
+          "mean_accepted_steps": 1.9,
+          "mean_evaluated_proposals": 102.6
+        },
+        {
+          "method": "Swap-diverse12",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.4,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.33256467668714507,
+            "sufficiency_confidence_drop": 0.02511221491137962
+          },
+          "median_ranking_seconds": 0.3017161955067422,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.10433055886095909,
+            "sufficiency_confidence_drop": -0.014846422552247744
+          },
+          "mean_accepted_steps": 3.7,
+          "mean_evaluated_proposals": 160.2
+        },
+        {
+          "method": "Swap-diverse6",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.1864126328106511,
+            "sufficiency_confidence_drop": 0.10153938894821153
+          },
+          "median_ranking_seconds": 0.035831642999255564,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.027837275341974495,
+            "sufficiency_confidence_drop": -0.030882941452234733
+          },
+          "mean_accepted_steps": 0.7,
+          "mean_evaluated_proposals": 29.7
+        },
+        {
+          "method": "Swap-diverse6",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.2785314185935384,
+            "sufficiency_confidence_drop": 0.05639354852675966
+          },
+          "median_ranking_seconds": 0.08774853248905856,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.09195508547920328,
+            "sufficiency_confidence_drop": -0.017258472721793258
+          },
+          "mean_accepted_steps": 1.9,
+          "mean_evaluated_proposals": 51.3
+        },
+        {
+          "method": "Swap-diverse6",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.4,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.3325621697940418,
+            "sufficiency_confidence_drop": 0.02544180017587314
+          },
+          "median_ranking_seconds": 0.16951656599121634,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.1043280519678558,
+            "sufficiency_confidence_drop": -0.014516837287754221
+          },
+          "mean_accepted_steps": 3.75,
+          "mean_evaluated_proposals": 81
+        },
+        {
+          "method": "Swap-global12",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.20657436106932095,
+            "sufficiency_confidence_drop": 0.09720161107719204
+          },
+          "median_ranking_seconds": 0.06116955799370771,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.1,
+            "necessity_confidence_drop": 0.047999003600644345,
+            "sufficiency_confidence_drop": -0.035220719323254226
+          },
+          "mean_accepted_steps": 0.7,
+          "mean_evaluated_proposals": 59.4
+        },
+        {
+          "method": "Swap-global12",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.2762266908726951,
+            "sufficiency_confidence_drop": 0.05237406245773274
+          },
+          "median_ranking_seconds": 0.17960353349917568,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.08965035775835994,
+            "sufficiency_confidence_drop": -0.021277958790820173
+          },
+          "mean_accepted_steps": 1.95,
+          "mean_evaluated_proposals": 104.4
+        },
+        {
+          "method": "Swap-global12",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.45,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.3338939856518189,
+            "sufficiency_confidence_drop": 0.024535337240523675
+          },
+          "median_ranking_seconds": 0.2981844234964228,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.1056598678256329,
+            "sufficiency_confidence_drop": -0.015423300223103687
+          },
+          "mean_accepted_steps": 3.85,
+          "mean_evaluated_proposals": 165.6
+        },
+        {
+          "method": "Swap-global6",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.20642951875873175,
+            "sufficiency_confidence_drop": 0.1001057492660926
+          },
+          "median_ranking_seconds": 0.03506711550289765,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.1,
+            "necessity_confidence_drop": 0.04785416129005515,
+            "sufficiency_confidence_drop": -0.03231658113435366
+          },
+          "mean_accepted_steps": 0.6,
+          "mean_evaluated_proposals": 27.9
+        },
+        {
+          "method": "Swap-global6",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.27612607068742295,
+            "sufficiency_confidence_drop": 0.059141603045336895
+          },
+          "median_ranking_seconds": 0.1014233219975722,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.08954973757308785,
+            "sufficiency_confidence_drop": -0.01451041820321602
+          },
+          "mean_accepted_steps": 2,
+          "mean_evaluated_proposals": 53.1
+        },
+        {
+          "method": "Swap-global6",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.4,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.33252484431141804,
+            "sufficiency_confidence_drop": 0.022742680740867167
+          },
+          "median_ranking_seconds": 0.15124461550294654,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.10429072648523206,
+            "sufficiency_confidence_drop": -0.017215956722760193
+          },
+          "mean_accepted_steps": 3.85,
+          "mean_evaluated_proposals": 82.8
+        },
+        {
+          "method": "Swap-union-diffusion",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.2067217769886065,
+            "sufficiency_confidence_drop": 0.09971924290379428
+          },
+          "median_ranking_seconds": 0.06248707250051666,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.1,
+            "necessity_confidence_drop": 0.0481464195199299,
+            "sufficiency_confidence_drop": -0.03270308749665199
+          },
+          "mean_accepted_steps": 0.7,
+          "mean_evaluated_proposals": 59.4
+        },
+        {
+          "method": "Swap-union-diffusion",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.27646120115004796,
+            "sufficiency_confidence_drop": 0.05298536658403071
+          },
+          "median_ranking_seconds": 0.15263898400007747,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.08988486803571283,
+            "sufficiency_confidence_drop": -0.020666654664522204
+          },
+          "mean_accepted_steps": 1.85,
+          "mean_evaluated_proposals": 100.8
+        },
+        {
+          "method": "Swap-union-diffusion",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.45,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.3338916632413642,
+            "sufficiency_confidence_drop": 0.023658517462245822
+          },
+          "median_ranking_seconds": 0.3009253715063096,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.1056575454151782,
+            "sufficiency_confidence_drop": -0.01630012000138154
+          },
+          "mean_accepted_steps": 3.9,
+          "mean_evaluated_proposals": 167.4
+        },
+        {
+          "method": "Swap-union-random",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.20774326289298012,
+            "sufficiency_confidence_drop": 0.09800822570160447
+          },
+          "median_ranking_seconds": 0.06202307099738391,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.1,
+            "necessity_confidence_drop": 0.049167905424303514,
+            "sufficiency_confidence_drop": -0.03441410469884179
+          },
+          "mean_accepted_steps": 0.8,
+          "mean_evaluated_proposals": 63
+        },
+        {
+          "method": "Swap-union-random",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.2762213685816349,
+            "sufficiency_confidence_drop": 0.05413895667711951
+          },
+          "median_ranking_seconds": 0.18121119050192647,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.08964503546729977,
+            "sufficiency_confidence_drop": -0.019513064571433408
+          },
+          "mean_accepted_steps": 1.95,
+          "mean_evaluated_proposals": 104.4
+        },
+        {
+          "method": "Swap-union-random",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.45,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.33420421387590876,
+            "sufficiency_confidence_drop": 0.025087965098176426
+          },
+          "median_ranking_seconds": 0.30150994950236054,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.10597009604972277,
+            "sufficiency_confidence_drop": -0.014870672365450935
+          },
+          "mean_accepted_steps": 3.9,
+          "mean_evaluated_proposals": 167.4
+        },
+        {
+          "method": "Swap-union-structural",
+          "budget": 5,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.3,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.20848128098380583,
+            "sufficiency_confidence_drop": 0.09804720788245029
+          },
+          "median_ranking_seconds": 0.06158662950474536,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.1,
+            "sufficiency_agreement": 0.1,
+            "necessity_confidence_drop": 0.04990592351512922,
+            "sufficiency_confidence_drop": -0.03437512251799598
+          },
+          "mean_accepted_steps": 0.75,
+          "mean_evaluated_proposals": 61.2
+        },
+        {
+          "method": "Swap-union-structural",
+          "budget": 10,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.35,
+            "sufficiency_agreement": 0.95,
+            "necessity_confidence_drop": 0.27622669038739056,
+            "sufficiency_confidence_drop": 0.05294798512408777
+          },
+          "median_ranking_seconds": 0.18027031900419388,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.15,
+            "sufficiency_agreement": 0.05,
+            "necessity_confidence_drop": 0.08965035727305547,
+            "sufficiency_confidence_drop": -0.02070403612446515
+          },
+          "mean_accepted_steps": 2,
+          "mean_evaluated_proposals": 106.2
+        },
+        {
+          "method": "Swap-union-structural",
+          "budget": 20,
+          "queries": 20,
+          "mean": {
+            "necessity_flip": 0.45,
+            "sufficiency_agreement": 0.9,
+            "necessity_confidence_drop": 0.33389398488228667,
+            "sufficiency_confidence_drop": 0.024990668398302125
+          },
+          "median_ranking_seconds": 0.29957301350077614,
+          "paired_mean_difference_from_signed_saliency": {
+            "necessity_flip": 0.2,
+            "sufficiency_agreement": 0.0,
+            "necessity_confidence_drop": 0.10565986705610064,
+            "sufficiency_confidence_drop": -0.014967969065325236
+          },
+          "mean_accepted_steps": 3.8,
+          "mean_evaluated_proposals": 163.8
+        }
+      ],
+      "reference_comparison": null,
+      "paired_policy_comparisons": []
+    }
+  ]
+}

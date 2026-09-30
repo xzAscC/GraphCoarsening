@@ -36,6 +36,21 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def study_arguments(reference_args, device, output, additional_queries, query_count):
+    """Keep reference provenance separate from the actually executed study.
+
+The v1 writer inherited unused pair/mixed flags from its input benchmark.
+Those flags never controlled this driver, but could misdescribe the run.
+"""
+    return {key: reference_args[key] for key in
+            ('dataset', 'seed', 'checkpoint_dir', 'query_split', 'candidate_region')} | {
+        'device': device, 'output': str(output), 'query_reference': None,
+        'swap_steps': 8, 'swap_additions': 12, 'swap_removals': 3,
+        'intervention_batch_size': 8, 'support_swaps': True,
+        'pair_swaps': False, 'mixed_swaps': False, 'budgets': [5, 10, 20],
+        'additional_queries_per_class': additional_queries, 'queries_per_class': query_count // 2}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', type=Path, required=True)
@@ -161,12 +176,11 @@ def main():
                          ('Swap-union-diffusion', 'Swap-union-random'), ('Swap-union-diffusion', 'Swap-union-structural')]
     comparisons = [item for treatment, control in comparison_pairs
                    for item in paired_policy_comparison(rows, treatment, control)]
-    report = {'protocol': PROTOCOL, 'study': 'coverage-union-fixed-controls-v1', 'scope': __doc__,
+    report = {'protocol': PROTOCOL, 'study': 'coverage-union-fixed-controls-v2', 'scope': __doc__,
               'input': str(args.input), 'input_sha256': sha(args.input),
-              'args': reference['args'] | {'query_reference': None, 'device': args.device,
-                                          'swap_steps': 8, 'swap_additions': 12, 'swap_removals': 3,
-                                          'output': str(args.output), 'additional_queries_per_class': args.additional_queries_per_class,
-                                          'queries_per_class': len(queries) // 2},
+              'args': study_arguments(reference['args'], args.device, args.output,
+                                      args.additional_queries_per_class, len(queries)),
+              'reference_args': reference['args'],
               'variant_configuration': variants, 'query_sampling_seed': 20260930,
               'excluded_reference_query_keys': excluded if args.additional_queries_per_class else [],
               'source_sha256_at_start': source_hashes, 'checkpoint_sha256': sha(path),
