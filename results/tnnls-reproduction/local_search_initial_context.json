@@ -1,0 +1,22 @@
+{
+  "study": "Initial opt-in compact search with authoritative full-graph acceptance",
+  "status": "Experimental path; default remains full-graph",
+  "runs": [
+    {"dataset": "Cora", "seed": 42, "queries": 20, "query_budget_records": 60, "paired_repeats": 2, "same_final_support_pairs": 111, "binary_disagreement_pairs": 0, "median_full_ms": 36.762758496479364, "median_local_ms": 40.31297725305194, "median_paired_full_over_local": 0.8954948151394857, "median_full_peak_extra_bytes": 259131136, "median_local_peak_extra_bytes": 34904064},
+    {"dataset": "Citeseer", "seed": 43, "queries": 20, "query_budget_records": 60, "paired_repeats": 2, "same_final_support_pairs": 116, "binary_disagreement_pairs": 0, "median_full_ms": 18.81897724888404, "median_local_ms": 15.284201253962237, "median_paired_full_over_local": 1.2129957243368548, "median_full_peak_extra_bytes": 531869184, "median_local_peak_extra_bytes": 67647232}
+  ],
+  "acceptance": "Full-graph original prediction and initial support metrics. Local gradients and local batch screening only propose candidates; every accepted change must pass serial full-graph continuous and binary non-regression checks.",
+  "verification": "87 unit tests passed, including CPU/CUDA non-regression and a deliberately optimistic local screen that cannot bypass full-graph acceptance. Both saved runs passed their post-search non-regression checks, and recorded source hashes matched the files used at verification.",
+  "timing": "One warmup per path, two alternating-order repetitions. Timed function includes local construction, gradients, screening and full-graph rechecks. Excludes shared initial saliency, candidate extraction, spectral preprocessing, model loading and final reporting. Runs executed sequentially on a shared RTX 4090.",
+  "interpretation": "Reduced temporary GPU allocation in both cases, but runtime changes are mixed. Local and full paths can produce different final supports despite matching binary metrics in this pilot. This is not a bitwise-equivalent implementation or a validated general speedup.",
+  "limitations": [
+    "Only two dataset/seed combinations and twenty validation queries per run.",
+    "Repeats and query budgets are not independent evidence.",
+    "Different proposal rankings and screening decisions can change actual work, even at the same limits.",
+    "Persistent original graph/model storage is excluded from incremental peak allocation.",
+    "Coarse-grouped search has not been benchmarked through this optional path.",
+    "No claim of improved explanation quality, final test performance or independent coarsening benefit follows."
+  ],
+  "next_step": "Remove redundant per-proposal identity validation through a tested batched mapping of already-validated candidates, then repeat the paired benchmark without discarding these initial results.",
+  "manuscript_numerical_results_changed": false
+}

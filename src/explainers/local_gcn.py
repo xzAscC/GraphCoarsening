@@ -21,6 +21,26 @@ from torch_geometric.utils import coalesce, is_undirected
 from .candidates import candidate_edge_mask
 
 
+def validate_local_gcn_model(model):
+    """Restrict automatic compaction to the repository's known local models."""
+    from torch_geometric.nn import GCNConv
+    from src.models.gcn import GCN
+    from src.models.link_predictor import LinkPredictionModel, LinkPredictor, MLPLinkPredictor
+    from experiments.train_gcn import MLPLinkPredictor as ProductMLP
+    if (type(model) is not LinkPredictionModel or type(model.encoder) is not GCN
+            or type(model.predictor) not in (LinkPredictor, MLPLinkPredictor, ProductMLP)
+            or any(module.training for module in model.modules())):
+        raise ValueError('Local search requires a known evaluation-mode GCN and endpoint decoder')
+    convs = model.encoder.convs
+    if len(convs) != model.encoder.num_layers:
+        raise ValueError('Declared and actual GCN layer counts differ')
+    if any(type(conv) is not GCNConv or conv.cached or not conv.normalize
+           or not conv.add_self_loops or conv.flow != 'source_to_target'
+           or conv.aggr != 'add' for conv in convs):
+        raise ValueError('Local search requires uncached normalized GCN layers with fixed self-loops')
+    return len(convs)
+
+
 @dataclass
 class GCNQueryRegion:
     data: Data

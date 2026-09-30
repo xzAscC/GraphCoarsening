@@ -11,6 +11,7 @@ from torch_geometric.data import Data
 
 from src.explainers.group_interventions import group_deletion_logits
 from src.evaluation.interventions import predict_logit
+from src.explainers.local_gcn import compact_gcn_query, validate_local_gcn_model
 
 
 def candidate_groups(candidates, partition, n):
@@ -113,7 +114,7 @@ def exchange_proposals(candidates, selected, in_order, out_order, gradient,
 
 def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                    steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7,
-                   exchange_size=1):
+                   exchange_size=1, local_gcn=False):
     """Return a same-size original-edge support and an auditable search trace.
 
     Accept only exact interventions whose removed-graph class probability does
@@ -123,6 +124,10 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     This is a finite-search invariant, not a fidelity or global-optimum theorem.
     Batched forwards require graph-separable inference; tested with GCN.
     exchange_size=0 mixes single and pair moves under the same proposal cap.
+    local_gcn uses a boundary-compacted graph for gradients and batched screening,
+    but retains full-graph initialization and serial acceptance checks. Floating
+    point differences may change proposals or screening; identical trajectories
+    to full-graph search are not promised. Default behavior remains full-graph.
     """
     if (steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0
             or exchange_size not in (0, 1, 2)):
@@ -147,13 +152,24 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         groups = groups.to(device)
         if groups.shape != candidates.shape:
             raise ValueError('One group per candidate required')
+    region = None
+    if local_gcn:
+        layers = validate_local_gcn_model(model)
+        region = compact_gcn_query(data, [a, b], layers)
+        region.map_keys(candidates)  # Reject any candidate outside the certified region.
+    working = region.data if region is not None else data
     full = predict_logit(model, data.x, data.edge_index, a, b, getattr(data, 'edge_weight', None))
     sign = 1 if full > 0 else -1
     p_full = torch.sigmoid(torch.tensor(sign * full, dtype=torch.float64, device=device))
 
-    def assess(supports, batch):
-        keep = group_deletion_logits(model, data, a, b, supports, batch, retain=True)
-        delete = group_deletion_logits(model, data, a, b, supports, batch)
+    def assess(supports, batch, *, compact=False):
+        graph, left, right = data, a, b
+        if compact:
+            graph = region.data
+            left, right = region.targets.flatten().tolist()
+            supports = [region.map_keys(keys) for keys in supports]
+        keep = group_deletion_logits(model, graph, left, right, supports, batch, retain=True)
+        delete = group_deletion_logits(model, graph, left, right, supports, batch)
         probabilities = torch.sigmoid(sign * torch.stack((keep, delete), dim=1).double())
         capped = torch.minimum(probabilities[:, 0], p_full)
         quality = capped - probabilities[:, 1]
@@ -164,8 +180,11 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     current = tuple(x[0] for x in assess([selected], 1))
     trace = []
 
-    def record(step, proposals, accepted, actual_exchange_size=0, proposal_sizes=()):
+    def record(step, proposals, accepted, actual_exchange_size=0, proposal_sizes=(), rechecks=0):
         trace.append({'step': step, 'proposals': proposals, 'accepted': accepted,
+                      'evaluation_mode': 'local-screen-full-accept' if region is not None else 'full',
+                      'gradient_nodes': working.num_nodes,
+                      'full_graph_rechecks': rechecks,
                       'exchange_size': actual_exchange_size,
                       'proposals_by_exchange_size': {str(s): proposal_sizes.count(s) for s in sorted(set(proposal_sizes))},
                       'objective': current[0].item(), 'capped_retained_probability': current[1].item(),
@@ -175,21 +194,22 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     record(0, 0, False)
     if not selected.numel() or selected.numel() == candidates.numel():
         return Data(edge_index=torch.stack((selected // n, selected % n))), trace
-    positions = torch.searchsorted(candidates, full_keys)
+    working_keys = full_keys[region.original_edge_mask] if region is not None else full_keys
+    positions = torch.searchsorted(candidates, working_keys)
     valid = positions < candidates.numel()
     safe_positions = positions.clamp(max=candidates.numel() - 1)
-    valid &= candidates[safe_positions] == full_keys
-    original_weight = getattr(data, 'edge_weight', None)
+    valid &= candidates[safe_positions] == working_keys
+    original_weight = getattr(working, 'edge_weight', None)
     if original_weight is None:
-        original_weight = data.x.new_ones(data.edge_index.size(1))
-    target = torch.tensor([[a], [b]], device=device)
+        original_weight = working.x.new_ones(working.edge_index.size(1))
+    target = region.targets if region is not None else torch.tensor([[a], [b]], device=device)
     for step in range(1, steps + 1):
         active = torch.isin(candidates, selected)
         gates = active.to(data.x.dtype).requires_grad_()
         stored_gate = torch.where(valid, gates[safe_positions], 0.)
         # Gates propose swaps only. Exact retained/deleted edge lists decide acceptance.
-        retained = model(data.x, data.edge_index, target, edge_weight=original_weight * stored_gate).squeeze()
-        removed = model(data.x, data.edge_index, target, edge_weight=original_weight * (1 - stored_gate)).squeeze()
+        retained = model(working.x, working.edge_index, target, edge_weight=original_weight * stored_gate).squeeze()
+        removed = model(working.x, working.edge_index, target, edge_weight=original_weight * (1 - stored_gate)).squeeze()
         objective = torch.minimum(torch.sigmoid(sign * retained), p_full.to(retained.dtype)) - torch.sigmoid(sign * removed)
         gradient, = torch.autograd.grad(objective, gates)
         if not torch.isfinite(gradient).all():
@@ -201,7 +221,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
             candidates, selected, in_order, out_order, gradient,
             additions, removals, exchange_size, groups)
         size = min(exchange_size, inside.numel(), outside.numel())
-        values = assess(proposals, batch_size)
+        values = assess(proposals, batch_size, compact=region is not None)
         eligible = ((values[1] >= current[1]) & (values[2] <= current[2])
                     & (values[3] >= current[3]) & (values[4] >= current[4])
                     & (values[0] > current[0] + min_gain))
@@ -210,7 +230,9 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
             break
         ranking = torch.argsort(values[0].masked_fill(~eligible, -torch.inf), descending=True)
         accepted = False
+        rechecks = 0
         for index in ranking[eligible[ranking]].tolist():
+            rechecks += 1
             checked = tuple(x[0] for x in assess([proposals[index]], 1))
             if (checked[1] >= current[1] and checked[2] <= current[2]
                     and checked[3] >= current[3] and checked[4] >= current[4]
@@ -218,7 +240,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                 selected, current, accepted = proposals[index], checked, True
                 size = proposal_sizes[index]
                 break
-        record(step, len(proposals), accepted, size, proposal_sizes)
+        record(step, len(proposals), accepted, size, proposal_sizes, rechecks)
         if not accepted:
             break
     return Data(edge_index=torch.stack((selected // n, selected % n))), trace
