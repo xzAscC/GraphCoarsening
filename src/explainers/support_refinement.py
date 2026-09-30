@@ -40,6 +40,29 @@ def diversify(order, groups, count):
     return torch.tensor(selected[:count], device=order.device, dtype=torch.long)
 
 
+def coverage_union(order, groups, count):
+    """Union equal-sized global/diverse shortlists, fill to a fixed total cap.
+
+Retains the global top count/2 AND the diverse top count/2 at this state.
+Duplicate slots are filled by global rank, then the pool is returned in global
+rank order. This covers a smaller ungrouped pool, not a same-size one, and
+does not imply dominance of complete adaptive search trajectories.
+"""
+    if count < 2 or count % 2:
+        raise ValueError('Coverage union requires an even total addition count >= 2')
+    if groups is None:
+        return order[:count]
+    half = count // 2
+    chosen = set(order[:half].tolist())
+    chosen.update(diversify(order, groups, min(half, len(order))).tolist())
+    for index in order.tolist():
+        if len(chosen) >= min(count, len(order)):
+            break
+        chosen.add(index)
+    return torch.tensor([index for index in order.tolist() if index in chosen],
+                        device=order.device, dtype=torch.long)
+
+
 def ranked_bundles(order, gradient, count, size, *, groups=None, largest=True):
     """Bounded pair proposals; grouping prioritizes two edges in one group.
 
@@ -81,7 +104,7 @@ def ranked_bundles(order, gradient, count, size, *, groups=None, largest=True):
 
 
 def exchange_proposals(candidates, selected, in_order, out_order, gradient,
-                       additions, removals, exchange_size, groups=None):
+                       additions, removals, exchange_size, groups=None, addition_policy='diverse'):
     """Build at most additions*removals supports, including mixed-size mode 0.
 
     Pure modes preserve the existing Cartesian order. Mixed mode ranks each
@@ -90,13 +113,19 @@ def exchange_proposals(candidates, selected, in_order, out_order, gradient,
     """
     if exchange_size not in (0, 1, 2) or min(additions, removals) < 1:
         raise ValueError('Invalid proposal settings')
+    if addition_policy not in ('diverse', 'coverage-union'):
+        raise ValueError('Unknown addition policy')
+    if addition_policy == 'coverage-union' and (exchange_size != 1 or additions < 2 or additions % 2):
+        raise ValueError('Coverage union requires single exchanges and an even addition count >= 2')
     available = min(len(in_order), len(out_order))
     if available == 0:
         return [], []
     sizes = ([1, 2] if available >= 2 else [1]) if exchange_size == 0 else [min(exchange_size, available)]
     pools = []
     for size in sizes:
-        add = ranked_bundles(out_order, gradient, additions, size, groups=groups)
+        add = (coverage_union(out_order, groups, additions).reshape(-1, 1)
+               if addition_policy == 'coverage-union'
+               else ranked_bundles(out_order, gradient, additions, size, groups=groups))
         drop = ranked_bundles(in_order, gradient, removals, size, largest=False)
         pool = []
         for d in drop:
@@ -114,7 +143,7 @@ def exchange_proposals(candidates, selected, in_order, out_order, gradient,
 
 def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                    steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7,
-                   exchange_size=1, local_gcn=False):
+                   exchange_size=1, local_gcn=False, addition_policy='diverse'):
     """Return a same-size original-edge support and an auditable search trace.
 
     Accept only exact interventions whose removed-graph class probability does
@@ -122,6 +151,8 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     does not decrease. Binary necessity and sufficiency cannot regress either.
     Every accepted candidate is checked again with a single graph per forward.
     This is a finite-search invariant, not a fidelity or global-optimum theorem.
+    coverage-union is an optional single-exchange policy retaining both global
+    and group-diverse half-sized shortlists under the total additions cap.
     Batched forwards require graph-separable inference; tested with GCN.
     exchange_size=0 mixes single and pair moves under the same proposal cap.
     local_gcn uses a boundary-compacted graph for gradients and batched screening,
@@ -132,6 +163,10 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     if (steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0
             or exchange_size not in (0, 1, 2)):
         raise ValueError('Invalid refinement budget')
+    if addition_policy not in ('diverse', 'coverage-union'):
+        raise ValueError('Unknown addition policy')
+    if addition_policy == 'coverage-union' and (exchange_size != 1 or additions < 2 or additions % 2):
+        raise ValueError('Coverage union requires single exchanges and an even addition count >= 2')
     if model.training:
         raise ValueError('Frozen evaluation-mode model required')
     n, device = data.x.size(0), data.x.device
@@ -183,6 +218,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
 
     def record(step, proposals, accepted, actual_exchange_size=0, proposal_sizes=(), rechecks=0):
         trace.append({'step': step, 'proposals': proposals, 'accepted': accepted,
+                      'addition_policy': addition_policy, 'addition_cap': additions,
                       'evaluation_mode': 'local-screen-full-accept' if region is not None else 'full',
                       'gradient_nodes': working.num_nodes,
                       'full_graph_rechecks': rechecks,
@@ -220,7 +256,8 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         in_order = inside[torch.argsort(gradient[inside], stable=True)]
         proposals, proposal_sizes = exchange_proposals(
             candidates, selected, in_order, out_order, gradient,
-            additions, removals, exchange_size, groups)
+            additions, removals, exchange_size, groups,
+            **({'addition_policy': addition_policy} if addition_policy != 'diverse' else {}))
         size = min(exchange_size, inside.numel(), outside.numel())
         values = assess(proposals, batch_size, compact=region is not None)
         eligible = ((values[1] >= current[1]) & (values[2] <= current[2])

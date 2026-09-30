@@ -1,0 +1,17 @@
+{
+  "status": "configuration-fixed-before-reading-pilot-outcomes",
+  "hypothesis": "Retaining the small global-gradient pool while adding diverse candidates can prevent the diagnosed coverage omission. Whether grouping adds value beyond a larger global pool remains an empirical question.",
+  "implementation": "Union global top-six and group-diverse top-six additions, deduplicate, fill remaining positions by global rank to twelve, return in global rank order. Three removals and at most eight accepted-search iterations, with the existing acceptance checks.",
+  "controls": ["global six", "global twelve", "diffusion-diverse six", "diffusion-diverse twelve", "diffusion-union twelve", "random-union twelve", "normalized-edge-union twelve"],
+  "grouping_configuration": {"seed": 0, "width": 100, "diffusion_steps": 4, "alpha": 0.75},
+  "planned_runs": [
+    {"dataset": "PubMed", "training_seed": 42, "queries": 20, "role": "reused diagnostic queries, including the previously identified loss"},
+    {"dataset": "PubMed", "training_seed": 43, "queries": 100, "role": "additional validation queries excluding all twenty queries in mixed_PubMed43_val20_steps8.json", "sampling_seed": 20260930, "positive_queries": 50, "negative_queries": 50}
+  ],
+  "support_budgets": [5, 10, 20],
+  "test_split": "not evaluated",
+  "allowed_conclusion": "Candidate-set containment at the same state is distinct from end-to-end search dominance. Fixing the selected case alone is insufficient to promote the method.",
+  "evaluation": "Preserve every query outcome, compare diffusion union to global twelve and to nonspectral unions, record continuous and binary fidelity, actual proposal counts, and search-only timing. Do not select grouping seeds or alter configuration after examining outcomes.",
+  "cost_limit": "Union and global-twelve share a thirty-six-proposal per-step cap. Global-six has an eighteen-proposal cap. Actual work can differ because trajectories and stopping times differ; equal maximum caps are not equal measured compute.",
+  "manuscript": "No empirical numbers will be copied into LaTeX during this development study."
+}
