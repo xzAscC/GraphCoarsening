@@ -1,0 +1,34 @@
+tests/test_grouping_controls.py
+  s_6574c9512bb1f0::t_e6ef43fb2cca18 56-83
+experiments/benchmark_projected_gcn.py
+  s_6574c9512bb1f0::t_e6ef43fb2cca18 54-55,96-107,144-149,213,219-220
+results/tnnls-reproduction/projected_gcn_context.json
+  s_6574c9512bb1f0::t_c82ce0047cb196 26-27
+results/tnnls-reproduction/projected_feature_context.json
+  s_6574c9512bb1f0::t_c4bbbae6df63ce 13,18
+  s_6574c9512bb1f0::t_c82ce0047cb196 1-12,14-17,19-22
+results/tnnls-reproduction/projected_feature_plan.json
+  s_6574c9512bb1f0::t_494d4e80e70e2a 1-15
+src/grouping_controls.py
+  s_6574c9512bb1f0::t_e6ef43fb2cca18 24,38-54
+results/tnnls-reproduction/projected_feature_Cora42_val20.json
+  s_6574c9512bb1f0::t_4bcd469fc02948 1-15445
+results/tnnls-reproduction/projected_feature_PubMed43_val20.json
+  s_6574c9512bb1f0::t_5baf5b6baa7c76 1-15445
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1b394608b1ca45abb6c2920aaaf6c0dbdc48675e",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
