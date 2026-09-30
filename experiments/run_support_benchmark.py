@@ -62,10 +62,17 @@ def main():
                    help='Add class-supportive saliency and bounded-refinement calibration')
     p.add_argument('--intervention-batch-size', type=int, default=1,
                    help='Independent deletion graphs per GPU forward (GCN only)')
+    p.add_argument('--support-swaps', action='store_true',
+                   help='Compare ungrouped and coarse-diverse swaps from the same signed saliency support')
+    p.add_argument('--swap-steps', type=int, default=2)
+    p.add_argument('--swap-additions', type=int, default=6)
+    p.add_argument('--swap-removals', type=int, default=3)
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
     p.add_argument('--query-split', choices=['val', 'test'], default='test')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
+    if args.support_swaps and not args.signed_ablation:
+        p.error('--support-swaps requires --signed-ablation for a shared initial support')
     if args.score_ablation and args.merge_score != 'legacy':
         p.error('--score-ablation uses legacy as its reference; do not combine with --merge-score projection')
     source_files = [Path(__file__), Path('experiments/train_gcn.py'), *Path('src').rglob('*.py')]
@@ -183,6 +190,31 @@ def main():
                                  'support': support.edge_index.t().tolist(),
                                  'grouping': getattr(explainer, 'last_diagnostics', {}),
                                  **metrics})
+                    if args.support_swaps and name == 'Saliency-supportive':
+                        from src.explainers.support_refinement import candidate_groups, refine_support
+                        from src.partition import isolate_query_endpoints
+                        partition = isolate_query_endpoints(coarsener.partition, a, b)
+                        group_ids = candidate_groups(candidates, partition, n)
+                        for variant, grouping in [('Swap-gradient', None), ('Swap-coarse', group_ids)]:
+                            sync()
+                            swap_start = time.perf_counter()
+                            refined, trace = refine_support(
+                                model, data, a, b, candidates, support, groups=grouping,
+                                steps=args.swap_steps, additions=args.swap_additions,
+                                removals=args.swap_removals, batch_size=args.intervention_batch_size)
+                            sync()
+                            swap_seconds = time.perf_counter() - swap_start
+                            refined_metrics = evaluate_support(model, data, refined, a, b, args.device)
+                            assert refined_metrics['support_edges'] == effective
+                            rows.append({'query': [a, b], 'label': label, 'method': variant,
+                                         'budget': budget, 'effective_budget': effective,
+                                         'candidate_edges': len(candidates),
+                                         'ranking_seconds': duration + swap_seconds,
+                                         'refinement_seconds': swap_seconds, 'search_trace': trace,
+                                         'initial_method': name,
+                                         'support': refined.edge_index.t().cpu().tolist(),
+                                         'grouping': {'clusters': len(partition)} if grouping is not None else {},
+                                         **refined_metrics})
             print(f'Completed label={label} query=({a},{b})', flush=True)
     report = {'protocol': PROTOCOL, 'args': vars(args), 'split_sha256': hashes,
               'source_sha256_at_start': source_hashes,
@@ -195,7 +227,7 @@ def main():
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output, 'x') as f:
         json.dump(report, f, indent=2)
-    for method, _ in methods:
+    for method in sorted({r['method'] for r in rows}):
         for budget in args.budgets:
             group = [r for r in rows if r['method'] == method and r['budget'] == budget]
             print(method, budget, {k: float(np.mean([r[k] for r in group])) for k in

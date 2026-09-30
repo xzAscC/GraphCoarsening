@@ -20,10 +20,11 @@ def supportive_edge_scores(edge_index, gradient, num_nodes, sign):
 
 
 @torch.no_grad()
-def group_deletion_logits(model, data, node_a, node_b, groups, batch_size=1):
+def group_deletion_logits(model, data, node_a, node_b, groups, batch_size=1, *, retain=False):
     """Delete each collection of canonical undirected edge keys independently.
 
-    Both orientations and duplicate entries are removed. Original features,
+    With retain=True, retain each group instead of deleting it.
+    Both orientations and duplicate entries are treated together. Original features,
     vertices and surviving edge weights are preserved. Chunking bounds the
     number of full graph copies held on the device simultaneously.
     """
@@ -41,6 +42,8 @@ def group_deletion_logits(model, data, node_a, node_b, groups, batch_size=1):
         indices, weights = [], []
         for offset, group in enumerate(chunk):
             keep = ~torch.isin(keys, group.to(device))
+            if retain:
+                keep = ~keep
             indices.append(data.edge_index[:, keep] + offset * n)
             if weight is not None:
                 weights.append(weight[keep])
