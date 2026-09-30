@@ -1,0 +1,27 @@
+src/negative_sampling.py
+  s_6574c9512bb1f0::t_b5ff547a9019c1 1-62
+tests/test_training_negatives.py
+  s_6574c9512bb1f0::t_d893045143c996 1-89
+experiments/audit_training_negatives.py
+  s_6574c9512bb1f0::t_d893045143c996 1-97
+experiments/train_gcn.py
+  s_6574c9512bb1f0::t_b5ff547a9019c1 8-10,25-27,157-159,166-174,247-248,271-272,287-292,313,316-317,333,336-342,358,368
+results/tnnls-reproduction/legacy_training_negative_replay.json
+  s_6574c9512bb1f0::t_05600a90ced56c 1-6562
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "557f64fa7d0546431bbeaec9d9ee3e141332dd01",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
