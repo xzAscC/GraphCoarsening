@@ -141,9 +141,26 @@ def exchange_proposals(candidates, selected, in_order, out_order, gradient,
     return [p[0] for p in chosen], [p[1] for p in chosen]
 
 
+def acceptance_mask(values, current, min_gain, policy='componentwise'):
+    """Shared batched/serial test; optional policy relaxes continuous Pareto guards.
+
+    Both policies require strict objective gain and binary non-regression.
+    binary-monotone may trade retained confidence against deleted confidence;
+    it does not inherit componentwise continuous non-regression.
+    """
+    if policy not in ('componentwise', 'binary-monotone'):
+        raise ValueError('Unknown acceptance policy')
+    valid = ((values[3] >= current[3]) & (values[4] >= current[4])
+             & (values[0] > current[0] + min_gain))
+    if policy == 'componentwise':
+        valid = valid & (values[1] >= current[1]) & (values[2] <= current[2])
+    return valid
+
+
 def refine_support(model, data, a, b, candidates, initial, *, groups=None,
                    steps=2, additions=6, removals=3, batch_size=8, min_gain=1e-7,
-                   exchange_size=1, local_gcn=False, addition_policy='diverse'):
+                   exchange_size=1, local_gcn=False, addition_policy='diverse',
+                   acceptance_policy='componentwise'):
     """Return a same-size original-edge support and an auditable search trace.
 
     Accept only exact interventions whose removed-graph class probability does
@@ -159,12 +176,17 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
     but retains full-graph initialization and serial acceptance checks. Floating
     point differences may change proposals or screening; identical trajectories
     to full-graph search are not promised. Default behavior remains full-graph.
+    Optional binary-monotone acceptance drops the two continuous componentwise
+    guards, retaining strict objective gain and both binary guards. It is an
+    experimental tradeoff policy, not a dominance claim over the default.
     """
     if (steps < 0 or min(additions, removals, batch_size) < 1 or min_gain < 0
             or exchange_size not in (0, 1, 2)):
         raise ValueError('Invalid refinement budget')
     if addition_policy not in ('diverse', 'coverage-union'):
         raise ValueError('Unknown addition policy')
+    if acceptance_policy not in ('componentwise', 'binary-monotone'):
+        raise ValueError('Unknown acceptance policy')
     if addition_policy == 'coverage-union' and (exchange_size != 1 or additions < 2 or additions % 2):
         raise ValueError('Coverage union requires single exchanges and an even addition count >= 2')
     if model.training:
@@ -218,6 +240,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
 
     def record(step, proposals, accepted, actual_exchange_size=0, proposal_sizes=(), rechecks=0):
         trace.append({'step': step, 'proposals': proposals, 'accepted': accepted,
+                      'acceptance_policy': acceptance_policy,
                       'addition_policy': addition_policy, 'addition_cap': additions,
                       'evaluation_mode': 'local-screen-full-accept' if region is not None else 'full',
                       'gradient_nodes': working.num_nodes,
@@ -260,9 +283,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
             **({'addition_policy': addition_policy} if addition_policy != 'diverse' else {}))
         size = min(exchange_size, inside.numel(), outside.numel())
         values = assess(proposals, batch_size, compact=region is not None)
-        eligible = ((values[1] >= current[1]) & (values[2] <= current[2])
-                    & (values[3] >= current[3]) & (values[4] >= current[4])
-                    & (values[0] > current[0] + min_gain))
+        eligible = acceptance_mask(values, current, min_gain, acceptance_policy)
         if not eligible.any():
             record(step, len(proposals), False, size, proposal_sizes)
             break
@@ -272,9 +293,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         for index in ranking[eligible[ranking]].tolist():
             rechecks += 1
             checked = tuple(x[0] for x in assess([proposals[index]], 1))
-            if (checked[1] >= current[1] and checked[2] <= current[2]
-                    and checked[3] >= current[3] and checked[4] >= current[4]
-                    and checked[0] > current[0] + min_gain):
+            if acceptance_mask(checked, current, min_gain, acceptance_policy):
                 selected, current, accepted = proposals[index], checked, True
                 size = proposal_sizes[index]
                 break

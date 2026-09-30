@@ -1,0 +1,11 @@
+{
+  "status": "fixed-before-ablation-run",
+  "input": "coverage_union_PubMed43_additional_val100.json",
+  "motivation": "CF2 improves both binary criteria on query [2335,13279] at budget 5 using a one-edge exchange. The alternative has greater capped-retained-minus-deleted objective, but is rejected by the existing removed-probability non-increase condition even though necessity remains successful.",
+  "variants": ["componentwise", "binary-monotone"],
+  "change": "Binary-monotone retains strict objective increase and both binary non-regression guards but allows continuous retained/deleted confidence tradeoffs. Default componentwise policy is unchanged.",
+  "settings": {"steps": 8, "additions": 12, "removals": 3, "batch_size": 8, "exchange_size": 1, "local_gcn": false, "groups": null},
+  "selection": "All 100 previously inspected PubMed43 validation queries, same saved saliency initializations and three budgets. No CF2 support or edge is injected into proposal generation. This is development, not fresh confirmation.",
+  "gates": "Check original-graph replay, support sizes, objective improvement and binary non-regression along each trace. Report all query-level wins, losses, tradeoffs, continuous metrics and actual proposal counts. Equal caps do not imply equal actual costs or that one final trajectory dominates another.",
+  "manuscript": "Do not update empirical LaTeX data or present the optional policy as frozen before independent validation."
+}

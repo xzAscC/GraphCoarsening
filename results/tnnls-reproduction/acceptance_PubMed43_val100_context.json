@@ -1,0 +1,22 @@
+{
+  "status": "promising-acceptance-policy-development-result-not-promoted",
+  "plan": "acceptance_PubMed43_val100_plan.json",
+  "run": "acceptance_PubMed43_val100.json",
+  "audit": "acceptance_PubMed43_val100_audit.json",
+  "diagnosis": "For [2335,13279] at budget 5, the independently found CF2 support differs by one edge, raises J from approximately 0.4583 to 0.5122, repairs sufficiency and preserves necessity. The default nevertheless rejects it because deleted-class probability rises from approximately 0.00066 to 0.00948. This identifies an acceptance constraint, not proof that the CF2 edge was in the gradient shortlist.",
+  "change": "Optional binary-monotone policy permits continuous confidence tradeoffs while requiring strict J improvement and no binary necessity/sufficiency regression. Same saliency initialization, gradient proposal mechanism, 12 additions, 3 removals, 8 steps, full-graph screening and serial rechecks. No CF2 support or edge is supplied to the search. Componentwise remains the default.",
+  "necessity_and_sufficiency_by_budget": {
+    "componentwise": {"5": [0.32, 0.86], "10": [0.43, 0.94], "20": [0.53, 0.96]},
+    "binary-monotone": {"5": [0.34, 0.94], "10": [0.46, 0.98], "20": [0.55, 1.0]}
+  },
+  "binary_pareto_win_loss_tie_tradeoff": {"5": [9, 0, 91, 0], "10": [6, 0, 94, 0], "20": [7, 1, 92, 0]},
+  "regression": "Query [5425,10431] at budget 20 loses necessity relative to the componentwise terminal result. Each policy still satisfies non-regression relative to its own shared initial support. A weaker acceptance constraint does not imply a better greedy terminal support.",
+  "diagnostic_case_outcome": "The ordinary binary-monotone search repairs sufficiency at all three budgets for [2335,13279], using supports different from the supplied-for-analysis CF2 result. The CF2 answer was not injected.",
+  "cost": {"mean_evaluated_proposals_componentwise": 113.97, "mean_evaluated_proposals_binary_monotone": 144.81, "total_search_seconds_componentwise": 57.38354218492168, "total_search_seconds_binary_monotone": 72.64572760504961},
+  "cost_scope": "About 27 percent more proposals and measured search time, despite equal per-step and step-count caps. Single-run alternating policy order on a shared GPU. Excludes initialization and final external metric evaluation, so not an end-to-end or equal-actual-compute claim.",
+  "verification": "Source hashes, initial-support replay, support sizes, every accepted strict objective gain, both binary guards and default continuous guards checked. Cross-baseline record audit passed. Full suite: 134 passed. The rerun componentwise control matches all 300 historical binary outcomes but 23 final supports differ; this is not a claim of bitwise search trajectory reproduction.",
+  "limitations": "All 100 queries were previously inspected, and the policy was motivated by a failure in this set. This is development evidence requiring confirmation on other validation cohorts before selection. No uncertainty or universal-superiority claim. Relaxed acceptance does not retain continuous componentwise non-regression.",
+  "coarsening_scope": "Both new variants are ungrouped. Improvements are evidence about acceptance constraints, not an independent benefit of graph coarsening.",
+  "next_gate": "Run the frozen policy on different dataset/seed validation cohorts and compare actual cost as well as quality before any method promotion. Preserve the one observed regression and compare grouping separately.",
+  "manuscript": "Added the acceptance-constraint limitation and updated XZ20. No empirical values, tables or figures changed; compiled and visually checked the affected page."
+}
