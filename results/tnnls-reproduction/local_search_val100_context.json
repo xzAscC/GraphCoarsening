@@ -1,0 +1,31 @@
+{
+  "study": "Expanded fixed-configuration paired local-search validation",
+  "status": "Optional backend remains experimental; full-graph search remains default",
+  "queries_per_run": 100,
+  "budgets": [5, 10, 20],
+  "paired_repeats_per_query_budget": 2,
+  "total_paired_search_records": 2400,
+  "same_final_support_pairs": 2147,
+  "binary_disagreement_pairs": 0,
+  "nonregression_failures": 0,
+  "source_hashes_verified": true,
+  "runs": [
+    {"dataset": "Cora", "seed": 42, "same_support_pairs": 538, "median_full_ms": 36.67316875362303, "median_local_ms": 31.0241027509619, "median_paired_full_over_local": 1.1561463724301935, "median_full_peak_extra_bytes": 259130368, "median_local_peak_extra_bytes": 34673664},
+    {"dataset": "Cora", "seed": 43, "same_support_pairs": 515, "median_full_ms": 36.76604874635814, "median_local_ms": 30.96682649993454, "median_paired_full_over_local": 1.1566507052557435, "median_full_peak_extra_bytes": 259130368, "median_local_peak_extra_bytes": 34705152},
+    {"dataset": "Citeseer", "seed": 42, "same_support_pairs": 544, "median_full_ms": 18.750578248727834, "median_local_ms": 14.698347753437702, "median_paired_full_over_local": 1.5491925658110217, "median_full_peak_extra_bytes": 531871744, "median_local_peak_extra_bytes": 67828992},
+    {"dataset": "Citeseer", "seed": 43, "same_support_pairs": 550, "median_full_ms": 31.669629246607656, "median_local_ms": 18.197134748334065, "median_paired_full_over_local": 1.5387816009901685, "median_full_peak_extra_bytes": 531874304, "median_local_peak_extra_bytes": 67915264}
+  ],
+  "protocol": "Ungrouped single-edge search, eight steps maximum, eighteen proposals per step maximum, batch size eight. Same saved signed-saliency initialization per query/budget. One warmup per path and two alternating-order repetitions; the four GPU runs were sequential. All accepted local-path updates were checked on the full graph.",
+  "timing_scope": "Refinement call including compaction, gradients, proposal screening and full-graph acceptance, but excluding model loading, shared saliency initialization, candidate-region extraction, spectral preprocessing and final metrics. Other desktop work and manuscript builds were not disabled; these are shared-machine diagnostics.",
+  "memory_scope": "Median across query-budget records of the maximum incremental allocated bytes across repeats. Excludes persistent model/input data and allocator reservations; not whole-device peak usage.",
+  "interpretation": "The optional path showed lower paired median search time and lower temporary GPU allocation in all four runs. Binary necessity and sufficiency matched, but 253 paired final supports differed. Retain the full-graph acceptance safeguard and do not claim identical explanation trajectories.",
+  "limitations": [
+    "Four runs span only two graphs; query budgets and timing repetitions are not independent trials.",
+    "Validation lists overlap earlier development samples and do not constitute an untouched test set.",
+    "Matched limits do not ensure equal actual proposals or serial checks after numerical trajectory changes.",
+    "This benchmark does not establish an end-to-end explanation speedup or the independent value of spectral coarsening.",
+    "Coarse-grouped and strong-baseline comparisons must use matched computational backends before any final performance claim."
+  ],
+  "decision": "Keep the optimization as an explicit optional backend and preserve the original full-graph reference. Move beyond these two graphs rather than continue tuning the same validation queries.",
+  "manuscript_numerical_results_changed": false
+}
