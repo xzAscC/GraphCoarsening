@@ -1,0 +1,40 @@
+tests/test_training_negatives.py
+  s_6574c9512bb1f0::t_c58ccc1eb2fb4e 2,88-102
+  s_2da55d0656711b::t_ebaedfa4beda0b 103
+experiments/audit_clean_training.py
+  s_6574c9512bb1f0::t_c58ccc1eb2fb4e 1-93
+results/tnnls-reproduction/clean_training_audit.json
+  s_6574c9512bb1f0::t_312363bd76387a 1-86
+results/tnnls-reproduction/training_clean_Citeseer42.json
+  s_6574c9512bb1f0::t_6cafacc09de032 1-1148
+results/tnnls-reproduction/training_clean_Citeseer43.json
+  s_6574c9512bb1f0::t_9b53523aaff1bf 1-1148
+results/tnnls-reproduction/training_clean_Cora42.json
+  s_6574c9512bb1f0::t_7812452bd2dac1 1-1148
+results/tnnls-reproduction/training_clean_Cora43.json
+  s_6574c9512bb1f0::t_1715fdcf7420b4 1-1148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e50179d669c38361c46c260d1f3ea872ad8f1c9b",
+  "prompts": {},
+  "sessions": {
+    "s_2da55d0656711b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e5c7a357-55b6-4fbb-8d35-a0a37feffbd0",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    },
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
