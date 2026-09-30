@@ -1,0 +1,13 @@
+{
+  "status": "fixed-before-run",
+  "input": "coverage_union_PubMed43_additional_val100.json",
+  "selection": "All 100 saved validation queries, 50 per class. Previously inspected development data, not held-out confirmation.",
+  "baseline": "CF2 binary-link adaptation with exact-boundary-local objective evaluation and authoritative full-original-graph support metrics.",
+  "settings": {"epochs": 2000, "lr": 0.01, "lambda": 500, "alpha": 0.6, "gamma": 0.5, "seed": 20260930},
+  "comparison_methods": ["Saliency-supportive", "Swap-global12", "Swap-union-diffusion"],
+  "budgets": [5, 10, 20],
+  "backend_evidence": "CPU/GPU soft-mask objective and gradient tests plus four complete 2000-step paired full/local runs. No claim that all floating-point optimizer trajectories coincide. Keep local-backend identity explicit.",
+  "evaluation": "Independently replay all 900 reference supports and compute all 300 CF2 supports using original weights, undirected retention/deletion and raw-logit zero threshold.",
+  "comparison_scope": "Same queries and checkpoint as gnnexplainer_PubMed43_val100.json, allowing paired quality comparison after hash and query checks. Existing timing measurements are not controlled cross-method runtime comparisons.",
+  "decision": "Evaluate necessity and sufficiency jointly, preserve all outcomes, and do not promote coarsening based on an advantage shared by ungrouped search. No tuning on test data or empirical LaTeX updates."
+}
