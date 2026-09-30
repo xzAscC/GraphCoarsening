@@ -1,0 +1,32 @@
+{
+  "status": "forward-feasibility-diagnostic-not-integrated-into-explanation-search",
+  "runs": ["projected_gcn_Cora42_val20.json", "projected_gcn_PubMed43_val20.json"],
+  "definition": "With normalized cluster indicators P, projected features are P^T X, propagation is P^T A_hat P, and the shared layer bias is multiplied by sqrt(cluster size). Query endpoints remain singletons. There is no second normalization or additional coarse self-loop insertion.",
+  "interventions": "Recompute fine normalization and its projected operator separately for the full graph, each retained support, and each deleted support. The partition and projected original features stay fixed for each query.",
+  "controls": [
+    "Authoritative full-graph predictions replayed from saved checkpoints and supports",
+    "Native GCN on the exact normalization-boundary region",
+    "Singleton-projection implementation that reuses one normalized operator across layers",
+    "Dynamic exact compaction rebuilt for each intervention"
+  ],
+  "approximate_partitions": ["diffusion", "random", "normalized-edge"],
+  "selection": "Twenty validation queries per dataset/checkpoint, ten per class in the existing record order, without selection on approximation outcomes. Each has one full prediction plus retained/deleted predictions at three support budgets.",
+  "queries_total": 40,
+  "interventions_per_implementation": 280,
+  "tests_passed": 117,
+  "verification": "All exact controls preserve binary decisions and pass the saved/full/local numerical tolerances. Source hashes, recorded absolute errors, binary comparisons, residual ranges, and alternating timing order were independently checked after execution.",
+  "binary_disagreements_with_full_model": {
+    "Cora42": {"local-operator": 0, "native-local": 0, "dynamic-local": 0, "diffusion": 9, "random": 22, "normalized-edge": 14},
+    "PubMed43": {"local-operator": 0, "native-local": 0, "dynamic-local": 0, "diffusion": 30, "random": 29, "normalized-edge": 15}
+  },
+  "diffusion_projection": {
+    "Cora42": {"mean_coarse_over_local_nodes": 0.2638968193140534, "mean_relative_feature_residual": 0.8196776807308197, "median_exact_operator_over_projected_time": 0.8704691312542285},
+    "PubMed43": {"mean_coarse_over_local_nodes": 0.10765914565535935, "mean_relative_feature_residual": 0.8773703128099442, "median_exact_operator_over_projected_time": 0.8628414668473037}
+  },
+  "timing_interpretation": "Ratios below one mean the projected variant is slower than the exact singleton/operator-reuse control. All three projected partition variants have median ratios below one in both runs. The native-local implementation is also faster than that exact operator-reuse control in these measurements.",
+  "timing_limits": "Four alternating paired repetitions per query, one warmup per path, on a shared GPU. Each evaluation covers seven serial forwards, not batched proposal gradients or complete support search. Masking, normalization and projected-operator assembly are included. Offline partitions, region construction and prepared projected features are excluded and separately recorded; query membership restriction is not separately timed. Resident data/model/features are excluded from incremental allocation measurements. No general scalability conclusion follows.",
+  "theory_scope": "Exact singleton recovery and an invariant-subspace example are tested. A Frobenius operator residual and feature projection residual are recorded for real queries; they are not decoder certificates. The Galerkin operator need not be a normalized graph Laplacian, so the manuscript comparison is stated for bounded symmetric operators.",
+  "decision": "Do not use projected logits as authoritative explanation metrics, and do not claim a speed benefit for this implementation. Reduced node count alone does not establish faithful or faster inference. Retain this branch as a diagnostic and keep exact original/local evaluation as the reference.",
+  "next_work": "Assess exact reuse of frozen feature transforms and layer-dependent computation before attributing any future acceleration to approximate coarsening. A batched or otherwise redesigned projected backend would require new accuracy and cost comparisons.",
+  "manuscript": "Only operator assumptions and the bias/normalization derivation were clarified. Experimental values and tables remain unchanged."
+}
