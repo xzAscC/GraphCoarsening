@@ -1,0 +1,29 @@
+{
+  "study": "Mixed single-edge and two-edge support proposals",
+  "status": "Exploratory validation only; no default-method promotion",
+  "datasets": ["Cora", "Citeseer"],
+  "seeds": [42, 43],
+  "queries_per_run": 20,
+  "budgets": [5, 10, 20],
+  "maximum_search_steps": 8,
+  "shared_proposal_cap_per_step": 18,
+  "device": "cuda",
+  "audit": "mixed_four_runs_audit.json",
+  "audited_swap_rows": 1440,
+  "source_hashes_verified_against_current_files": true,
+  "observations": [
+    "Cora seed 42: mixed search improves mean binary sufficiency from 0.95 to 1.0 at all three budgets, with unchanged necessity.",
+    "Citeseer seed 43: mixed search reduces mean binary necessity from 0.30 to 0.25 at budget 10, with unchanged sufficiency.",
+    "The other two runs have unchanged mean binary necessity and sufficiency relative to single-edge gradient search at all budgets.",
+    "Mixed coarse-grouped and mixed ungrouped search have identical mean binary metrics in all twelve dataset-seed-budget settings; this does not imply identical supports or continuous metrics."
+  ],
+  "limitations": [
+    "Validation queries have informed method development; these are not held-out test estimates.",
+    "Two datasets and two model seeds are insufficient to establish general superiority.",
+    "The shared per-step proposal cap does not establish equal total computation or runtime.",
+    "Saved-trace auditing is not independent re-execution of every intervention.",
+    "Coarsening's independent explanation benefit remains unestablished.",
+    "Historical LaTeX numerical results remain unchanged and are not validated by this study."
+  ],
+  "decision": "Preserve all outcomes, retain single-edge default, and require broader validation before selecting a final method or replacing manuscript numbers."
+}
