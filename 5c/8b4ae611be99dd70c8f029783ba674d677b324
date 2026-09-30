@@ -1,0 +1,39 @@
+tests/test_interventions.py
+  s_6574c9512bb1f0::t_74790e9efb2a2f 1-78
+tests/test_support_ranking.py
+  s_6574c9512bb1f0::t_a9cd151fdaaa3b 18
+  s_6574c9512bb1f0::t_8fa39802efbfbd 1-17,19-29
+src/evaluation/interventions.py
+  s_6574c9512bb1f0::t_154851a258bcb5 1-99
+experiments/run_support_benchmark.py
+  s_6574c9512bb1f0::t_b6d8311e88aa4d 1-33,35-132
+  s_6574c9512bb1f0::t_a9cd151fdaaa3b 34
+tests/test_pathway_intervention.py
+  s_6574c9512bb1f0::t_5275a61013aaba 1-44
+src/explainers/coarsen_explainer.py
+  s_6574c9512bb1f0::t_f435f9d32e28b2 172,180-181,183,185-188
+experiments/run_explanations.py
+  s_6574c9512bb1f0::t_bb86274dcb0abd 18,95,99,105-107,113-115,119,122-128,142-147,168-169,225
+results/tnnls-reproduction/matched_Cora_seed42.json
+  s_6574c9512bb1f0::t_fc4e1e0c0361cb 1-3989
+results/tnnls-reproduction/support-v1-pathway-fixed/explanation_Cora.json
+  s_6574c9512bb1f0::t_0e51c0e75ac5d1 1-466
+results/tnnls-reproduction/support-v1/explanation_Cora.json
+  s_6574c9512bb1f0::t_ba0bc4dbe6240c 1-466
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5c8b4ae611be99dd70c8f029783ba674d677b324",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
