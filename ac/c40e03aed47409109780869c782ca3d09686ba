@@ -1,0 +1,24 @@
+experiments/audit_frozen_baselines.py
+  s_6574c9512bb1f0::t_8da78f9ece1280 1-66,69-128
+  s_6574c9512bb1f0::t_541c40a77625b4 67-68
+tests/test_frozen_baseline_audit.py
+  s_6574c9512bb1f0::t_8da78f9ece1280 1-48
+results/tnnls-reproduction/cf2_local_PubMed43_val100_plan.json
+  s_6574c9512bb1f0::t_b3f7ca0475ae9c 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "acc40e03aed47409109780869c782ca3d09686ba",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
