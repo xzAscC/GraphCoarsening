@@ -1,0 +1,30 @@
+{
+  "study": "Paired full/local intervention cost diagnostics",
+  "status": "No default-search integration or manuscript numerical update",
+  "device": "NVIDIA GeForce RTX 4090",
+  "execution": "Four runs executed sequentially; no concurrent experiment launched by this study. Other desktop workloads remained active.",
+  "queries_per_run": 100,
+  "supports_per_query": 3,
+  "warmups_per_path": 2,
+  "paired_repeats_per_query": 6,
+  "order": "Alternating full/local and local/full, balanced across repetitions",
+  "all_prediction_checks_passed": true,
+  "source_hashes_verified": true,
+  "unit_tests_passed": 83,
+  "aggregation": "Take each query's median repeated wall time for each path, then summarize paired ratios across queries. Setup is a separate single measurement of region construction plus support remapping. Memory uses each query's maximum incremental allocation over repetitions, then the median across queries.",
+  "runs": [
+    {"dataset": "Cora", "seed": 42, "median_full_ms": 5.238647252554074, "median_local_ms": 5.1447874975565355, "median_setup_ms": 4.403755003295373, "median_paired_full_over_local": 1.0019661082173927, "median_full_over_local_plus_setup": 0.5414286416738157, "queries_faster_including_setup": 0, "median_full_peak_extra_bytes": 97473536, "median_local_peak_extra_bytes": 4525056},
+    {"dataset": "Cora", "seed": 43, "median_full_ms": 1.6351432495866902, "median_local_ms": 1.5009349990577903, "median_setup_ms": 1.6063970033428632, "median_paired_full_over_local": 1.0937847828625724, "median_full_over_local_plus_setup": 0.5223407593442946, "queries_faster_including_setup": 0, "median_full_peak_extra_bytes": 97473536, "median_local_peak_extra_bytes": 4756480},
+    {"dataset": "Citeseer", "seed": 42, "median_full_ms": 2.494809996278491, "median_local_ms": 1.5212249963951763, "median_setup_ms": 1.5903829989838414, "median_paired_full_over_local": 1.6454267292985834, "median_full_over_local_plus_setup": 0.793870992817463, "queries_faster_including_setup": 3, "median_full_peak_extra_bytes": 200099328, "median_local_peak_extra_bytes": 3045376},
+    {"dataset": "Citeseer", "seed": 43, "median_full_ms": 5.450846751045901, "median_local_ms": 5.2073029983148444, "median_setup_ms": 4.286058494471945, "median_paired_full_over_local": 1.039145549663326, "median_full_over_local_plus_setup": 0.5642609602488362, "queries_faster_including_setup": 0, "median_full_peak_extra_bytes": 199571456, "median_local_peak_extra_bytes": 2221312}
+  ],
+  "interpretation": "Local evaluation reduces transient tensor allocation substantially, but median timing including setup is slower in every run for this three-support batch. Excluding setup, observed paired median ratios range from about 1.00 to 1.65. These results do not establish faster explanation search.",
+  "limitations": [
+    "Shared-device and host scheduling effects are not controlled; absolute times differ substantially across runs. Do not pool them into an end-to-end speed claim.",
+    "Timing covers retain/delete forwards for three already-selected supports, not gradient proposals, acceptance checks, spectral preprocessing or the full search workload.",
+    "Incremental allocated-memory peaks exclude persistent model, original graph and preconstructed local graph storage. They are not total GPU peak memory or reserved-memory measurements.",
+    "Repeated timings and query budgets are not independent experimental runs.",
+    "Amortization of setup across search steps and adaptive-trajectory changes remain unmeasured."
+  ],
+  "decision": "Keep compaction opt-in. Its current supported benefit is transient-memory reduction. Before integration, measure complete search including construction and full-graph acceptance checks; do not substitute node-count ratios for measured speedups."
+}

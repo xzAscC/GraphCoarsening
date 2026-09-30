@@ -1,13 +1,15 @@
 """Replay saved validation supports on full and boundary-compacted GCN graphs.
 
-This checks numerical agreement, not support-search trajectory equivalence or
-speed. Model weights and source manifests are recorded; no optimization occurs.
+This checks numerical agreement, not support-search trajectory equivalence.
+Optional paired timings cover forward interventions, not end-to-end search.
+Model weights and source manifests are recorded; no optimization occurs.
 """
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import sys
+import time
 
 import torch
 
@@ -23,6 +25,40 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def synchronize(device):
+    if torch.device(device).type == 'cuda':
+        torch.cuda.synchronize(device)
+
+
+def benchmark_pair(full, local, device, repeats, warmups=2):
+    """Alternate evaluation order with synchronization and per-process peaks."""
+    if repeats < 2 or repeats % 2 or warmups < 0:
+        raise ValueError('Use a positive even repeat count and nonnegative warmups')
+    functions = {'full': full, 'local': local}
+    for _ in range(warmups):
+        full()
+        local()
+    synchronize(device)
+    records = []
+    for iteration in range(repeats):
+        order = ('full', 'local') if iteration % 2 == 0 else ('local', 'full')
+        record = {'order': list(order)}
+        for name in order:
+            synchronize(device)
+            cuda = torch.device(device).type == 'cuda'
+            baseline = torch.cuda.memory_allocated(device) if cuda else None
+            if cuda:
+                torch.cuda.reset_peak_memory_stats(device)
+            start = time.perf_counter()
+            functions[name]()
+            synchronize(device)
+            record[name] = {'wall_seconds': time.perf_counter() - start,
+                            'peak_extra_allocated_bytes':
+                                torch.cuda.max_memory_allocated(device) - baseline if cuda else None}
+        records.append(record)
+    return records
+
+
 @torch.no_grad()
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -31,9 +67,13 @@ def main():
     parser.add_argument('--method', default='Swap-gradient')
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--batch-size', type=int, default=8)
+    parser.add_argument('--timing-repeats', type=int, default=0,
+                        help='Zero disables timing; otherwise use a positive even count')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Preserve previous replay outputs')
+    if args.timing_repeats < 0 or args.timing_repeats % 2:
+        raise ValueError('Timing repeat count must be zero or positive even')
     saved = json.loads(args.input.read_bytes())
     if saved['args']['query_split'] != 'val' or saved['args']['candidate_region'] != 'gcn-boundary':
         raise ValueError('Use boundary-protocol validation records')
@@ -67,10 +107,18 @@ def main():
     checks, failures = [], []
     for query in queries:
         selected = [row for row in rows if tuple(row['query']) == query]
+        synchronize(args.device)
+        construction_start = time.perf_counter()
         region = compact_gcn_query(data, query, len(encoder.convs))
+        synchronize(args.device)
+        construction_seconds = time.perf_counter() - construction_start
         groups = [torch.tensor([min(a, b) * data.num_nodes + max(a, b) for a, b in row['support']],
                                dtype=torch.long, device=args.device) for row in selected]
+        synchronize(args.device)
+        mapping_start = time.perf_counter()
         local_groups = [region.map_keys(keys) for keys in groups]
+        synchronize(args.device)
+        mapping_seconds = time.perf_counter() - mapping_start
         for original, local in zip(groups, local_groups):
             torch.testing.assert_close(region.restore_keys(local), original.unique(sorted=True))
         a, b = query
@@ -95,7 +143,19 @@ def main():
                 if not valid.all():
                     failures.append({'query': query, 'comparison': description, 'prediction': name,
                                      'budgets': [selected[i]['budget'] for i in (~valid).nonzero().flatten().tolist()]})
+        timing = None
+        if args.timing_repeats:
+            def evaluate(graph, left, right, supports):
+                for retain in (True, False):
+                    group_deletion_logits(model, graph, left, right, supports,
+                                          args.batch_size, retain=retain)
+            timing = benchmark_pair(lambda: evaluate(data, a, b, groups),
+                                    lambda: evaluate(region.data, la, lb, local_groups),
+                                    args.device, args.timing_repeats)
         checks.append({'query': query, 'support_count': len(groups),
+                       'region_construction_seconds': construction_seconds,
+                       'support_mapping_seconds': mapping_seconds,
+                       'paired_timing': timing,
                        'original_nodes': data.num_nodes, 'local_nodes': region.data.num_nodes,
                        'original_stored_edges': data.edge_index.size(1),
                        'local_stored_edges': region.data.edge_index.size(1),
@@ -104,8 +164,11 @@ def main():
               'input_sha256': sha(args.input), 'checkpoint_sha256': sha(checkpoint),
               'args': vars(args) | {'input': str(args.input), 'output': str(args.output)},
               'source_sha256': source_hashes, 'torch': torch.__version__,
+              'threads': torch.get_num_threads(),
+              'gpu': torch.cuda.get_device_name(args.device) if torch.device(args.device).type == 'cuda' else None,
               'tolerance': {'relative': 1e-5, 'absolute': 2e-5, 'binary_decisions_must_match': True},
-              'scope': 'Saved-support forward replay only; not a speed benchmark or proof that adaptive search trajectories remain identical.',
+              'scope': 'Saved-support forward replay only; does not prove adaptive search trajectories remain identical.',
+              'timing_scope': 'Optional synchronized paired retain/delete forward timings with two warmups and alternating order. Includes graph-copy construction within interventions; excludes spectral preprocessing, ranking, gradients, search and model loading. Region construction and support remapping are recorded separately. Peak extra allocated memory is process-local, not whole-device usage or allocator reservations. Shared-device timings are diagnostic.',
               'queries': len(queries), 'supports': len(rows), 'failures': failures, 'checks': checks}
     with args.output.open('x') as output:
         json.dump(result, output, indent=2)
