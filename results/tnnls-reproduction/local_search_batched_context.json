@@ -1,0 +1,20 @@
+{
+  "study": "Batched support-identity mapping in optional local GCN search",
+  "change": "Map equal-size proposal supports in one tensor batch, retain batch membership and sorted-unique checks, and cache local endpoint identities. Full-graph acceptance is unchanged.",
+  "verification": "88 unit tests passed, including exact CPU/CUDA agreement between individual and batch key mapping and rejection of invalid support batches. Both paired search runs passed full-graph non-regression checks and source-hash verification.",
+  "runs": [
+    {"dataset": "Cora", "seed": 42, "queries": 20, "query_budget_records": 60, "paired_repeats": 2, "same_final_support_pairs": 111, "binary_disagreement_pairs": 0, "median_full_ms": 36.620456747186836, "median_local_ms": 30.66074100206606, "median_paired_full_over_local": 1.165009489438794, "median_full_peak_extra_bytes": 259131136, "median_local_peak_extra_bytes": 34904064},
+    {"dataset": "Citeseer", "seed": 43, "queries": 20, "query_budget_records": 60, "paired_repeats": 2, "same_final_support_pairs": 116, "binary_disagreement_pairs": 0, "median_full_ms": 18.763990497973282, "median_local_ms": 12.203117996250512, "median_paired_full_over_local": 1.5026506734488458, "median_full_peak_extra_bytes": 531869184}
+  ],
+  "prior_results": "local_search_initial_context.json and its raw reports are preserved. Previous paired full/local ratios were approximately 0.895 and 1.213. The new runs use the same input query/support files, but were executed at different times on a shared device.",
+  "cross_run_caution": "On Cora, 115 of 120 local and 116 of 120 unchanged full-path final supports match their corresponding prior-run supports. Thus cross-run support changes cannot all be attributed to the mapping optimization. Floating-point-sensitive search is not assumed bitwise deterministic.",
+  "scope": "Complete ungrouped single-edge refinement call, including region construction, gradients, local screening and full-graph acceptance. Excludes shared saliency initialization, candidate extraction, spectral preprocessing, model loading and final metric reporting.",
+  "limitations": [
+    "Only two graph/seed combinations and twenty validation queries each; repeated timing pairs are not independent samples.",
+    "Local screening can change search trajectories and actual work. Equal binary metrics do not imply identical continuous metrics or supports.",
+    "The paired ratios do not establish a general end-to-end explanation speedup or any benefit of spectral coarsening.",
+    "The unchanged full-graph path remains the default; this optional path still requires broader validation."
+  ],
+  "decision": "Retain the tested batching improvement in the optional local path. Do not keep tuning this small validation sample or promote it to the default based on these timings alone.",
+  "manuscript_numerical_results_changed": false
+}

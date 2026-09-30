@@ -50,6 +50,13 @@ class LocalGCNTests(unittest.TestCase):
             self.assertGreater(observed_gradient, 1e-8, 'Avoid a constant-output equivalence fixture')
             groups = [region.original_keys[:size] for size in (0, 1, 3, 5)]
             local_groups = [region.map_keys(keys) for keys in groups]
+            batch_groups = [region.original_keys[index] for index in
+                            (torch.tensor([0, 2], device=device), torch.tensor([1, 3], device=device))]
+            mapped_batch = region.map_support_batch(batch_groups)
+            for original_keys, local_keys in zip(batch_groups, mapped_batch):
+                torch.testing.assert_close(local_keys, region.map_keys(original_keys), rtol=0, atol=0)
+            self.assertEqual(region.map_support_batch([]), [])
+            self.assertEqual(len(region.map_support_batch([region.original_keys[:0]])), 1)
             for keys, mapped in zip(groups, local_groups):
                 torch.testing.assert_close(region.restore_keys(mapped), keys)
             for retain in (False, True):
@@ -74,12 +81,23 @@ class LocalGCNTests(unittest.TestCase):
             region.map_keys(torch.tensor([1]))
         with self.assertRaisesRegex(ValueError, 'original query-region'):
             region.restore_keys(torch.tensor([1]))
+        with self.assertRaisesRegex(ValueError, 'query-region'):
+            region.map_support_batch([torch.tensor([1])])
+        with self.assertRaisesRegex(ValueError, 'equal-size'):
+            region.map_support_batch([torch.tensor([1]), torch.tensor([1, 2])])
         data.edge_index = torch.tensor([[0], [1]])
         with self.assertRaisesRegex(ValueError, 'undirected'):
             compact_gcn_query(data, [1, 4], 2)
         data.edge_index = torch.tensor([[0], [0]])
         with self.assertRaisesRegex(ValueError, 'self-loops'):
             compact_gcn_query(data, [1, 4], 2)
+
+    def test_batch_rejects_noncanonical_supports(self):
+        data = Data(x=torch.ones(4, 2), edge_index=torch.tensor([[0, 1, 1, 2], [1, 0, 2, 1]]))
+        region = compact_gcn_query(data, [0, 3], 2)
+        for invalid in (torch.tensor([6, 1]), torch.tensor([1, 1])):
+            with self.assertRaisesRegex(ValueError, 'sorted unique'):
+                region.map_support_batch([invalid])
 
 
 if __name__ == '__main__':

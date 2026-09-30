@@ -51,6 +51,26 @@ class GCNQueryRegion:
     original_keys: torch.Tensor
     original_to_local: torch.Tensor
 
+    def map_support_batch(self, supports):
+        """Map equal-size sorted supports with one batch membership check.
+
+        Search proposals are already canonical, sorted and duplicate-free.
+        Validate that contract across the batch instead of sorting and checking
+        every proposal separately. Node relabeling is monotone, so order stays
+        canonical and support identity is unchanged.
+        """
+        if not supports:
+            return []
+        if any(keys.ndim != 1 or keys.dtype != torch.long or keys.shape != supports[0].shape
+               for keys in supports):
+            raise ValueError('Expected equal-size one-dimensional long supports')
+        keys = torch.stack([keys.to(self.original_nodes.device) for keys in supports])
+        if (keys[:, 1:] <= keys[:, :-1]).any() or not torch.isin(keys, self.original_keys).all():
+            raise ValueError('Batch supports must be sorted unique original query-region edges')
+        a, b = keys // self.original_num_nodes, keys % self.original_num_nodes
+        mapped = self.original_to_local[a] * self.data.num_nodes + self.original_to_local[b]
+        return list(mapped.unbind(0))
+
     def map_keys(self, keys):
         """Map a support of original canonical edge keys, rejecting outsiders."""
         keys = keys.to(self.original_nodes.device)

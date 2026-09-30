@@ -158,6 +158,7 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         region = compact_gcn_query(data, [a, b], layers)
         region.map_keys(candidates)  # Reject any candidate outside the certified region.
     working = region.data if region is not None else data
+    local_endpoints = region.targets.flatten().tolist() if region is not None else None
     full = predict_logit(model, data.x, data.edge_index, a, b, getattr(data, 'edge_weight', None))
     sign = 1 if full > 0 else -1
     p_full = torch.sigmoid(torch.tensor(sign * full, dtype=torch.float64, device=device))
@@ -166,8 +167,8 @@ def refine_support(model, data, a, b, candidates, initial, *, groups=None,
         graph, left, right = data, a, b
         if compact:
             graph = region.data
-            left, right = region.targets.flatten().tolist()
-            supports = [region.map_keys(keys) for keys in supports]
+            left, right = local_endpoints
+            supports = region.map_support_batch(supports)
         keep = group_deletion_logits(model, graph, left, right, supports, batch, retain=True)
         delete = group_deletion_logits(model, graph, left, right, supports, batch)
         probabilities = torch.sigmoid(sign * torch.stack((keep, delete), dim=1).double())
