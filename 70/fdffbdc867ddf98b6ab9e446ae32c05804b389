@@ -1,0 +1,27 @@
+results/tnnls-reproduction/supportive_Citeseer42_val_batch8.json
+  s_6574c9512bb1f0::t_8e04337e3f47e7 1-135106
+results/tnnls-reproduction/supportive_Citeseer43_val_batch8.json
+  s_6574c9512bb1f0::t_aa134ddb265376 1-138382
+results/tnnls-reproduction/supportive_Cora42_val_batch8.json
+  s_6574c9512bb1f0::t_73527884fc538f 1-151728
+results/tnnls-reproduction/supportive_Cora42_val_batch8_v2.json
+  s_6574c9512bb1f0::t_7ed6faf881febd 1-151728
+results/tnnls-reproduction/supportive_Cora43_val_batch8.json
+  s_6574c9512bb1f0::t_3df7f8658e24e7 1-151803
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "70fdffbdc867ddf98b6ab9e446ae32c05804b389",
+  "prompts": {},
+  "sessions": {
+    "s_6574c9512bb1f0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0eea1-80ea-7ee2-9a28-4238f68a4e37",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
