@@ -6,6 +6,7 @@ SubgraphX implementation for PyG versions that lack it.
 """
 
 import warnings
+from contextlib import contextmanager
 from typing import List
 
 import torch
@@ -13,6 +14,19 @@ from torch_geometric.data import Data
 from torch_geometric.utils import k_hop_subgraph
 
 from src.explainers.base import BaseExplainer
+
+
+@contextmanager
+def _frozen_parameters(model):
+    parameters = list(model.parameters())
+    flags = [parameter.requires_grad for parameter in parameters]
+    try:
+        for parameter in parameters:
+            parameter.requires_grad_(False)
+        yield
+    finally:
+        for parameter, flag in zip(parameters, flags):
+            parameter.requires_grad_(flag)
 
 
 class _LinkPredAdapter(torch.nn.Module):
@@ -45,6 +59,9 @@ def _build_pyg_explainer(
     from torch_geometric.explain import Explainer, ExplainerConfig, ModelConfig
 
     adapter = _LinkPredAdapter(model, target_edge_index.to(device))
+    # PyG restores the adapter's initial training flag after explanation.
+    # A newly constructed adapter otherwise re-enables dropout in the predictor.
+    adapter.eval()
 
     model_config = ModelConfig(
         mode="binary_classification",
@@ -146,12 +163,13 @@ class GNNExplainerWrapper(BaseExplainer):
             self.model, algorithm, target_edge, self.device,
         )
 
-        explanation = explainer(
-            data.x,
-            data.edge_index,
-            index=0,
-            edge_weight=getattr(data, "edge_weight", None),
-        )
+        with _frozen_parameters(self.model):
+            explanation = explainer(
+                data.x,
+                data.edge_index,
+                index=0,
+                edge_weight=getattr(data, "edge_weight", None),
+            )
 
         edge_mask = explanation.edge_mask.detach()
         top_k = max(1, int(edge_mask.size(0) * self.k_frac))

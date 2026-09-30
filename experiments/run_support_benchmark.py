@@ -79,6 +79,8 @@ def main():
     p.add_argument('--endpoint-isolation', action='store_true')
     p.add_argument('--signed-ablation', action='store_true',
                    help='Add class-supportive saliency and bounded-refinement calibration')
+    p.add_argument('--gnnexplainer', action='store_true')
+    p.add_argument('--gnnexplainer-epochs', type=int, default=100)
     p.add_argument('--intervention-batch-size', type=int, default=1,
                    help='Independent deletion graphs per GPU forward (GCN only)')
     p.add_argument('--support-swaps', action='store_true',
@@ -161,6 +163,10 @@ def main():
         random_scores = torch.rand(len(unique), generator=torch.Generator().manual_seed(args.seed + 123))
         variants['Pathway-random'] = random_scores.to(data.edge_index.device)[inverse]
     methods = [('Saliency', saliency)] + [(name, ours) for name in variants] + [('Random', None)]
+    if args.gnnexplainer:
+        from src.explainers.pyg_baselines import GNNExplainerWrapper
+        methods.insert(-1, ('GNNExplainer', GNNExplainerWrapper(
+            model, epochs=args.gnnexplainer_epochs, k_frac=1., device=args.device)))
     if args.protection_ablation:
         endpoints = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
                                     device=args.device, protect_hops=0)

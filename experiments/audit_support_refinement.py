@@ -80,10 +80,14 @@ def audit(path):
         if reference['checkpoint_sha256'] != report['checkpoint_sha256'] or reference['split_sha256'] != report['split_sha256']:
             raise AssertionError('Reference checkpoint or splits differ')
         reference_rows = {(tuple(r['query']), r['method'], r['budget']): r for r in reference['rows']}
-        if set(reference_rows) != set(keys):
+        if not set(reference_rows).issubset(set(keys)):
             raise AssertionError('Reference query/method/budget pairs differ')
+        if {(k[0], k[2]) for k in reference_rows} != {(k[0], k[2]) for k in keys}:
+            raise AssertionError('Reference query/budget coverage differs')
         comparisons = []
         for method in sorted({r['method'] for r in rows}):
+            if not any(key[1] == method for key in reference_rows):
+                continue
             for budget in sorted({r['budget'] for r in rows}):
                 matched, mismatched = [], []
                 for row in rows:
