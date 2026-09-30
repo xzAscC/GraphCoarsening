@@ -1,0 +1,24 @@
+{
+  "status": "matched-local-diagnostic-negative-for-dynamic-merge-promotion",
+  "plan": "projected_local_matched_plan.json",
+  "runs": ["projected_local_matched_Cora42_val20.json", "projected_local_matched_PubMed43_val20.json"],
+  "scope": "All seven methods construct partitions on the same query-local merge graph with protected endpoints. Achieved cluster counts are asserted equal for every query. This is not a reusable global-partition benchmark and cannot identify how much of the preceding global result was caused by local node counts alone.",
+  "binary_disagreements_out_of_140_per_run": {
+    "Cora42": {"diffusion": 13, "random": 8, "normalized-edge": 15, "raw-feature": 9, "first-linear-feature": 9, "ward-raw-feature": 13, "ward-first-linear-feature": 13},
+    "PubMed43": {"diffusion": 22, "random": 20, "normalized-edge": 15, "raw-feature": 17, "first-linear-feature": 16, "ward-raw-feature": 19, "ward-first-linear-feature": 18}
+  },
+  "mean_absolute_logit_error": {
+    "Cora42": {"raw-feature": 3.423525, "first-linear-feature": 3.278340, "ward-raw-feature": 3.395203, "ward-first-linear-feature": 3.445154},
+    "PubMed43": {"raw-feature": 1.256141, "first-linear-feature": 1.270330, "ward-raw-feature": 1.298035, "ward-first-linear-feature": 1.316165}
+  },
+  "ward_versus_corresponding_fixed_ranking_binary_win_loss_tie": {
+    "Cora42": {"raw-feature": [3, 7, 130], "first-linear-feature": [5, 9, 126]},
+    "PubMed43": {"raw-feature": [0, 2, 138], "first-linear-feature": [2, 4, 134]}
+  },
+  "finding": "Dynamic Ward controls have more decision disagreements than their corresponding fixed feature rankings in both matched-local runs. Mean absolute logit error is mixed on Cora and worse for both Ward controls on PubMed. The previous global-partition improvement does not establish superiority under equal local compression.",
+  "cost": "Median per-query partition construction is approximately 4.7-4.8 ms for Ward versus 0.59-0.64 ms for fixed feature rankings on Cora, and 6.9-7.4 ms versus 0.71-0.73 ms on PubMed. These per-policy times exclude shared grouping-graph setup, which is included in the all-partitions local construction time. All approximate forward variants remain slower than the exact singleton/operator-reuse baseline in this serial workload. Shared GPU timings are not full support-search or end-to-end results.",
+  "verification": "All exact controls reproduce saved/full/local decisions within numerical tolerances. Independently checked source hashes, identical achieved counts, expected feasible cluster counts, positive construction timings, direct Ward loss versus summed increments, error arithmetic, binary comparisons and alternating timing order. CPU/GPU unit tests check protected endpoint singletons and preservation of inference data. Full suite: 125 passed.",
+  "sampling_limit": "Forty previously inspected development queries total, seven correlated conditions per query. No fresh validation, test-set claims or independent significance claim.",
+  "decision": "Do not promote approximate projected inference or the Ward controls. Preserve the implementations as diagnostics, but deprioritize further ranking-only searches. Return to original-edge explanation support search and stronger baseline comparisons, where the paper's explanation claim must be established independently of approximate inference.",
+  "manuscript": "No LaTeX source, experimental numbers, tables or figures changed in this study."
+}

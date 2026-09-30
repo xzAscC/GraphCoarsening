@@ -1,0 +1,15 @@
+{
+  "status": "fixed-before-local-matched-runs",
+  "question": "Do dynamic centroid-based merges still improve projected predictions when achieved query-local cluster counts are equal?",
+  "scope": "Query-local diagnostic only. It replaces restriction of a global partition with partition construction in the fixed exact boundary region. Do not infer performance of reusable global coarsening from this study.",
+  "partition_graph": "Original fixed region with all edges incident to the two query endpoints excluded for grouping only. Inference still uses the unchanged region and per-intervention normalization. Every variant uses the same remaining merge graph and protects both endpoints.",
+  "alpha": 0.75,
+  "target_clusters": "max(n - floor(0.75*n), components of the allowed merge graph). Assert every policy reaches this number on every query.",
+  "variants": ["diffusion", "random", "normalized-edge", "raw-feature", "first-linear-feature", "ward-raw-feature", "ward-first-linear-feature"],
+  "inputs": ["diffusion_Cora42_val20_steps8.json", "coverage_union_PubMed43_additional_val100.json"],
+  "methods": ["Swap-gradient", "Swap-global12"],
+  "selection": "Same first ten validation queries per class, already inspected development data, not independent confirmation. No outcome selection or test data.",
+  "timing_repeats": 4,
+  "metrics": ["binary prediction disagreements", "mean absolute logit error", "projection residuals", "achieved nodes", "partition construction seconds", "serial forward seconds"],
+  "decision": "Keep all results. No paper numerical updates and no replacement of authoritative exact fidelity. A positive result is a reason for further independent and end-to-end validation, not a final method claim."
+}
