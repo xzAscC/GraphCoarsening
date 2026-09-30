@@ -59,6 +59,7 @@ class CoarsenExplainer(BaseExplainer):
         score_method: str = "legacy",
         evidence_mode: str = "absolute",
         intervention_batch_size: int = 1,
+        candidate_region: str = 'induced',
     ):
         super().__init__(model, device)
         self.k = k
@@ -81,6 +82,9 @@ class CoarsenExplainer(BaseExplainer):
             raise ValueError('intervention_batch_size must be positive')
         self.evidence_mode = evidence_mode
         self.intervention_batch_size = intervention_batch_size
+        if candidate_region not in {'induced', 'gcn-boundary'}:
+            raise ValueError('Unknown candidate_region')
+        self.candidate_region = candidate_region
         self.last_diagnostics = {}
         self._coarsener: Optional[GraphCoarsener] = None
         self._cached_data_id: Optional[int] = None
@@ -149,13 +153,10 @@ class CoarsenExplainer(BaseExplainer):
                 fidelity_threshold=self.fidelity_threshold,
             )
 
-        _, sub_ei, _, sub_mask = k_hop_subgraph(
-            node_idx=torch.tensor([node_a, node_b], device=self.device),
-            num_hops=self.k_hop,
-            edge_index=data.edge_index,
-            relabel_nodes=False,
-            num_nodes=data.x.size(0),
-        )
+        from src.explainers.candidates import candidate_edge_mask
+        sub_mask = candidate_edge_mask(data.edge_index, data.x.size(0), [node_a, node_b],
+                                       self.k_hop, self.candidate_region)
+        sub_ei = data.edge_index[:, sub_mask]
         num_sub = sub_ei.size(1)
 
         if num_sub == 0:

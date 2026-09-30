@@ -12,7 +12,6 @@ import numpy as np
 import torch
 import torch_geometric
 from torch_geometric.data import Data
-from torch_geometric.utils import k_hop_subgraph
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from experiments.train_gcn import load_dataset, MLPLinkPredictor
@@ -22,6 +21,26 @@ from src.explainers.baselines import SaliencyExplainer
 from src.explainers.coarsen_explainer import CoarsenExplainer
 from src.evaluation.interventions import PROTOCOL, evaluate_support
 from src.spectral import compute_perturbation_scores, pair_projection_scores
+from src.explainers.candidates import candidate_edge_mask
+
+
+def reference_query_indices(reference, pool, label, n):
+    """Resolve ordered, unique reference queries against a verified split pool."""
+    pool_map = {min(a, b) * n + max(a, b): i
+                for i, (a, b) in enumerate(pool.t().cpu().tolist())}
+    indices, seen = [], set()
+    for row in reference['rows']:
+        if row['label'] != label:
+            continue
+        a, b = row['query']
+        key = min(a, b) * n + max(a, b)
+        if key in seen:
+            continue
+        if key not in pool_map:
+            raise ValueError('Reference query is absent from the specified split and class')
+        indices.append(pool_map[key])
+        seen.add(key)
+    return indices
 
 
 def rank_support(explanation, candidates, n, budget):
@@ -69,6 +88,8 @@ def main():
     p.add_argument('--swap-removals', type=int, default=3)
     p.add_argument('--merge-score', choices=['legacy', 'projection'], default='legacy')
     p.add_argument('--query-split', choices=['val', 'test'], default='test')
+    p.add_argument('--query-reference', help='Reuse queries from an existing benchmark JSON')
+    p.add_argument('--candidate-region', choices=['induced', 'gcn-boundary'], default='induced')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
     if args.support_swaps and not args.signed_ablation:
@@ -103,6 +124,17 @@ def main():
     hashes = {name: hashlib.sha256(getattr(data, name).numpy().tobytes()).hexdigest()
               for name in ['train_pos_edge_index', 'val_pos_edge_index', 'val_neg_edge_index',
                            'test_pos_edge_index', 'test_neg_edge_index']}
+    reference, reference_hash = None, None
+    if args.query_reference:
+        reference_bytes = Path(args.query_reference).read_bytes()
+        reference_hash = hashlib.sha256(reference_bytes).hexdigest()
+        reference = json.loads(reference_bytes)
+        if any(reference['args'][key] != getattr(args, key) for key in ('dataset', 'seed', 'query_split')):
+            raise ValueError('Reference dataset, seed, and split must match')
+        if reference['split_sha256'] != hashes:
+            raise ValueError('Reference split hashes differ')
+        if reference['checkpoint_sha256'] != hashlib.sha256(path.read_bytes()).hexdigest():
+            raise ValueError('Reference checkpoint differs')
     data = data.to(args.device)
     saliency = SaliencyExplainer(model, k_frac=1., device=args.device)
     ours = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'], device=args.device,
@@ -156,19 +188,26 @@ def main():
     for _, explainer in methods:
         if isinstance(explainer, CoarsenExplainer):
             explainer.intervention_batch_size = args.intervention_batch_size
-    rng = np.random.default_rng(args.seed)
+            explainer.candidate_region = args.candidate_region
+    query_rng = np.random.default_rng(args.seed)
+    random_rng = np.random.default_rng(args.seed + 7919)
     rows = []
     for label, pool in [(1, getattr(data, args.query_split + '_pos_edge_index')),
                         (0, getattr(data, args.query_split + '_neg_edge_index'))]:
-        ids = rng.choice(pool.size(1), min(args.queries_per_class, pool.size(1)), replace=False)
+        count = min(args.queries_per_class, pool.size(1))
+        ids = (reference_query_indices(reference, pool, label, n) if reference is not None
+               else query_rng.choice(pool.size(1), count, replace=False))
+        if len(ids) != count:
+            raise ValueError('Reference query count differs; set --queries-per-class to match')
         for idx in ids:
             a, b = map(int, pool[:, int(idx)].tolist())
             train_keys = data.edge_index.min(dim=0).values * n + data.edge_index.max(dim=0).values
             assert not (train_keys == min(a, b) * n + max(a, b)).any(), 'Target leakage'
-            _, es, _, _ = k_hop_subgraph([a, b], c['num_layers'], data.edge_index, num_nodes=n)
+            region_mask = candidate_edge_mask(data.edge_index, n, [a, b], c['num_layers'], args.candidate_region)
+            es = data.edge_index[:, region_mask]
             candidates = torch.unique(es.min(dim=0).values * n + es.max(dim=0).values).cpu()
             random_exp = Data(edge_index=torch.stack((candidates // n, candidates % n)),
-                              edge_weight=torch.from_numpy(rng.random(len(candidates))))
+                              edge_weight=torch.from_numpy(random_rng.random(len(candidates))))
             for name, explainer in methods:
                 if name in variants:
                     coarsener.scores = variants[name]
@@ -217,6 +256,8 @@ def main():
                                          **refined_metrics})
             print(f'Completed label={label} query=({a},{b})', flush=True)
     report = {'protocol': PROTOCOL, 'args': vars(args), 'split_sha256': hashes,
+              'query_reference_sha256': reference_hash,
+              'query_sampling': 'reference-v1' if reference is not None else 'independent-streams-v1',
               'source_sha256_at_start': source_hashes,
               'training_summary': ckpt.get('training_summary'),
               'checkpoint_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
