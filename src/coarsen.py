@@ -1,44 +1,9 @@
-"""Coarse graph construction and linkwise refinement.
+"""Weighted quotient construction and linkwise refinement.
 
-Implements the core coarsening pipeline (Algorithm 1), the coarse weight
-computation (Theorem on Weight and Degree), and the linkwise refinement
-(Algorithm 3) used for GNN explanation.
-
-Formal Propositions:
-
-    (P1) Protected Partition Correctness:
-        Given a target link (a,b), let N₁(a,b) be the 1-hop neighborhood.
-        A protected partition P' constrains the greedy partition such that
-        v ∈ N₁(a,b) ⇒ v is a singleton. This preserves local structure from
-        absorption during coarsening. Proof: by construction of the skip
-        condition. O(E·α(N)) complexity preserved.
-
-    (P2) Prediction-Guided Merge:
-        Let ρ̂(e) be normalized spectral perturbation, ĝ̂(v) be normalized
-        node gradient importance. The merge cost C(e) = ρ̂(e) + λ·ĝ̂(a)·ĝ̂(b)
-        captures both structural and predictive importance. The product form
-        Φ(a,b) = ĝ̂(a)·ĝ̂(b) correctly penalizes merging two high-importance
-        nodes because Φ is large iff BOTH endpoints have high gradient.
-        The hard reject (Φ > τ) guarantees no merge where both endpoints
-        are in the top (1-τ) importance fraction.
-
-Empirical Findings (validated on Cora, Citeseer, PubMed with 100 test edges):
-
-    (E1) Pathway Redundancy:
-        For pathway p (supernode pair), CF(p) = Δf(p) / Σ|g(e)| ≈ 0.61
-        on average (39% redundancy), with 97.5% of pathways sub-additive.
-        Gradient saliency systematically overestimates group importance.
-
-    (E2) Structural Sufficiency at Low Sparsity:
-        Pathway-calibrated edges form structurally coherent subgraphs with
-        significantly fewer disconnected components than saliency (p<0.0001
-        across all budgets and datasets). On Cora, this coherence yields
-        superior sufficiency at all 6 budgets (p≤0.006).
-
-    (E3) Necessity at Moderate-to-High Sparsity:
-        At budgets k≥20, removing pathway-calibrated edges causes significant
-        prediction drops vs removing saliency edges: Cora (p<0.001 at k=20-100),
-        Citeseer (p<0.001 at k=20-200), PubMed (p<0.001 at k=200).
+The quotient identity is W = P_hat.T @ A @ P_hat. Protected-node and
+prediction-guided partitions are implementation choices, not fidelity guarantees.
+Historical empirical claims must be re-evaluated using the versioned original-
+edge intervention protocol; see results/tnnls-reproduction for audited runs.
 """
 
 from typing import List, Optional, Tuple

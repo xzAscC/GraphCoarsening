@@ -36,13 +36,16 @@ class CoarsenExplainer(BaseExplainer):
 
     Args:
         model: Trained link-prediction model.
-        k: Target number of coarse nodes (sparsity parameter).
-        alpha: Laplacian regularisation weight in ``[0, 1]``.
+        k: Number of eigenpairs used in spectral scoring.
+        alpha: Fraction of original nodes used as the merge budget.
         mode: ``'edge'`` for Protect-and-Project (default),
               ``'coarse'`` for direct coarse-graph output.
         k_hop: Number of hops for neighbourhood extraction.
         k_frac: Fraction of candidate edges to keep.
         device: ``'cpu'`` or ``'cuda'``.
+        protect_hops: Protected radius for prediction-guided partitions.
+        partition_mode: Query-dependent partition, or a cached global partition
+            with the endpoint clusters split into singletons (global-refine).
     """
 
     def __init__(
@@ -56,6 +59,8 @@ class CoarsenExplainer(BaseExplainer):
         device: str = "cpu",
         lambda_pred: float = 1.0,
         fidelity_threshold: float = 0.8,
+        protect_hops: int = 1,
+        partition_mode: str = "prediction",
     ):
         super().__init__(model, device)
         self.k = k
@@ -65,6 +70,13 @@ class CoarsenExplainer(BaseExplainer):
         self.k_frac = k_frac
         self.lambda_pred = lambda_pred
         self.fidelity_threshold = fidelity_threshold
+        if protect_hops < 0:
+            raise ValueError("protect_hops must be nonnegative")
+        self.protect_hops = protect_hops
+        if partition_mode not in {"prediction", "global-refine"}:
+            raise ValueError("Unknown partition_mode")
+        self.partition_mode = partition_mode
+        self.last_diagnostics = {}
         self._coarsener: Optional[GraphCoarsener] = None
         self._cached_data_id: Optional[int] = None
 
@@ -102,9 +114,10 @@ class CoarsenExplainer(BaseExplainer):
            redundancy/synergy ratio: score(e) = |g(e)| × CF(pathway(e)).
         5. Select top-k calibrated edges.
 
-        This corrects gradient saliency's systematic overestimation of edges
-        in redundant pathways (R=0.61 on average, 97.5% sub-additive).
+        The calibration is a heuristic. Its benefit relative to uncalibrated
+        gradients must be measured at matched original-edge budgets.
         """
+        self.last_diagnostics = {}
         coarsener = self._ensure_fitted(data)
         data = self._to_device(data)
 
@@ -113,18 +126,23 @@ class CoarsenExplainer(BaseExplainer):
         gradient_all = self._gradient_scores(data, node_a, node_b, data.edge_index)
 
         from src.partition import prediction_guided_partition
-        partition = prediction_guided_partition(
-            edge_index=data.edge_index,
-            spectral_scores=coarsener.scores,
-            gradient_scores=gradient_all,
-            num_nodes=data.x.size(0),
-            alpha=self.alpha,
-            protected_nodes=protected,
-            lambda_pred=self.lambda_pred,
-            fidelity_threshold=self.fidelity_threshold,
-        )
+        if self.partition_mode == "global-refine":
+            partition = [part for cluster in coarsener.partition
+                         for part in ([[v] for v in cluster]
+                                      if node_a in cluster or node_b in cluster else [cluster])]
+        else:
+            partition = prediction_guided_partition(
+                edge_index=data.edge_index,
+                spectral_scores=coarsener.scores,
+                gradient_scores=gradient_all,
+                num_nodes=data.x.size(0),
+                alpha=self.alpha,
+                protected_nodes=protected,
+                lambda_pred=self.lambda_pred,
+                fidelity_threshold=self.fidelity_threshold,
+            )
 
-        _, sub_ei, _, _ = k_hop_subgraph(
+        _, sub_ei, _, sub_mask = k_hop_subgraph(
             node_idx=torch.tensor([node_a, node_b], device=self.device),
             num_hops=self.k_hop,
             edge_index=data.edge_index,
@@ -152,9 +170,25 @@ class CoarsenExplainer(BaseExplainer):
             pathway_edges.setdefault(key, []).append(j)
             edge_pathway[j] = key
 
-        gradient_scores = self._spectral_scores_for_subgraph(
-            gradient_all, data.edge_index, sub_ei, num_sub,
-        )
+        # Preserve the actual directional derivatives. Matching either direction
+        # and taking the first hit silently overwrote one orientation's gradient.
+        gradient_scores = gradient_all[sub_mask]
+        unique_sizes = []
+        multi_gradient = 0.0
+        for indices in pathway_edges.values():
+            group = sub_ei[:, indices]
+            keys = group.min(dim=0).values * data.x.size(0) + group.max(dim=0).values
+            size = int(torch.unique(keys).numel())
+            unique_sizes.append(size)
+            if size > 1:
+                multi_gradient += float(gradient_scores[indices].abs().sum())
+        total_gradient = float(gradient_scores.abs().sum())
+        self.last_diagnostics = {
+            "protected_nodes": len(protected), "clusters": len(partition),
+            "pathways": len(pathway_edges),
+            "multi_edge_pathways": sum(s > 1 for s in unique_sizes),
+            "multi_edge_gradient_fraction": multi_gradient / total_gradient if total_gradient else 0.0,
+        }
 
         target = torch.tensor([[node_a], [node_b]], device=self.device)
         with torch.no_grad():
@@ -164,21 +198,16 @@ class CoarsenExplainer(BaseExplainer):
             ).squeeze().item()
 
         pathway_cf = {}
+        full_keys = (data.edge_index.min(dim=0).values * data.x.size(0)
+                     + data.edge_index.max(dim=0).values)
         for key, edge_indices in pathway_edges.items():
             if len(edge_indices) < 2:
                 pathway_cf[key] = 1.0
                 continue
 
-            mask = torch.ones(data.edge_index.size(1), dtype=torch.bool, device=self.device)
-            for j in edge_indices:
-                src, dst = sub_ei[0, j], sub_ei[1, j]
-                matches = (
-                    (data.edge_index[0] == src) & (data.edge_index[1] == dst)
-                ) | (
-                    (data.edge_index[0] == dst) & (data.edge_index[1] == src)
-                )
-                # A pathway intervention removes both orientations and duplicates.
-                mask[matches] = False
+            group = sub_ei[:, edge_indices]
+            group_keys = group.min(dim=0).values * data.x.size(0) + group.max(dim=0).values
+            mask = ~torch.isin(full_keys, group_keys)
             modified_ei = data.edge_index[:, mask]
             original_weight = getattr(data, "edge_weight", None)
             with torch.no_grad():
@@ -221,21 +250,6 @@ class CoarsenExplainer(BaseExplainer):
             original_node_indices=involved_nodes,
         )
 
-    @staticmethod
-    def _spectral_scores_for_subgraph(all_scores, edge_index, sub_edge_index, num_sub_edges):
-        scores = torch.zeros(num_sub_edges, device=all_scores.device)
-        for i in range(num_sub_edges):
-            src, dst = sub_edge_index[0, i], sub_edge_index[1, i]
-            matches = (
-                (edge_index[0] == src) & (edge_index[1] == dst)
-            ) | (
-                (edge_index[0] == dst) & (edge_index[1] == src)
-            )
-            idx = matches.nonzero(as_tuple=True)[0]
-            if idx.numel() > 0:
-                scores[i] = all_scores[idx[0]]
-        return scores
-
     def _gradient_scores(self, data, node_a, node_b, edge_index):
         edge_mask = torch.ones(
             edge_index.size(1), requires_grad=True, device=self.device,
@@ -252,7 +266,7 @@ class CoarsenExplainer(BaseExplainer):
     def _get_protected_nodes(self, data, node_a, node_b):
         subset, _, _, _ = k_hop_subgraph(
             node_idx=torch.tensor([node_a, node_b], device=self.device),
-            num_hops=1,
+            num_hops=self.protect_hops,
             edge_index=data.edge_index,
             relabel_nodes=False,
             num_nodes=data.x.size(0),

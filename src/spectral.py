@@ -1,18 +1,9 @@
-"""Spectral graph analysis: eigenvalue computation and perturbation scores.
+"""Spectral decomposition and candidate merge-ranking scores.
 
-Implements the spectral decomposition and perturbation analysis from
-Theorem 3 / Proposition 2 for computing edge coarsening scores.
-
-Proposition (Spectral Perturbation as Edge Importance):
-    For symmetric normalized adjacency Â with eigenpairs (λ_i, u_i),
-    the perturbation score ρ(e) = Σ_i |ν_i/η_i| approximates the spectral
-    distortion from merging edge e's endpoints. Edges with low ρ(e) cause
-    minimal spectral distortion when merged, making them safe to coarsen.
-    Edges with high ρ(e) are structurally critical and should be preserved
-    for downstream explanation tasks.
-
-    In the Protect-and-Project framework, ρ̂(e) serves as a structural
-    importance signal that boosts gradient saliency: Score(e) = ĝ(e)·(1+ρ̂(e)).
+The legacy perturbation surrogate is retained for reproducibility. It is not
+orientation invariant and has no established contraction-error guarantee.
+The pair-projection score has an exact single-merge signal-loss interpretation,
+not an eigenvalue-shift or multi-merge fidelity guarantee.
 """
 
 from typing import Tuple

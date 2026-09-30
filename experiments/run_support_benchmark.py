@@ -55,6 +55,8 @@ def main():
     p.add_argument('--output', required=True)
     p.add_argument('--score-ablation', action='store_true',
                    help='Also compare symmetric, projection-loss, and random merge scores')
+    p.add_argument('--protection-ablation', action='store_true')
+    p.add_argument('--global-refine', action='store_true')
     p.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu')
     args = p.parse_args()
     if Path(args.output).exists():
@@ -106,6 +108,16 @@ def main():
         random_scores = torch.rand(len(unique), generator=torch.Generator().manual_seed(args.seed + 123))
         variants['Pathway-random'] = random_scores.to(data.edge_index.device)[inverse]
     methods = [('Saliency', saliency)] + [(name, ours) for name in variants] + [('Random', None)]
+    if args.protection_ablation:
+        endpoints = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
+                                    device=args.device, protect_hops=0)
+        endpoints._coarsener, endpoints._cached_data_id = coarsener, id(data)
+        methods.insert(-1, ('Pathway-endpoints', endpoints))
+    if args.global_refine:
+        global_refine = CoarsenExplainer(model, k_frac=1., k_hop=c['num_layers'],
+                                        device=args.device, partition_mode='global-refine')
+        global_refine._coarsener, global_refine._cached_data_id = coarsener, id(data)
+        methods.insert(-1, ('Global-refine', global_refine))
     rng = np.random.default_rng(args.seed)
     rows = []
     for label, pool in [(1, data.test_pos_edge_index), (0, data.test_neg_edge_index)]:
@@ -121,6 +133,8 @@ def main():
             for name, explainer in methods:
                 if name in variants:
                     coarsener.scores = variants[name]
+                elif name == 'Pathway-endpoints':
+                    coarsener.scores = variants['Pathway']
                 sync()
                 start = time.perf_counter()
                 exp = random_exp if explainer is None else explainer.explain_link(data, a, b)
@@ -134,6 +148,8 @@ def main():
                     rows.append({'query': [a, b], 'label': label, 'method': name,
                                  'budget': budget, 'effective_budget': effective,
                                  'candidate_edges': len(candidates), 'ranking_seconds': duration,
+                                 'support': support.edge_index.t().tolist(),
+                                 'grouping': getattr(explainer, 'last_diagnostics', {}),
                                  **metrics})
             print(f'Completed label={label} query=({a},{b})', flush=True)
     report = {'protocol': PROTOCOL, 'args': vars(args), 'split_sha256': hashes,
