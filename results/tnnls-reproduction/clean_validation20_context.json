@@ -1,0 +1,30 @@
+{
+  "baseline_runs": [
+    "clean_Cora42_val20_cf2_gnn.json",
+    "clean_Citeseer43_val20_cf2_gnn.json"
+  ],
+  "longer_search_runs": [
+    "clean_Cora42_val20_steps8.json",
+    "clean_Citeseer43_val20_steps8.json"
+  ],
+  "audits": [
+    "clean_training_audit.json",
+    "clean_validation20_audit.json",
+    "clean_steps8_audit.json",
+    "clean_validation20_search_diagnostics.json"
+  ],
+  "training_protocol": "static-undirected-split-disjoint-negatives-v1",
+  "scope": "Development validation only. The new frozen checkpoints were selected by validation AUC without evaluating their test split. Original negative-sampling records and all legacy explanation measurements are retained separately.",
+  "comparison_checks": "The two-step and eight-step runs share checkpoint hashes, split hashes, query/budget pairs, candidate regions, achieved support sizes and identical signed-saliency initial supports. All saved source hashes match the files used in this study. These are paired search-budget comparisons, not matched-total-compute comparisons.",
+  "baseline_scope": "CF2 is explicitly adapted to binary links and original-edge budgets. Its node-explainer defaults and PyG GNNExplainer's initial settings have not been tuned for this task. Adding GNNExplainer changes the torch RNG consumption before CF2 mask initialization, so comparison with earlier runs is not an isolated causal estimate of the negative-sampling fix.",
+  "timing_context": "The Cora and Citeseer jobs ran concurrently on a shared RTX 4090; timings are diagnostic and not controlled runtime benchmarks.",
+  "observations": "Increasing the search step limit improves some Cora binary necessity outcomes without observed binary regressions. The coarse and ungrouped variants have identical aggregate binary outcomes at every tested budget in both step-limit settings. This does not establish a stable independent benefit from coarse grouping.",
+  "failure_probe": {
+    "batch_probe": "clean_Cora42_query1324_2265_budget5_neighborhood.json",
+    "serial_probe": "clean_Cora42_query1324_2265_budget5_neighborhood_serial.json",
+    "alternative_replay": "clean_Cora42_query1324_2265_budget5_cf2_neighborhood.json",
+    "interpretation": "For this one validation query, all 330 one-edge exchanges around the saved search support failed the executed acceptance rule, including with one graph per forward. The CF2 support differs by two edges and its serially replayed retained/deleted predictions improve the capped objective and both continuous components, while restoring binary sufficiency without losing necessity. This is numerical evidence of an admissible one-exchange search trap, not a general theorem or evidence that coarse grouping will resolve it."
+  },
+  "next_method_question": "Test coordinated multi-edge proposals against equally budgeted ungrouped proposals before attributing any improvement to graph grouping.",
+  "manuscript_numerical_results_updated": false
+}

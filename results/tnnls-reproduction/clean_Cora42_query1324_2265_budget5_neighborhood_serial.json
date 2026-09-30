@@ -1,0 +1,38 @@
+{
+  "diagnostic": "exhaustive-one-exchange-validation-probe-v1",
+  "input": "results/tnnls-reproduction/clean_Cora42_val20_cf2_gnn.json",
+  "input_sha256": "793eed2a26bfd9cba19536ee18a8aa1bcdae8f7b0c5a05205b2079f74330c7ec",
+  "args": {
+    "input": "results/tnnls-reproduction/clean_Cora42_val20_cf2_gnn.json",
+    "query": [
+      1324,
+      2265
+    ],
+    "budget": 5,
+    "method": "Swap-coarse",
+    "max_proposals": 1000,
+    "batch_size": 1,
+    "device": "cuda",
+    "output": "results/tnnls-reproduction/clean_Cora42_query1324_2265_budget5_neighborhood_serial.json"
+  },
+  "checkpoint_sha256": "73357cc88f39af91b58d098159bb1f88e81291d4be39d24aa197ea1fbeff08f1",
+  "baseline": {
+    "full_logit": -0.5760663151741028,
+    "retained_logit": 1.0931094884872437,
+    "removed_logit": 1.1540796756744385,
+    "necessity_flip": 1.0,
+    "sufficiency_agreement": 0.0,
+    "necessity_confidence_drop": 0.400417061371,
+    "sufficiency_confidence_drop": 0.38912857033015497,
+    "support_edges": 5,
+    "input_edges": 4488,
+    "evidence_sparsity": 0.9988859180035651
+  },
+  "probe_source_sha256": "81b80de08d144f7422c1e34612b61cea8ae12956b888f9c0f4b00753caa696cc",
+  "baseline_objective": 0.011288491040845089,
+  "candidate_edges": 71,
+  "evaluated_proposals": 330,
+  "batch_eligible_proposals": 0,
+  "best_serially_checked_improvement": null,
+  "scope": "Enumerates every one-edge exchange around one saved support. Only the reported best improvement is serially rechecked; this is not global support optimization."
+}

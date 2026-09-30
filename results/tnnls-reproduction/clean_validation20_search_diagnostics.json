@@ -1,0 +1,424 @@
+{
+  "diagnostic": "paired-final-support-guards-v1",
+  "scope": "Saved-logit comparison with tolerance 1e-6. Does not reexecute the model, establish statistical superiority, or show that one-edge proposals could reach the alternative support.",
+  "runs": [
+    {
+      "input": "results/tnnls-reproduction/clean_Cora42_val20_cf2_gnn.json",
+      "sha256": "793eed2a26bfd9cba19536ee18a8aa1bcdae8f7b0c5a05205b2079f74330c7ec",
+      "search_method": "Swap-coarse",
+      "summaries": [
+        {
+          "alternative": "CF2-link-adapted",
+          "paired_query_budgets": 60,
+          "binary_dominance_cases": 3,
+          "binary_dominance_with_continuous_guard_conflict": 1,
+          "passes_final_state_guards_with_tolerance": 5
+        },
+        {
+          "alternative": "GNNExplainer",
+          "paired_query_budgets": 60,
+          "binary_dominance_cases": 2,
+          "binary_dominance_with_continuous_guard_conflict": 2,
+          "passes_final_state_guards_with_tolerance": 2
+        }
+      ],
+      "cases": [
+        {
+          "query": [
+            1324,
+            2265
+          ],
+          "budget": 5,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": false,
+            "capped_retained_probability": 0.25103319379149736,
+            "removed_probability": 0.23974470275065227,
+            "objective": 0.011288491040845089
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.6401617641216523,
+            "removed_probability": 0.23632007973296493,
+            "objective": 0.40384168438868734
+          },
+          "binary_dominance": true,
+          "binary_nonregression": true,
+          "objective_gain": 0.3925531933478422,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 2,
+          "accepted_search_steps": 0,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1324,
+            2265
+          ],
+          "budget": 20,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": false,
+            "capped_retained_probability": 0.25103319379149736,
+            "removed_probability": 0.23974468102271185,
+            "objective": 0.011288512768785508
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.5090268838557479,
+            "removed_probability": 0.25103319379149736,
+            "objective": 0.25799369006425055
+          },
+          "binary_dominance": true,
+          "binary_nonregression": true,
+          "objective_gain": 0.24670517729546504,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": true,
+          "passes_final_state_guards_with_tolerance": false,
+          "required_edge_exchanges": 15,
+          "accepted_search_steps": 0,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1716,
+            2446
+          ],
+          "budget": 5,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9536773113326421,
+            "removed_probability": 0.7038445683565712,
+            "objective": 0.24983274297607094
+          },
+          "alternative_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9536773113326421,
+            "removed_probability": 0.6974205183531816,
+            "objective": 0.25625679297946047
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 0.006424050003389525,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 1,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1716,
+            2446
+          ],
+          "budget": 10,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.953677321865234,
+            "removed_probability": 0.5109946696858224,
+            "objective": 0.4426826521794116
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.953677321865234,
+            "removed_probability": 0.49264796544513484,
+            "objective": 0.4610293564200992
+          },
+          "binary_dominance": true,
+          "binary_nonregression": true,
+          "objective_gain": 0.018346704240687572,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 1,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1716,
+            2446
+          ],
+          "budget": 20,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.953677321865234,
+            "removed_probability": 0.23585489695345002,
+            "objective": 0.7178224249117839
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.953677321865234,
+            "removed_probability": 0.2189445816866926,
+            "objective": 0.7347327401785414
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 0.01691031526675746,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 5,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            762,
+            2448
+          ],
+          "budget": 10,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9495976280374434,
+            "removed_probability": 0.23288721729508413,
+            "objective": 0.7167104107423593
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9495976280374434,
+            "removed_probability": 0.23115115912977374,
+            "objective": 0.7184464689076697
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 0.0017360581653104168,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 1,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1324,
+            2265
+          ],
+          "budget": 10,
+          "alternative": "GNNExplainer",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": false,
+            "capped_retained_probability": 0.25103319379149736,
+            "removed_probability": 0.23974470275065227,
+            "objective": 0.011288491040845089
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.5039915451317433,
+            "removed_probability": 0.25103319379149736,
+            "objective": 0.2529583513402459
+          },
+          "binary_dominance": true,
+          "binary_nonregression": true,
+          "objective_gain": 0.24166986029940082,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": true,
+          "passes_final_state_guards_with_tolerance": false,
+          "required_edge_exchanges": 4,
+          "accepted_search_steps": 0,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            1324,
+            2265
+          ],
+          "budget": 20,
+          "alternative": "GNNExplainer",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": false,
+            "capped_retained_probability": 0.25103319379149736,
+            "removed_probability": 0.23974468102271185,
+            "objective": 0.011288512768785508
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.5814524924549618,
+            "removed_probability": 0.25103319379149736,
+            "objective": 0.3304192986634644
+          },
+          "binary_dominance": true,
+          "binary_nonregression": true,
+          "objective_gain": 0.3191307858946789,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": true,
+          "passes_final_state_guards_with_tolerance": false,
+          "required_edge_exchanges": 9,
+          "accepted_search_steps": 0,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            502,
+            2063
+          ],
+          "budget": 10,
+          "alternative": "GNNExplainer",
+          "search_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9999999130942825,
+            "removed_probability": 0.9999694518348027,
+            "objective": 3.0461259479808156e-05
+          },
+          "alternative_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9999999130942825,
+            "removed_probability": 0.9999648806579563,
+            "objective": 3.50324363261878e-05
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 4.571176846379643e-06,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 4,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            502,
+            2063
+          ],
+          "budget": 20,
+          "alternative": "GNNExplainer",
+          "search_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9999999130942825,
+            "removed_probability": 0.9999694518348027,
+            "objective": 3.0461259479808156e-05
+          },
+          "alternative_state": {
+            "necessity": false,
+            "sufficiency": true,
+            "capped_retained_probability": 0.9999999130942825,
+            "removed_probability": 0.9999648806579563,
+            "objective": 3.50324363261878e-05
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 4.571176846379643e-06,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 9,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        }
+      ]
+    },
+    {
+      "input": "results/tnnls-reproduction/clean_Citeseer43_val20_cf2_gnn.json",
+      "sha256": "fc92ef5392e8a0a3e9b1a9e1511859557998b8fa86dfc78ce567f4f8f4a5a409",
+      "search_method": "Swap-coarse",
+      "summaries": [
+        {
+          "alternative": "CF2-link-adapted",
+          "paired_query_budgets": 60,
+          "binary_dominance_cases": 0,
+          "binary_dominance_with_continuous_guard_conflict": 0,
+          "passes_final_state_guards_with_tolerance": 2
+        },
+        {
+          "alternative": "GNNExplainer",
+          "paired_query_budgets": 60,
+          "binary_dominance_cases": 0,
+          "binary_dominance_with_continuous_guard_conflict": 0,
+          "passes_final_state_guards_with_tolerance": 0
+        }
+      ],
+      "cases": [
+        {
+          "query": [
+            12,
+            966
+          ],
+          "budget": 10,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.8617458116051616,
+            "removed_probability": 0.320784131582112,
+            "objective": 0.5409616800230497
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.8617458116051616,
+            "removed_probability": 0.30656243391680293,
+            "objective": 0.5551833776883587
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 0.014221697665309008,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 3,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        },
+        {
+          "query": [
+            12,
+            966
+          ],
+          "budget": 20,
+          "alternative": "CF2-link-adapted",
+          "search_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.86174579740257,
+            "removed_probability": 0.3607990454807091,
+            "objective": 0.5009467519218609
+          },
+          "alternative_state": {
+            "necessity": true,
+            "sufficiency": true,
+            "capped_retained_probability": 0.86174579740257,
+            "removed_probability": 0.27167353190589427,
+            "objective": 0.5900722654966757
+          },
+          "binary_dominance": false,
+          "binary_nonregression": true,
+          "objective_gain": 0.0891255135748148,
+          "retention_guard_conflict": false,
+          "deletion_guard_conflict": false,
+          "passes_final_state_guards_with_tolerance": true,
+          "required_edge_exchanges": 10,
+          "accepted_search_steps": 2,
+          "last_step_proposals": 18
+        }
+      ]
+    }
+  ]
+}
