@@ -5,6 +5,9 @@ import os
 import sys
 import random
 import json
+import hashlib
+import platform
+from pathlib import Path
 
 import torch
 import torch.nn.functional as F
@@ -19,7 +22,9 @@ from src.models.gcn import GCN
 import torch_geometric
 import torch_geometric.transforms as T
 from torch_geometric.datasets import Planetoid, Coauthor, Amazon
-from torch_geometric.utils import negative_sampling, train_test_split_edges
+from torch_geometric.utils import train_test_split_edges
+from src.negative_sampling import (NEGATIVE_PROTOCOL, SPLIT_NAMES,
+                                   training_negative_exclusion, sample_training_negatives)
 
 try:
     from ogb.linkproppred import LinkPropPredDataset
@@ -149,17 +154,24 @@ def train_epoch(
     optimizer: torch.optim.Optimizer,
     device: torch.device,
     neg_ratio: float = 1.0,
+    *,
+    negative_exclusion=None,
+    negative_audit=None,
 ):
     model.train()
     predictor.train()
 
     pos_edge = data.train_pos_edge_index.to(device)
     num_neg = int(pos_edge.size(1) * neg_ratio)
-    neg_edge = negative_sampling(
-        edge_index=pos_edge,
-        num_nodes=data.num_nodes,
-        num_neg_samples=num_neg,
-    ).to(device)
+    if negative_exclusion is None:
+        negative_exclusion = training_negative_exclusion(data)
+    neg_edge = sample_training_negatives(negative_exclusion.to(device),
+                                        data.num_nodes, num_neg)
+    if negative_audit is not None:
+        negative_audit.append({'stored_negative_entries': neg_edge.size(1),
+                               'excluded_pair_collisions': 0,
+                               'sha256': hashlib.sha256(
+                                   neg_edge.detach().cpu().numpy().tobytes()).hexdigest()})
 
     x = (data.x.to(device) if data.x is not None else torch.eye(data.num_nodes, device=device))
     optimizer.zero_grad()
@@ -232,6 +244,8 @@ def main():
     parser.add_argument("--weight-decay", type=float, default=None)
     parser.add_argument("--select-best", action="store_true", help="Select epoch using validation AUC only")
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--skip-test", action="store_true",
+                        help="Do not inspect the test split during method development")
     args = parser.parse_args()
 
     cfg = ExperimentConfig()
@@ -254,6 +268,8 @@ def main():
         cfg.model.dropout = args.dropout
     if args.weight_decay is not None:
         cfg.model.weight_decay = args.weight_decay
+    if cfg.model.epochs < 1 or cfg.model.neg_ratio <= 0:
+        raise ValueError('Positive epochs and negative sampling ratio required')
     checkpoint_path = os.path.join(args.checkpoint_dir, f"{args.dataset}_gcn.pt")
     if os.path.exists(checkpoint_path) and not args.overwrite:
         raise FileExistsError(f"Refusing to overwrite {checkpoint_path}; choose a new directory")
@@ -268,6 +284,12 @@ def main():
     print(f"Loading dataset: {args.dataset}")
     data = load_dataset(args.dataset)
     print(f"  Nodes: {data.num_nodes}, Edges: {data.train_pos_edge_index.size(1)}, Features: {data.num_features}")
+    negative_exclusion = training_negative_exclusion(data).to(device)
+    split_hashes = {name: hashlib.sha256(getattr(data, name).cpu().numpy().tobytes()).hexdigest()
+                    for name in SPLIT_NAMES}
+    source_paths = [Path(__file__), Path('src/models/gcn.py'), Path('src/negative_sampling.py'),
+                    Path('config.py')]
+    source_hashes = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths}
 
     in_channels = data.num_features
     out_channels = cfg.model.hidden_channels
@@ -288,10 +310,11 @@ def main():
     )
 
     print(f"Training on {device} for {cfg.model.epochs} epochs...")
-    history, best_state = [], None
+    history, best_state, negative_audit = [], None, []
     best_val, selected_epoch = -float("inf"), cfg.model.epochs
     for epoch in range(1, cfg.model.epochs + 1):
-        loss = train_epoch(model, predictor, data, optimizer, device, cfg.model.neg_ratio)
+        loss = train_epoch(model, predictor, data, optimizer, device, cfg.model.neg_ratio,
+                           negative_exclusion=negative_exclusion, negative_audit=negative_audit)
         if epoch % 10 == 0 or epoch == 1:
             val_auc = evaluate(model, predictor, data, device, "val")
             history.append({"epoch": epoch, "loss": loss, "validation_auc": val_auc})
@@ -307,10 +330,16 @@ def main():
     if best_state is not None:
         model.load_state_dict(best_state[0])
         predictor.load_state_dict(best_state[1])
-    test_auc = evaluate(model, predictor, data, device, "test")
+    test_auc = None if args.skip_test else evaluate(model, predictor, data, device, "test")
     summary = {"args": vars(args), "selected_epoch": selected_epoch,
                "history": history, "test_auc": test_auc, "torch": torch.__version__,
-               "pyg": torch_geometric.__version__}
+               "pyg": torch_geometric.__version__, "python": platform.python_version(),
+               "negative_sampling_protocol": NEGATIVE_PROTOCOL,
+               "negative_ratio": cfg.model.neg_ratio, "negative_sampling_audit": negative_audit,
+               "negative_exclusion_sha256": hashlib.sha256(
+                   negative_exclusion.cpu().numpy().tobytes()).hexdigest(),
+               "split_sha256": split_hashes, "source_sha256_at_start": source_hashes,
+               "test_evaluated": not args.skip_test}
     torch.save({
         "model_state_dict": model.state_dict(),
         "predictor_state_dict": predictor.state_dict(),
@@ -326,6 +355,7 @@ def main():
             "out_channels": out_channels,
             "num_layers": cfg.model.num_layers,
             "dataset": args.dataset,
+            "negative_sampling_protocol": NEGATIVE_PROTOCOL,
         },
         "edge_splits": {name: getattr(data, name).cpu() for name in
                         ["train_pos_edge_index", "val_pos_edge_index", "val_neg_edge_index",
@@ -335,7 +365,7 @@ def main():
 
     with open(checkpoint_path + ".json", "w") as f:
         json.dump(summary, f, indent=2)
-    print(f"Test AUC: {test_auc:.4f}")
+    print('Test evaluation skipped' if test_auc is None else f"Test AUC: {test_auc:.4f}")
 
 
 if __name__ == "__main__":
